@@ -18,6 +18,7 @@ import java.net.URI;
 //commit
 //ddddddddd
 //Hello
+//Pidr
 public class UserGroupRegistrationActivity extends AppCompatActivity {
     ImageView image;
     Button button;
