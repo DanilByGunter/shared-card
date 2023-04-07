@@ -22,6 +22,7 @@ import java.net.URI;
 //huila
 ///dsdsdsadsdas
 //dddsadsdsadsa
+//ddsdsdasd
 public class UserGroupRegistrationActivity extends AppCompatActivity {
     ImageView image;
     Button button;
