@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Example</string>
+    <string name="app_name">SHARED CARD</string>
     <string name="enter_your_name">Введите ваше имя:</string>
     <string name="enter_your_group">Введите имя группы:</string>
     <string name="continue_">Продолжить</string>

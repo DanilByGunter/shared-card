@@ -8,4 +8,8 @@
         <item name="android:textColor">@color/green</item>
         <item name="android:fontFamily">@font/gothic</item>
     </style>
+    <style name="TextViewKitchen">
+        <item name="android:textColor">@color/light_green_2</item>
+        <item name="android:fontFamily">@font/kitchen_home</item>
+    </style>
 </resources>
