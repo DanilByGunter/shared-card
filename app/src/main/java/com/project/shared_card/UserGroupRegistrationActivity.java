@@ -20,6 +20,7 @@ import java.net.URI;
 //Hello
 //Pidr
 //huila
+///dsdsdsadsdas
 public class UserGroupRegistrationActivity extends AppCompatActivity {
     ImageView image;
     Button button;
