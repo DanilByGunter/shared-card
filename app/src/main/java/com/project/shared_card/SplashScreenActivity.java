@@ -12,6 +12,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 // ddddd
 //vfvf z cjikf c evf
 //t` ek,srf vfvf rheujv ujkjdf
+    //dsdsdadasdsasad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
