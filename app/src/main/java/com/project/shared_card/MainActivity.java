@@ -15,6 +15,7 @@ import android.view.WindowManager;
 //ЗАЕБАЛО
 //ебаный гит
 //ГОВНОГОВНОГОВНОГОВНО
+//Я Миша
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
