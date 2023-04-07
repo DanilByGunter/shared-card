@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 // bitch better have my money
+//Y'all should know me well enough
+// bitch better have my money
+//Please don't call me on my bluff
 public class MainActivity extends AppCompatActivity {
 //HELLO
     //ddd
