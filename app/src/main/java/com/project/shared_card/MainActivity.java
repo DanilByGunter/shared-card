@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
-
+//HELLO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
