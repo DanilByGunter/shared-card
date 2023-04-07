@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Main" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="android:fontFamily">@font/gothic</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:textColorHint">@color/green</item>
+        <item name="android:windowBackground">@drawable/background</item>
+        <item name="android:windowLightStatusBar">false</item>
+<!--        <item name="android:statusBarColor">@color/white</item>-->
+        <item name="colorPrimary">@color/light_green_2</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/green</item>
+        <item name="colorSecondaryVariant">@color/green</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Theme.Main.SplashTheme" parent="Theme.Main">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+    <style name="Theme.Main.Registrations" parennt="Theme.Main">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
+</resources>

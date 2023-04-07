@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextViewLight">
+        <item name="android:textColor">@color/light_green_2</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
+    <style name="TextViewDark">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
+</resources>

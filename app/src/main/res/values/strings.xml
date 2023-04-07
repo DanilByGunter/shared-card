@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Example</string>
+    <string name="enter_your_name">Введите ваше имя:</string>
+    <string name="enter_your_group">Введите имя группы:</string>
+    <string name="continue_">Продолжить</string>
+    <string name="choose_an_avatar_for_myself">Выберите аватарку</string>
+    <string name="choose_an_avatar_for_group">Выберите аватарку для группы</string>
+</resources>
