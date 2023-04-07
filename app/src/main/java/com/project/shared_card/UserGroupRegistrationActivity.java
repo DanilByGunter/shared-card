@@ -15,7 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.net.URI;
-
+//commit
+//ddddddddd
 public class UserGroupRegistrationActivity extends AppCompatActivity {
     ImageView image;
     Button button;

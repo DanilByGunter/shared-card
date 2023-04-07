@@ -10,8 +10,6 @@ import android.view.WindowManager;
 // bitch better have my money
 //Please don't call me on my bluff
 public class MainActivity extends AppCompatActivity {
-//HELLO
-    //ddd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
