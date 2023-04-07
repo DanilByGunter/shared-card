@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 public class SplashScreenActivity extends AppCompatActivity {
-//rdddrsdfdsd//ddddd
+//smak my ass
+    //rdddrsdfdsd
+// ddddd
+//vfvf z cjikf c evf
+//t` ek,srf vfvf rheujv ujkjdf
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
