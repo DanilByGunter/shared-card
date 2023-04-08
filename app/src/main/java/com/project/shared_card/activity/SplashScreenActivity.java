@@ -1,10 +1,11 @@
-package com.project.shared_card;
+package com.project.shared_card.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.WindowManager;
+
+import com.project.shared_card.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
     @Override

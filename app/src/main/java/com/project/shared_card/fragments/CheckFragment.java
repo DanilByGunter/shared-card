@@ -1,4 +1,4 @@
-package com.project.shared_card;
+package com.project.shared_card.fragments;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.project.shared_card.R;
 
 
 public class CheckFragment extends Fragment {

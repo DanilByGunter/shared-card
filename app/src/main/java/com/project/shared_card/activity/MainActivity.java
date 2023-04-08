@@ -1,16 +1,18 @@
-package com.project.shared_card;
+package com.project.shared_card.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.WindowManager;
 
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.project.shared_card.R;
+import com.project.shared_card.fragments.CheckFragment;
+import com.project.shared_card.fragments.GroupFragment;
+import com.project.shared_card.fragments.StatisticsFragment;
+import com.project.shared_card.fragments.StoryFragment;
 
 
 public class MainActivity extends AppCompatActivity {
