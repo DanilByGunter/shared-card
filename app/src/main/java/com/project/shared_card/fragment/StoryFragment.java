@@ -1,4 +1,4 @@
-package com.project.shared_card.fragments;
+package com.project.shared_card.fragment;
 
 import android.os.Bundle;
 
@@ -10,25 +10,27 @@ import android.view.ViewGroup;
 
 import com.project.shared_card.R;
 
-public class GroupFragment extends Fragment {
 
+public class StoryFragment extends Fragment {
 
-    public GroupFragment() {
+    public StoryFragment() {
     }
 
-    public static GroupFragment newInstance() {
-        GroupFragment fragment = new GroupFragment();
+    public static StoryFragment newInstance() {
+        StoryFragment fragment = new StoryFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_group, container, false);
+        return inflater.inflate(R.layout.fragment_story, container, false);
     }
 }

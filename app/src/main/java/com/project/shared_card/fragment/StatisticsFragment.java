@@ -1,4 +1,4 @@
-package com.project.shared_card.fragments;
+package com.project.shared_card.fragment;
 
 import android.os.Bundle;
 

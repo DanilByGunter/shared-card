@@ -9,10 +9,10 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.project.shared_card.R;
-import com.project.shared_card.fragments.CheckFragment;
-import com.project.shared_card.fragments.GroupFragment;
-import com.project.shared_card.fragments.StatisticsFragment;
-import com.project.shared_card.fragments.StoryFragment;
+import com.project.shared_card.fragment.CheckFragment;
+import com.project.shared_card.fragment.GroupFragment;
+import com.project.shared_card.fragment.StatisticsFragment;
+import com.project.shared_card.fragment.StoryFragment;
 
 
 public class MainActivity extends AppCompatActivity {
