@@ -5,4 +5,6 @@
     <string name="continue_">Продолжить</string>
     <string name="choose_an_avatar_for_myself">Выберите аватарку</string>
     <string name="choose_an_avatar_for_group">Выберите аватарку для группы</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
