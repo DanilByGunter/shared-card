@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "groups")
-public class Groups {
+public class GroupsEntity {
     @PrimaryKey
     public long id;
     public String name;

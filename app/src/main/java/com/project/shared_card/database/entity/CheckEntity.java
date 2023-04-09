@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "check")
-public class Check {
+public class CheckEntity {
     @PrimaryKey
     public long id;
     public long categoryId;
