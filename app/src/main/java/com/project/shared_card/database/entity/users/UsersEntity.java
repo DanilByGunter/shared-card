@@ -1,10 +1,10 @@
-package com.project.shared_card.database.entity;
+package com.project.shared_card.database.entity.users;
 
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.project.shared_card.model.SignUpOfUser;
+import com.project.shared_card.model.SignUp;
 
 @Entity(tableName = "users")
 public class UsersEntity {
@@ -14,12 +14,12 @@ public class UsersEntity {
     private String photo;
     private long groupId;
 
-    public static UsersEntity fromSignUpOfUser(SignUpOfUser user) {
+    public static UsersEntity fromSignUpOfUser(SignUp user) {
         UsersEntity entity = new UsersEntity(0,user.getName(), user.getPhoto(), 0);
         return entity;
     }
-    public static SignUpOfUser toSignUpOfUser(UsersEntity entity){
-        SignUpOfUser user = new SignUpOfUser(entity.getName(), entity.getPhoto());
+    public static SignUp toSignUpOfUser(UsersEntity entity){
+        SignUp user = new SignUp(entity.getName(), entity.getPhoto());
         return user;
     }
     public UsersEntity(long id, String name, String photo, long groupId) {

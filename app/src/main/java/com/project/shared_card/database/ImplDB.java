@@ -4,24 +4,26 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.project.shared_card.database.repository.ImplementationUsersRepository;
+import com.project.shared_card.database.entity.groups.repository.ImplGroupsRepository;
+import com.project.shared_card.database.entity.users.repository.ImplUsersRepository;
 
 public class ImplDB {
     private AppDatabase db;
-    private ImplementationUsersRepository usersRepository;
 
     public ImplDB(Context context) {
         this.db = Room.databaseBuilder(context,
                         AppDatabase.class, "Sample.db")
                 .build();
-        usersRepository = new ImplementationUsersRepository(db.getUsersDao());
     }
 
     public AppDatabase getDb() {
         return db;
     }
 
-    public ImplementationUsersRepository getUsersRepository() {
-        return usersRepository;
+    public ImplUsersRepository getUsersRepository() {
+        return new ImplUsersRepository(db.getUsersDao());
+    }
+    public ImplGroupsRepository getGroupsRepository(){
+        return new ImplGroupsRepository(db.getGroupsDao());
     }
 }

@@ -1,10 +1,10 @@
 package com.project.shared_card.model;
 
-public class SignUpOfUser {
+public class SignUp {
     private String name;
     private String photo;
 
-    public SignUpOfUser(String name, String photo) {
+    public SignUp(String name, String photo) {
         this.name = name;
         this.photo = photo;
     }

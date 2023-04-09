@@ -1,23 +1,23 @@
-package com.project.shared_card.database.repository;
+package com.project.shared_card.database.entity.users.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.project.shared_card.database.dao.UsersDao;
-import com.project.shared_card.database.entity.UsersEntity;
-import com.project.shared_card.model.SignUpOfUser;
+import com.project.shared_card.database.entity.users.UsersDao;
+import com.project.shared_card.database.entity.users.UsersEntity;
+import com.project.shared_card.model.SignUp;
 
 import java.util.List;
 
 
-public class ImplementationUsersRepository implements UsersRepository{
+public class ImplUsersRepository implements UsersRepository{
      private UsersDao usersDao;
 
-    public ImplementationUsersRepository(UsersDao usersDao) {
+    public ImplUsersRepository(UsersDao usersDao) {
         this.usersDao = usersDao;
     }
 
     @Override
-    public void createUser(SignUpOfUser user) {
+    public void createUser(SignUp user) {
         UsersEntity entity = UsersEntity.fromSignUpOfUser(user);
         Thread thread = new Thread(new Runnable() {
             @Override

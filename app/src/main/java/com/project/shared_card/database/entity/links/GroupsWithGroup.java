@@ -5,7 +5,7 @@ import androidx.room.Embedded;
 import androidx.room.Relation;
 
 import com.project.shared_card.database.entity.GroupEntity;
-import com.project.shared_card.database.entity.GroupsEntity;
+import com.project.shared_card.database.entity.groups.GroupsEntity;
 
 import java.util.List;
 

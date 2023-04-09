@@ -2,7 +2,6 @@ package com.project.shared_card.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,12 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.shared_card.R;
-import com.project.shared_card.database.AppDatabase;
 import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.repository.ImplementationUsersRepository;
-import com.project.shared_card.model.SignUpOfUser;
-
-import java.util.List;
+import com.project.shared_card.model.SignUp;
 
 public class UserGroupRegistrationActivity extends AppCompatActivity {
     ImplDB db;
@@ -52,18 +47,25 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
         });
     }
     public void onClick(View v) {
-        numberOfClick+=1;
         switch (numberOfClick){
-            case 1:
-                SignUpOfUser user = new SignUpOfUser(editText.getText().toString(),image.getDrawable().toString());
-                System.out.println("photo = " +image.getDrawable().toString());
+            case 0:
+                if (editText.getText().toString().equals("")){
+                    return;
+                }
+                SignUp user = new SignUp(editText.getText().toString(),image.getDrawingCache().toString());
                 db.getUsersRepository().createUser(user);
                 textView.setText(getString(R.string.choose_an_avatar_for_group));
                 editText.setHint(getString(R.string.enter_your_group));
                 editText.setText("");
                 image.setImageDrawable(null);
+                numberOfClick+=1;
                 break;
-            case 2:
+            case 1:
+                if (editText.getText().toString().equals("")){
+                    return;
+                }
+                SignUp group = new SignUp(editText.getText().toString(),image.getDrawingCache().toString());
+                db.getGroupsRepository().createGroups(group);
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
                 finish();

@@ -1,15 +1,11 @@
-package com.project.shared_card.database.dao;
+package com.project.shared_card.database.entity.users;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.project.shared_card.database.entity.UsersEntity;
-
 import java.util.List;
-
-import io.reactivex.Completable;
 
 
 @Dao
