@@ -1,7 +1,10 @@
 package com.project.shared_card.database.entity;
 
-import android.arch.persistence.room.PrimaryKey;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "users")
 public class Users {
     @PrimaryKey
     public long id;

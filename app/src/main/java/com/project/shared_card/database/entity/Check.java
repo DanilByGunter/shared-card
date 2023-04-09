@@ -1,10 +1,8 @@
 package com.project.shared_card.database.entity;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 
-import java.util.Date;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 @Entity(tableName = "check")
 public class Check {
@@ -13,8 +11,8 @@ public class Check {
     public long categoryId;
     public long metricId;
     public long groupId;
-    public Date date_first;
-    public Date date_last;
+    public long date_first;
+    public long date_last;
     public String name_buyer;
     public String name_user;
     public Boolean status;
