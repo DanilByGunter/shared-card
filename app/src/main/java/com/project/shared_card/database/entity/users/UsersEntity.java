@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 
 import com.project.shared_card.model.SignUp;
 
+import java.sql.Blob;
+
 @Entity(tableName = "users")
 public class UsersEntity {
     @PrimaryKey(autoGenerate = true)

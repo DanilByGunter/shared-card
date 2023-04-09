@@ -1,5 +1,7 @@
 package com.project.shared_card.model;
 
+import java.sql.Blob;
+
 public class SignUp {
     private String name;
     private String photo;

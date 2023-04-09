@@ -4,7 +4,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,12 +18,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.shared_card.R;
+import com.project.shared_card.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.model.SignUp;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Blob;
+
 public class UserGroupRegistrationActivity extends AppCompatActivity {
     ImplDB db;
-
+    ByteArrayOutputStream blob;
     ImageView image;
     Button button;
     TextView textView;
@@ -47,40 +63,41 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
         });
     }
     public void onClick(View v) {
-        switch (numberOfClick){
-            case 0:
-                if (editText.getText().toString().equals("")){
-                    return;
-                }
-                SignUp user = new SignUp(editText.getText().toString(),image.getDrawingCache().toString());
-                db.getUsersRepository().createUser(user);
-                textView.setText(getString(R.string.choose_an_avatar_for_group));
-                editText.setHint(getString(R.string.enter_your_group));
-                editText.setText("");
-                image.setImageDrawable(null);
-                numberOfClick+=1;
-                break;
-            case 1:
-                if (editText.getText().toString().equals("")){
-                    return;
-                }
-                SignUp group = new SignUp(editText.getText().toString(),image.getDrawingCache().toString());
-                db.getGroupsRepository().createGroups(group);
-                Intent intent = new Intent(this,MainActivity.class);
-                startActivity(intent);
-                finish();
-
+        if (editText.getText().toString().equals("")){
+            return;
         }
+        SignUp user = new SignUp(editText.getText().toString(), "");
+        db.getUsersRepository().createUser(user);
+        SignUp group = new SignUp("default", "res/drawable-v24/grocery_card.png");
+        db.getGroupsRepository().createGroups(group);
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
             String FilePath = data.getDataString();
-            System.out.println(FilePath);
             image.setImageURI(Uri.parse(FilePath));
+            Uri uri =  Uri.parse(FilePath);
+
+            File source = new File(FilePath);
+            FileOutputStream fos = null;
+            try {
+                fos = openFileOutput("me", MODE_PRIVATE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    fos.write(Files.readAllBytes(Paths.get(FilePath)));
+                }
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
 }
 
 

@@ -8,6 +8,8 @@ import com.project.shared_card.database.entity.GroupEntity;
 import com.project.shared_card.database.entity.users.UsersEntity;
 import com.project.shared_card.model.SignUp;
 
+import java.sql.Blob;
+
 @Entity(tableName = "groups")
 public class GroupsEntity {
     @PrimaryKey
@@ -15,8 +17,8 @@ public class GroupsEntity {
     private String name;
     private String photo;
 
-    public static GroupsEntity fromSignUpOfUser(SignUp user) {
-        GroupsEntity entity = new GroupsEntity(0,user.getName(), user.getPhoto());
+    public static GroupsEntity fromSignUpOfUser(SignUp group) {
+        GroupsEntity entity = new GroupsEntity(0,group.getName(), group.getPhoto());
         return entity;
     }
 
