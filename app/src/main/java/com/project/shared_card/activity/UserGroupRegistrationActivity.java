@@ -1,15 +1,21 @@
 package com.project.shared_card.activity;
 
+
+import static androidx.core.content.PackageManagerCompat.LOG_TAG;
+
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,11 +28,15 @@ import com.project.shared_card.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.model.SignUp;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,35 +76,48 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
         if (editText.getText().toString().equals("")){
             return;
         }
-        SignUp user = new SignUp(editText.getText().toString(), "");
+        if(image.getDrawable() == null){
+            byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable)getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
+            FileOutputStream fos;
+            try {
+                fos= openFileOutput("me.png", MODE_PRIVATE);
+                fos.write(picture);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        SignUp user = new SignUp(editText.getText().toString(), "me.png");
         db.getUsersRepository().createUser(user);
-        SignUp group = new SignUp("default", "res/drawable-v24/grocery_card.png");
+        SignUp group = new SignUp("", "res/drawable-v24/grocery_card.png");
         db.getGroupsRepository().createGroups(group);
+
+
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
         finish();
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
             String FilePath = data.getDataString();
             image.setImageURI(Uri.parse(FilePath));
-            Uri uri =  Uri.parse(FilePath);
-
-            File source = new File(FilePath);
-            FileOutputStream fos = null;
-            try {
-                fos = openFileOutput("me", MODE_PRIVATE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    fos.write(Files.readAllBytes(Paths.get(FilePath)));
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable()).getBitmap());
+                    FileOutputStream fos;
+                    try {
+                        fos= openFileOutput("me.png", MODE_PRIVATE);
+                        fos.write(picture);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            });
+            thread.start();
         }
     }
 

@@ -12,7 +12,7 @@ import java.sql.Blob;
 
 @Entity(tableName = "groups")
 public class GroupsEntity {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
     private String photo;
