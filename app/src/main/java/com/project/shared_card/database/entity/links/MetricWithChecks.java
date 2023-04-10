@@ -4,8 +4,8 @@ package com.project.shared_card.database.entity.links;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.project.shared_card.database.entity.CheckEntity;
-import com.project.shared_card.database.entity.MetricsEntity;
+import com.project.shared_card.database.entity.check.CheckEntity;
+import com.project.shared_card.database.entity.metrics.MetricsEntity;
 
 import java.util.List;
 

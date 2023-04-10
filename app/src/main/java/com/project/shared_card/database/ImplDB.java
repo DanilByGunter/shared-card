@@ -4,8 +4,9 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.project.shared_card.database.entity.groups.repository.ImplGroupsRepository;
-import com.project.shared_card.database.entity.users.repository.ImplUsersRepository;
+import com.project.shared_card.database.entity.group.repository.ImplGroupRepository;
+import com.project.shared_card.database.entity.group_name.repository.ImplGroupNameRepository;
+import com.project.shared_card.database.entity.user_name.repository.ImplUserNameRepository;
 
 public class ImplDB {
     private AppDatabase db;
@@ -20,10 +21,13 @@ public class ImplDB {
         return db;
     }
 
-    public ImplUsersRepository getUsersRepository() {
-        return new ImplUsersRepository(db.getUsersDao());
+    public ImplUserNameRepository getUserNameRepository() {
+        return new ImplUserNameRepository(db.getUserNameDao());
     }
-    public ImplGroupsRepository getGroupsRepository(){
-        return new ImplGroupsRepository(db.getGroupsDao());
+    public ImplGroupNameRepository getGroupNameRepository(){
+        return new ImplGroupNameRepository(db.getGroupNameDao());
+    }
+    public ImplGroupRepository getGroupRepository(){
+        return new ImplGroupRepository(db.getGroupDao());
     }
 }

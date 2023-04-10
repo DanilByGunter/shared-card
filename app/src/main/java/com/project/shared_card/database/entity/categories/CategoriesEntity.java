@@ -1,14 +1,18 @@
-package com.project.shared_card.model;
+package com.project.shared_card.database.entity.categories;
 
-public class SignUp {
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "category")
+public class CategoriesEntity {
+    @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
-    private String photo;
 
-    public SignUp(long id, String name, String photo) {
+    public CategoriesEntity(long id, String name) {
         this.id = id;
         this.name = name;
-        this.photo = photo;
     }
 
     public long getId() {
@@ -25,13 +29,5 @@ public class SignUp {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
     }
 }
