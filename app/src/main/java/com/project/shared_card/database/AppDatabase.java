@@ -4,7 +4,6 @@ package com.project.shared_card.database;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
-
 import com.project.shared_card.database.entity.group.GroupDao;
 import com.project.shared_card.database.entity.group_name.GroupNameDao;
 import com.project.shared_card.database.entity.user_name.UserNameDao;

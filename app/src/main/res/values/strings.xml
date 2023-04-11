@@ -1,6 +1,7 @@
 <resources>
-    <string name="my_id">no id</string>
-    <string name="select_group">no group</string>
+    <string name="key_for_shared_preference">CONFIG</string>
+    <string name="key_for_user_id">user_id</string>
+    <string name="key_for_select_group_id">select_group</string>
     <string name="app_name">SHARED CARD</string>
     <string name="enter_your_name">Введите ваше имя:</string>
     <string name="enter_your_group">Введите имя группы:</string>

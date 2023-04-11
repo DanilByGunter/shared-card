@@ -3,7 +3,9 @@ package com.project.shared_card.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,10 +34,15 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
     TextView textView;
     EditText editText;
     Boolean ruleRegistration;
+    SignUp user;
+    SignUp group;
+    SharedPreferences settings;
+    SharedPreferences.Editor prefEditor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_group_registration);
+        settings = getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
         Bundle arguments = getIntent().getExtras();
         String textForTextView = arguments.get(TEXT_VIEW_KEY).toString();
         String textForEditView = arguments.get(EDIT_VIEW_KEY).toString();
@@ -73,33 +80,36 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
             }
-            //Запрос на сервер возврат последнего id пользователя
-            //Сохраняем id в ресурсах
-            long idUser = 1;
-            SignUp user = new SignUp(idUser, editText.getText().toString(), "me.png");
+            prefEditor = settings.edit();
+            //Запрос на сервер возврат последнего id пользователя если интернета нет то id = -1
+            long idUser = -1;
+            prefEditor.putString(getString(R.string.key_for_user_id), String.valueOf(idUser)).apply();
+            user = new SignUp(idUser, editText.getText().toString(), "me.png");
             db.getUserNameRepository().createUser(user);
-            //Сохраняем id в ресурсах
-            long idGroup = -1;
-            SignUp group = new SignUp(idGroup, "", "res/drawable-v24/grocery_card.png");
-            db.getGroupNameRepository().createGroups(group);
 
+            long idGroup = -1;
+            String identifierGroup = String.valueOf(idGroup) + "#" + "default";
+            prefEditor.putString(getString(R.string.key_for_select_group_id),identifierGroup).apply();
+            group = new SignUp(idGroup, "default", "res/drawable-v24/grocery_card.png");
+            db.getGroupNameRepository().createGroups(group);
             db.getGroupRepository().createRepository(new GroupEntity(idUser, idGroup, true));
         }
         else{
+            //Запрос на сервер возврат последнего id группы
+            //Сохраняем id в SharedPreference
             if (image.getDrawable() == null) {
                 byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
                 FileOutputStream fos;
                 try {
-                    fos = openFileOutput(String.format("group/{0}.png",getString(R.string.select_group)), MODE_PRIVATE);
+                    fos = openFileOutput(String.format("group/{0}.png",settings.getString(getString(R.string.key_for_select_group_id),"")), MODE_PRIVATE);
                     fos.write(picture);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            //Запрос на сервер возврат последнего id группы
-            //Сохраняем id в ресурсах
+
             long idGroup = 1;
-            SignUp group = new SignUp(idGroup, editText.getText().toString(), String.format("group/{0}.png",getString(R.string.select_group)));
+            SignUp group = new SignUp(idGroup, editText.getText().toString(), String.format("group/{0}.png",settings.getString(getString(R.string.key_for_select_group_id),"")));
             db.getGroupNameRepository().createGroups(group);
         }
         Intent intent = new Intent(this,MainActivity.class);
@@ -123,7 +133,7 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
                             if(ruleRegistration)
                                 fos = openFileOutput("me.png", MODE_PRIVATE);
                             else
-                                fos = openFileOutput(String.format("group/{0}.png",getString(R.string.select_group)), MODE_PRIVATE);
+                                fos = openFileOutput(String.format("group/{0}.png",settings.getString(getString(R.string.key_for_select_group_id),"")), MODE_PRIVATE);
                             fos.write(picture);
                             }
                              catch (IOException e){
