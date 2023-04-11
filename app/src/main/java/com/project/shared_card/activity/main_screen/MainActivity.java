@@ -1,4 +1,4 @@
-package com.project.shared_card.activity;
+package com.project.shared_card.activity.main_screen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,18 +9,18 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.project.shared_card.R;
-import com.project.shared_card.fragment.CheckFragment;
-import com.project.shared_card.fragment.GroupFragment;
-import com.project.shared_card.fragment.StatisticsFragment;
-import com.project.shared_card.fragment.StoryFragment;
+import com.project.shared_card.activity.main_screen.check.CheckFragment;
+import com.project.shared_card.activity.main_screen.group.GroupFragment;
+import com.project.shared_card.activity.main_screen.statistic.StatisticsFragment;
+import com.project.shared_card.activity.main_screen.story.StoryFragment;
 
 
 public class MainActivity extends AppCompatActivity {
-    BottomNavigationView navigationView;
-    StoryFragment storyFragment = new StoryFragment();
-    StatisticsFragment statisticsFragment = new StatisticsFragment();
-    GroupFragment groupFragment = new GroupFragment();
-    CheckFragment checkFragment = new CheckFragment();
+    private BottomNavigationView navigationView;
+    private StoryFragment storyFragment = new StoryFragment();
+    private StatisticsFragment statisticsFragment = new StatisticsFragment();
+    private GroupFragment groupFragment = new GroupFragment();
+    private CheckFragment checkFragment = new CheckFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,4 +1,4 @@
-package com.project.shared_card.activity;
+package com.project.shared_card.activity.registration;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.shared_card.R;
+import com.project.shared_card.activity.main_screen.MainActivity;
 import com.project.shared_card.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group.GroupEntity;
@@ -25,19 +26,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class UserGroupRegistrationActivity extends AppCompatActivity {
-    static String TEXT_VIEW_KEY = "1";
-    static String EDIT_VIEW_KEY = "2";
-    static String  SCREEN_REGISTRATION= "3";
-    ImplDB db;
-    ImageView image;
-    Button button;
-    TextView textView;
-    EditText editText;
-    Boolean ruleRegistration;
-    SignUp user;
-    SignUp group;
-    SharedPreferences settings;
-    SharedPreferences.Editor prefEditor;
+
+    public static final String TEXT_VIEW_KEY = "1";
+    public static final String EDIT_VIEW_KEY = "2";
+    public static final String  SCREEN_REGISTRATION= "3";
+    private ImplDB db;
+    private ImageView image;
+    private Button button;
+    private TextView textView;
+    private EditText editText;
+    private Boolean ruleRegistration;
+    private SignUp user;
+    private SignUp group;
+    private SharedPreferences settings;
+    private SharedPreferences.Editor prefEditor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +114,7 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
             SignUp group = new SignUp(idGroup, editText.getText().toString(), String.format("group/{0}.png",settings.getString(getString(R.string.key_for_select_group_id),"")));
             db.getGroupNameRepository().createGroups(group);
         }
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

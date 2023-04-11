@@ -6,8 +6,8 @@
         <item name="android:fontFamily">@font/gothic</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:forceDarkAllowed" tools:targetApi="p">false</item>
-        <item name="android:statusBarColor">@color/green</item>
-        <item name="android:textColorHint">@color/green</item>
+        <item name="android:statusBarColor">@color/dark_green</item>
+        <item name="android:textColorHint">@color/dark_green</item>
                 <item name="android:windowBackground">@drawable/background</item>
         <item name="android:windowLightStatusBar">false</item>
         <!--        <item name="android:statusBarColor">@color/white</item>-->
@@ -15,8 +15,8 @@
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/green</item>
-        <item name="colorSecondaryVariant">@color/green</item>
+        <item name="colorSecondary">@color/dark_green</item>
+        <item name="colorSecondaryVariant">@color/dark_green</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->

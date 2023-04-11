@@ -1,4 +1,4 @@
-package com.project.shared_card.fragment;
+package com.project.shared_card.activity.main_screen.check.tabs;
 
 import android.os.Bundle;
 
@@ -10,14 +10,19 @@ import android.view.ViewGroup;
 
 import com.project.shared_card.R;
 
-public class GroupFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link CurrentListFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class CurrentListFragment extends Fragment {
 
 
-    public GroupFragment() {
+    public CurrentListFragment() {
     }
 
-    public static GroupFragment newInstance() {
-        GroupFragment fragment = new GroupFragment();
+    public static CurrentListFragment newInstance() {
+        CurrentListFragment fragment = new CurrentListFragment();
         return fragment;
     }
 
@@ -29,6 +34,6 @@ public class GroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_group, container, false);
+        return inflater.inflate(R.layout.fragment_current_list, container, false);
     }
 }

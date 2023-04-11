@@ -1,4 +1,4 @@
-package com.project.shared_card.activity;
+package com.project.shared_card.activity.splash_screen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.project.shared_card.R;
+import com.project.shared_card.activity.main_screen.MainActivity;
+import com.project.shared_card.activity.registration.UserGroupRegistrationActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
-    SharedPreferences settings;
+    private SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
