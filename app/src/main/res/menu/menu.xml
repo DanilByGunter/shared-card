@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_group"
-        android:icon="@drawable/strok_for_photo"
+        android:icon="@drawable/icon_group"
         android:title="" />
     <item
         android:id="@+id/menu_check"
-        android:icon="@drawable/strok_for_photo"
+        android:icon="@drawable/icon_check"
         android:title="" />
     <item
         android:id="@+id/menu_statistic"
-        android:icon="@drawable/strok_for_photo"
+        android:icon="@drawable/icon_statistic"
         android:title="" />
     <item
         android:id="@+id/manu_story"
-        android:icon="@drawable/strok_for_photo"
+        android:icon="@drawable/icon_story"
         android:title="" />
 </menu>

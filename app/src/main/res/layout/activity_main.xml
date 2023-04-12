@@ -54,6 +54,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/green_blue"
+        app:elevation="0dp"
+        app:itemRippleColor="@color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconSize="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu" />
 
