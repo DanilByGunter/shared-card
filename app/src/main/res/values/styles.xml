@@ -12,5 +12,8 @@
         <item name="android:textColor">@color/light_green_2</item>
         <item name="android:fontFamily">@font/kitchen_home</item>
     </style>
-
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/gothic</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

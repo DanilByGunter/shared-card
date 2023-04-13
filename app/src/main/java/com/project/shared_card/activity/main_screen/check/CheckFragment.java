@@ -40,7 +40,6 @@ public class CheckFragment extends Fragment {
         ViewPager2 viewPager = view.findViewById(R.id.check_pager);
         FragmentStateAdapter adapter = new AdapterForPage(getActivity());
         viewPager.setAdapter(adapter);
-        String[] nameTabs = {"eeee","ddd"};
         TabLayout tabLayout = view.findViewById(R.id.check_tab);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

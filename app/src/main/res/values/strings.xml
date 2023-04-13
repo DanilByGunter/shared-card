@@ -1,7 +1,7 @@
 <resources>
     <string name="key_for_shared_preference">CONFIG</string>
-    <string name="current_list">Список продуктов</string>
-    <string name="target_list">Список целей</string>
+    <string name="current_list">продукты</string>
+    <string name="target_list">цели</string>
     <string name="key_for_user_id">user_id</string>
     <string name="key_for_select_group_id">select_group</string>
     <string name="app_name">SHARED CARD</string>
