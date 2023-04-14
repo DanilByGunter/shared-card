@@ -12,4 +12,7 @@
     <string name="choose_an_avatar_for_group">Выберите аватарку для группы</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_for_search_view">Введите продукт</string>
+    <string name="magnifying_glass">\uf00d</string>
+    <string name="arrow_left">\uf002 Введите продукт</string>
 </resources>

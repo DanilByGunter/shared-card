@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="59dp"
+    android:height="59dp"
+    android:viewportWidth="59"
+    android:viewportHeight="59">
+    <path
+        android:fillColor="#003333"
+        android:name="Линия 5"
+        android:pathData="m0 8v2h50v-2z" />
+    <path
+        android:fillColor="#003333"
+        android:name="Линия 5 копия"
+        android:pathData="m15 28.98v1.99h35v-1.99z" />
+    <path
+        android:fillColor="#003333"
+        android:name="Линия 5 копия"
+        android:pathData="m30 49v2h20v-2z" />
+    <path
+        android:fillColor="#003333"
+        android:name="Линия 6"
+        android:pathData="m54 5h2v49h-2v-49z" />
+    <path
+        android:fillColor="#003333"
+        android:strokeColor="#003333"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:name="Треугольник 2"
+        android:pathData="m54.91 4 3 10h-6l3 -10z" />
+    <path
+        android:fillColor="#003333"
+        android:strokeColor="#003333"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:name="Треугольник 2"
+        android:pathData="m55.09 55 -3 -10h6l-3 10z" />
+</vector>

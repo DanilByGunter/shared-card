@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/by_product"
+        android:title="по продуктам" />
+    <item
+        android:id="@+id/by_date"
+        android:title="по дате" />
+    <item
+        android:id="@+id/by_category"
+        android:title="по категории" />
+    <item
+        android:id="@+id/by_user"
+        android:title="по пользователю" />
+</menu>

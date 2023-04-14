@@ -16,4 +16,14 @@
         <item name="android:fontFamily">@font/gothic</item>
         <item name="android:textSize">20sp</item>
     </style>
+    <style name="for_search_bar" >
+        <item name="backgroundTint">@color/light_green_2</item>
+        <item name="android:textColorHint">@color/light_green_2</item>
+        <item name="android:textColor">@color/light_green_2</item>
+        <item name="android:fontFamily">@font/update_gothic</item>
+    </style>
+    <style name="popup_menu">
+        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:itemBackground">@color/light_green_2</item>
+    </style>
 </resources>
