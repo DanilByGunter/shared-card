@@ -10,6 +10,7 @@
         android:id="@+id/input_line"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:inputType="text"
         android:background="@drawable/edit_text_underline"
         android:hint="@string/arrow_left"
         android:layout_marginRight="10dp"
@@ -23,7 +24,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/pushed_on_sort_button"
+        android:background="@drawable/icon_sort"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

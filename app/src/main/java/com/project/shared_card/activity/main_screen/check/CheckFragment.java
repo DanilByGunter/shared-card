@@ -1,16 +1,26 @@
 package com.project.shared_card.activity.main_screen.check;
 
+import android.animation.ValueAnimator;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -19,7 +29,7 @@ import com.project.shared_card.R;
 
 public class CheckFragment extends Fragment {
 
-
+    ViewPager2 viewPager;
 
     public CheckFragment() {
     }
@@ -37,7 +47,7 @@ public class CheckFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewPager2 viewPager = view.findViewById(R.id.check_pager);
+        viewPager = view.findViewById(R.id.check_pager);
         FragmentStateAdapter adapter = new AdapterForPage(getActivity());
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = view.findViewById(R.id.check_tab);

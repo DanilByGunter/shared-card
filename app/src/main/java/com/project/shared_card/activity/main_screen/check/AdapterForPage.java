@@ -11,6 +11,7 @@ import com.project.shared_card.activity.main_screen.check.tabs.TargetListFragmen
 public class AdapterForPage extends FragmentStateAdapter {
     public AdapterForPage(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
+
     }
 
     @NonNull
