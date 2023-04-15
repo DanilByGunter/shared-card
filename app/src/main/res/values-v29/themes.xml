@@ -14,9 +14,12 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/dark_green</item>
         <item name="colorSecondaryVariant">@color/dark_green</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/light_green_2</item>
         <item name="popupMenuBackground">@color/purple_200</item>
         <item name="itemTextAppearance">@style/popup_menu</item>
+        <item name="android:ambientShadowAlpha">0.05</item>
+        <item name="android:spotShadowAlpha">0.3</item>
+
     </style>
 
 </resources>

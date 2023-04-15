@@ -46,19 +46,23 @@
         android:id="@+id/show_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/green_blue"
-        app:elevation="0dp"
-        app:itemRippleColor="@color/transparent"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconSize="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_menu" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:clipToPadding="false">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:layout_gravity="bottom"
+            app:elevation="5dp"
+            android:background="@drawable/bottom_navigation_background"
+            app:itemRippleColor="@color/transparent"
+            app:labelVisibilityMode="unlabeled"
+            app:itemIconSize="35dp"
+            app:menu="@menu/bottom_menu" />
+    </FrameLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
