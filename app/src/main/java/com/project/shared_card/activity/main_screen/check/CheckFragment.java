@@ -50,6 +50,7 @@ public class CheckFragment extends Fragment {
         viewPager = view.findViewById(R.id.check_pager);
         FragmentStateAdapter adapter = new AdapterForPage(getActivity());
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
         TabLayout tabLayout = view.findViewById(R.id.check_tab);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.main_screen.check.tabs.TargetListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.main_screen.check.tabs.target.TargetListFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +21,8 @@
                 android:layout_height="wrap_content" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_product"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

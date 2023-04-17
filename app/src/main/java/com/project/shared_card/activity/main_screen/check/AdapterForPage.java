@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.project.shared_card.activity.main_screen.check.tabs.CurrentListFragment;
-import com.project.shared_card.activity.main_screen.check.tabs.TargetListFragment;
+import com.project.shared_card.activity.main_screen.check.tabs.current.CurrentListFragment;
+import com.project.shared_card.activity.main_screen.check.tabs.target.TargetListFragment;
 
 public class AdapterForPage extends FragmentStateAdapter {
     public AdapterForPage(@NonNull FragmentActivity fragmentActivity) {
