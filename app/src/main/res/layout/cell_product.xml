@@ -29,6 +29,7 @@
             app:layout_constraintLeft_toLeftOf="parent"/>
         <TextView
             style="@style/TextViewLight"
+            android:id="@+id/text_product"
             android:layout_marginLeft="10dp"
             android:textSize="18sp"
             android:layout_width="wrap_content"
@@ -64,6 +65,7 @@
             app:layout_constraintLeft_toLeftOf="parent">
             <TextView
                 style="@style/TextViewLight"
+                android:id="@+id/text_category"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:textAlignment="center"
@@ -86,6 +88,7 @@
             app:layout_constraintLeft_toLeftOf="parent">
             <TextView
                 style="@style/TextViewLight"
+                android:id="@+id/text_count_or_sell"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:textAlignment="center"
@@ -110,6 +113,7 @@
             app:layout_constraintRight_toRightOf="parent">
             <TextView
                 style="@style/TextViewLight"
+                android:id="@+id/text_date"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:textAlignment="center"
@@ -134,6 +138,7 @@
             app:layout_constraintRight_toRightOf="parent">
             <TextView
                 style="@style/TextViewLight"
+                android:id="@+id/text_user"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:textAlignment="center"

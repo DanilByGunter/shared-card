@@ -15,4 +15,5 @@
     <string name="text_for_search_view">Введите продукт</string>
     <string name="magnifying_glass">\uf00d</string>
     <string name="arrow_left">\uf002 Введите продукт</string>
+    <string name="dialog_add_product">Добавить продукт</string>
 </resources>
