@@ -3,12 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.main_screen.group.GroupFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Group" />
+        android:orientation="vertical">
+       <include
+           layout="@layout/group_head"/>
+        <ExpandableListView
+            android:id="@+id/group_expand_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indicatorLeft="350dp"
+            android:indicatorRight="400dp"
+            android:groupIndicator="@drawable/group_indicator"/>
+
+        <Button
+            android:id="@+id/group_new_group"
+            style="@style/TextViewDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="добавить группу"/>
+
+    </LinearLayout>
 
 </FrameLayout>

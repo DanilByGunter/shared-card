@@ -45,7 +45,8 @@
       android:textSize="26sp"/>
   <EditText
       android:id="@+id/edit_text_your_name"
-      style="@style/TextViewDark"
+
+      style="@style/for_edit_text"
       android:inputType="text"
       android:maxLength="15"
       android:layout_marginTop="30dp"

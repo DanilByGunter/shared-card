@@ -1,8 +1,13 @@
 package com.project.shared_card.database.entity.group_name.repository;
 
+import androidx.lifecycle.LiveData;
+
+import com.project.shared_card.database.entity.group_name.AllGroups;
 import com.project.shared_card.database.entity.group_name.GroupNameDao;
 import com.project.shared_card.database.entity.group_name.GroupNameEntity;
 import com.project.shared_card.model.SignUp;
+
+import java.util.List;
 
 public class ImplGroupNameRepository implements GroupNameRepository {
     GroupNameDao groupNameDao;
@@ -20,5 +25,10 @@ public class ImplGroupNameRepository implements GroupNameRepository {
             }
         });
         thread.start();
+    }
+
+    @Override
+    public LiveData<List<AllGroups>> getAllGroups() {
+        return groupNameDao.getALLGroup();
     }
 }

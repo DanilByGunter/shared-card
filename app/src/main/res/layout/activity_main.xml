@@ -23,6 +23,7 @@
                 app:cardCornerRadius="1000dp"
                 >
                 <ImageView
+                    android:id="@+id/main_image_group"
                     android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -30,6 +31,7 @@
             </androidx.cardview.widget.CardView>
             <TextView
                 style="@style/TextViewLight"
+                android:id="@+id/main_name_group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="30sp"

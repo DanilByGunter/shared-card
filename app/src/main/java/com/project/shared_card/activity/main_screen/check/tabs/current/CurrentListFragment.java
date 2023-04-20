@@ -13,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.project.shared_card.R;
-import com.project.shared_card.activity.main_screen.check.HelperForAnimation;
+import com.project.shared_card.activity.main_screen.check.PopupMenu;
 
 
 public class CurrentListFragment extends Fragment {
+    Button buttonSort;
+    RecyclerView list;
+    PopupMenu popupMenu;
     public CurrentListFragment() {
     }
 
@@ -36,15 +39,16 @@ public class CurrentListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button buttonSort = view.findViewById(R.id.button_sort);
-        RecyclerView list = view.findViewById(R.id.list_product);
+        list = view.findViewById(R.id.list_product);
+        buttonSort = view.findViewById(R.id.button_sort);
+        popupMenu = new PopupMenu(getContext(),buttonSort);
+
         Adapter adapter = new Adapter(getContext());
         list.setAdapter(adapter);
-        HelperForAnimation helperForAnimation = new HelperForAnimation(getContext(),buttonSort);
         buttonSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helperForAnimation.popupMenu();
+                popupMenu.popupMenu();
             }
         });
     }

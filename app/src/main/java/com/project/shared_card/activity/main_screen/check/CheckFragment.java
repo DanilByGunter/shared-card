@@ -57,21 +57,26 @@ public class CheckFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         String[] metrics = {"пупа", "лупа", "залупа"};
         String[] categories = {"алкоголь","молочка","мясо"};
+
         dialogCreateProduct = new Dialog(getContext());
         dialogCreateProduct.setContentView(R.layout.dialog_create_product);
         dialogCreateProduct.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         metric = dialogCreateProduct.findViewById(R.id.dialog_metric);
         category = dialogCreateProduct.findViewById(R.id.dialog_text_category);
+        viewPager = view.findViewById(R.id.check_pager);
+        buttonAddProduct = view.findViewById(R.id.add_fab);
+
+
         AdapterForSpinner adapterForCategory = new AdapterForSpinner(getContext(),categories);
         AdapterForSpinner adapterForMetric = new AdapterForSpinner(getContext(),metrics);
         category.setAdapter(adapterForCategory);
         metric.setAdapter(adapterForMetric);
-        viewPager = view.findViewById(R.id.check_pager);
-        buttonAddProduct = view.findViewById(R.id.add_fab);
+
         FragmentStateAdapter adapter = new AdapterForPage(getActivity());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
+
         TabLayout tabLayout = view.findViewById(R.id.check_tab);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

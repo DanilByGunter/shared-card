@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.project.shared_card.R;
-import com.project.shared_card.activity.main_screen.check.HelperForAnimation;
+import com.project.shared_card.activity.main_screen.check.PopupMenu;
 
 public class TargetListFragment extends Fragment {
     Button buttonSort;
@@ -38,11 +38,11 @@ public class TargetListFragment extends Fragment {
         RecyclerView list = view.findViewById(R.id.list_product);
         Adapter adapter = new Adapter(getContext());
         list.setAdapter(adapter);
-        HelperForAnimation helperForAnimation = new HelperForAnimation(getContext(),buttonSort);
+        PopupMenu popupMenu = new PopupMenu(getContext(),buttonSort);
         buttonSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helperForAnimation.popupMenu();
+                popupMenu.popupMenu();
             }
         });
     }

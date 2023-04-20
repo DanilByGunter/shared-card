@@ -4,6 +4,11 @@
         <item name="android:textColor">@color/light_green_2</item>
         <item name="android:fontFamily">@font/gothic</item>
     </style>
+    <style name="for_edit_text">
+        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textColorHint">@color/dark_green_translucent</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
     <style name="TextViewDark">
         <item name="android:textColor">@color/dark_green</item>
         <item name="android:fontFamily">@font/gothic</item>

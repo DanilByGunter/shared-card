@@ -22,7 +22,10 @@ import com.project.shared_card.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group.GroupEntity;
 import com.project.shared_card.model.SignUp;
+
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class UserGroupRegistrationActivity extends AppCompatActivity {
@@ -67,51 +70,82 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
             }
         });
     }
-    public void onClick(View v) {
+    public void onClick(View v)  {
         if (editText.getText().toString().equals("")){
             return;
         }
         if(ruleRegistration) {
-            if (image.getDrawable() == null) {
-                byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
-                FileOutputStream fos;
-                try {
-                    fos = openFileOutput("me.png", MODE_PRIVATE);
-                    fos.write(picture);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+//##############################Сохранение id группы, id пользователя и имени пользователя#########################
             prefEditor = settings.edit();
-            //Запрос на сервер возврат последнего id пользователя если интернета нет то id = -1
+            //Запрос на сервер возврат последнего id пользователя. если интернета нет, то id = -1
             long idUser = -1;
             prefEditor.putString(getString(R.string.key_for_user_id), String.valueOf(idUser)).apply();
-            user = new SignUp(idUser, editText.getText().toString(), "me.png");
-            db.getUserNameRepository().createUser(user);
+            prefEditor.putString(getString(R.string.key_for_user_name), editText.getText().toString()).apply();
 
             long idGroup = -1;
-            String identifierGroup = String.valueOf(idGroup) + "#" + "default";
+            String identifierGroup = String.valueOf(idGroup) + "#" + editText.getText().toString();
             prefEditor.putString(getString(R.string.key_for_select_group_id),identifierGroup).apply();
-            group = new SignUp(idGroup, "default", "res/drawable-v24/grocery_card.png");
+
+//####################Сохранение фотки###############################
+            FileOutputStream fosUser;
+            FileOutputStream fosGroup;
+            File fileUser = new File(getFilesDir()+"/user");
+            File fileGroup = new File(getFilesDir()+"/group");
+            fileUser.mkdir();
+            fileGroup.mkdir();
+            byte[] picture;
+            if (image.getDrawable() == null) {
+                picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
+            }
+            else{
+                picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable().getCurrent()).getBitmap());
+            }
+            try {
+                fosUser = new FileOutputStream(getFilesDir()+"/user"+"/me.png");
+                fosGroup = new FileOutputStream(getFilesDir()+"/group"+String.format("/%s.png",identifierGroup));
+                fosUser.write(picture);
+                fosGroup.write(picture);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+//############################добавление в БД#########################
+
+            String userPath = getFilesDir()+"/user"+"/me.png";
+            user = new SignUp(idUser, editText.getText().toString(), userPath);
+            db.getUserNameRepository().createUser(user);
+
+
+            String groupPath = getFilesDir()+"/group"+String.format("/%s.png",identifierGroup);
+            group = new SignUp(idGroup, editText.getText().toString(), groupPath);
             db.getGroupNameRepository().createGroups(group);
             db.getGroupRepository().createRepository(new GroupEntity(idUser, idGroup, true));
         }
         else{
+//##############################Сохранение id группы#########################
             //Запрос на сервер возврат последнего id группы
-            //Сохраняем id в SharedPreference
-            if (image.getDrawable() == null) {
-                byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
-                FileOutputStream fos;
-                try {
-                    fos = openFileOutput(String.format("group/{0}.png",settings.getString(getString(R.string.key_for_select_group_id),"")), MODE_PRIVATE);
-                    fos.write(picture);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
             long idGroup = 1;
-            SignUp group = new SignUp(idGroup, editText.getText().toString(), String.format("group/{0}.png",settings.getString(getString(R.string.key_for_select_group_id),"")));
+            //Сохраняем идентификатор в SharedPreference в виде (название#id)
+            String identifierGroup = settings.getString(getString(R.string.key_for_select_group_id),"XD");
+
+
+//####################Сохранение фотки###############################
+            byte[] picture;
+            if (image.getDrawable() == null) {
+                picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.grocery_card).getCurrent()).getBitmap());
+            }
+            else{
+                picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable().getCurrent()).getBitmap());
+            }
+            FileOutputStream fos;
+            try {
+                fos = new FileOutputStream(getFilesDir()+"/group"+String.format("{0}.png",identifierGroup));
+                fos.write(picture);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+//############################добавление в БД#########################
+            String groupPath = getFilesDir()+"/group"+String.format("{0}.png",identifierGroup);
+            SignUp group = new SignUp(idGroup, editText.getText().toString(), groupPath);
             db.getGroupNameRepository().createGroups(group);
         }
         Intent intent = new Intent(this, MainActivity.class);
@@ -125,25 +159,6 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
             String FilePath = data.getDataString();
             image.setImageURI(Uri.parse(FilePath));
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-
-                        byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable()).getBitmap());
-                        FileOutputStream fos;
-                        try {
-                            if(ruleRegistration)
-                                fos = openFileOutput("me.png", MODE_PRIVATE);
-                            else
-                                fos = openFileOutput(String.format("group/{0}.png",settings.getString(getString(R.string.key_for_select_group_id),"")), MODE_PRIVATE);
-                            fos.write(picture);
-                            }
-                             catch (IOException e){
-                                throw new RuntimeException(e);
-                            }
-                }
-            });
-            thread.start();
         }
     }
 }

@@ -8,6 +8,7 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="light_green_1">#5CC598</color>
     <color name="dark_green">#004238</color>
+    <color name="dark_green_translucent">#80004238</color>
     <color name="green">#295E44</color>
     <color name="light_green_2">#91CEA1</color>
     <color name="light_green_2_translucent">#8091CEA1</color>

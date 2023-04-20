@@ -5,21 +5,20 @@ import android.content.Context;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.project.shared_card.R;
 
-public class HelperForAnimation {
+public class PopupMenu {
     final int SPEED_ANIMATION_SORT_ICON = 300;
     int heightStart;
     final int heightEnd=50;
     Context getContext;
     Button buttonSort;
 
-    public HelperForAnimation(Context getContext, Button buttonSort) {
+    public PopupMenu(Context getContext, Button buttonSort) {
         this.getContext = getContext;
         this.buttonSort = buttonSort;
         heightStart = buttonSort.getLayoutParams().height;
@@ -54,9 +53,9 @@ public class HelperForAnimation {
     public void popupMenu(){
         openAnimation();
         Context wrapper = new ContextThemeWrapper(getContext, R.style.popup_menu);
-        PopupMenu popupMenu = new PopupMenu(wrapper, buttonSort);
+        android.widget.PopupMenu popupMenu = new android.widget.PopupMenu(wrapper, buttonSort);
         popupMenu.inflate(R.menu.popup_menu);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        popupMenu.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
@@ -85,9 +84,9 @@ public class HelperForAnimation {
 
             }
         });
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+        popupMenu.setOnDismissListener(new android.widget.PopupMenu.OnDismissListener() {
             @Override
-            public void onDismiss(PopupMenu menu) {
+            public void onDismiss(android.widget.PopupMenu menu) {
                 closeAnimation();
             }
         });
