@@ -10,7 +10,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
        <include
-           layout="@layout/group_head"/>
+           layout="@layout/user"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_green_translucent"/>
         <ExpandableListView
             android:id="@+id/group_expand_list"
             android:layout_width="match_parent"
@@ -18,13 +22,6 @@
             android:indicatorLeft="350dp"
             android:indicatorRight="400dp"
             android:groupIndicator="@drawable/group_indicator"/>
-
-        <Button
-            android:id="@+id/group_new_group"
-            style="@style/TextViewDark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="добавить группу"/>
 
     </LinearLayout>
 

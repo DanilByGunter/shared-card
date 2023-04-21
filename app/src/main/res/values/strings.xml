@@ -6,8 +6,8 @@
     <string name="key_for_user_name">user_name</string>
     <string name="key_for_select_group_id">select_group</string>
     <string name="app_name">SHARED CARD</string>
-    <string name="enter_your_name">Введите ваше имя:</string>
-    <string name="enter_your_group">Введите имя группы:</string>
+    <string name="enter_your_name">Введите ваше имя</string>
+    <string name="enter_your_group">Введите имя группы</string>
     <string name="continue_">Продолжить</string>
     <string name="choose_an_avatar_for_myself">Выберите аватарку</string>
     <string name="choose_an_avatar_for_group">Выберите аватарку для группы</string>
@@ -17,4 +17,5 @@
     <string name="magnifying_glass">\uf00d</string>
     <string name="arrow_left">\uf002 Введите продукт</string>
     <string name="dialog_add_product">Добавить продукт</string>
+    <string name="ready">готово</string>
 </resources>

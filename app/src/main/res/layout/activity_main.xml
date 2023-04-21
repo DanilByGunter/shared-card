@@ -20,7 +20,7 @@
                 android:layout_width="45dp"
                 android:layout_gravity="center"
                 android:layout_height="45dp"
-                app:cardCornerRadius="1000dp"
+                app:cardCornerRadius="10dp"
                 >
                 <ImageView
                     android:id="@+id/main_image_group"

@@ -5,9 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/group_user_card_view"
-        app:cardCornerRadius="1000dp"
+        app:cardCornerRadius="10000dp"
         app:cardElevation="1000dp"
-        android:layout_margin="5dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:layout_constraintLeft_toLeftOf="parent"

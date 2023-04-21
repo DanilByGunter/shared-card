@@ -1,5 +1,6 @@
 package com.project.shared_card.activity.main_screen.group;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,6 +15,8 @@ import androidx.lifecycle.Observer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +28,7 @@ import com.project.shared_card.database.entity.group_name.AllGroups;
 import java.util.List;
 
 public class GroupFragment extends Fragment {
-
+    Dialog dialogEditUser;
     private SharedPreferences settings;
 
     public GroupFragment() {
@@ -45,24 +48,34 @@ public class GroupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ExpandableListView expandableListView = view.findViewById(R.id.group_expand_list);
-        TextView textId = view.findViewById(R.id.group_head_id);
+        String USER_PATH = getContext().getFilesDir() + "/user/" + "me.png";
+
         TextView textName = view.findViewById(R.id.group_head_name);
         ImageView imageView = view.findViewById(R.id.group_head_image);
+        Button editProfile = view.findViewById(R.id.user_edit);
         settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
 
-        textId.setText("ID: " +settings.getString(getString(R.string.key_for_user_id),"-1"));
+        dialogEditUser = new Dialog(getContext());
+        dialogEditUser.setContentView(R.layout.dialog_edit_profile);
+        dialogEditUser.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        EditText dialogNameUser = dialogEditUser.findViewById(R.id.dialog_edit_name);
+        ImageView dialogImage = dialogEditUser.findViewById(R.id.dialog_image);
+        Button dialogReady = dialogEditUser.findViewById(R.id.dialog_ready);
+        dialogNameUser.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
+        dialogImage.setImageURI(Uri.parse(USER_PATH));
+
         textName.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
 
-        String userPath = getContext().getFilesDir() + "/user/" + "me.png";
-        imageView.setImageURI(Uri.parse(userPath));
+
+        imageView.setImageURI(Uri.parse(USER_PATH));
 
         ImplDB db = new ImplDB(getContext());
-//        db.getGroupRepository().getAllGroup().observe((LifecycleOwner) getContext(), new Observer<List<GroupEntity>>() {
-//            @Override
-//            public void onChanged(List<GroupEntity> groupDaos) {
-//                System.out.println(groupDaos);
-//            }
-//        });
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogEditUser.show();
+            }
+        });
         db.getGroupNameRepository().getAllGroups().observe((LifecycleOwner) getContext(), new Observer<List<AllGroups>>() {
             @Override
             public void onChanged(List<AllGroups> allGroups) {
