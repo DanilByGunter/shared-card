@@ -33,6 +33,9 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     public AdapterForExpendList(Context context, List<AllGroups> groups) {
         this.context = context;
         this.groups = groups;
+        dialogEditGroup = new Dialog(context);
+        dialogEditGroup.setContentView(R.layout.dialog_edit_profile);
+        dialogEditGroup.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     @Override
@@ -83,16 +86,12 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
             //Изменяем что-нибудь, если текущая Group скрыта
         }
         settings = context.getSharedPreferences(context.getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
-        dialogEditGroup = new Dialog(context);
-        dialogEditGroup.setContentView(R.layout.dialog_edit_profile);
-        dialogEditGroup.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         EditText dialogNameUser = dialogEditGroup.findViewById(R.id.dialog_edit_name);
         ImageView dialogImage = dialogEditGroup.findViewById(R.id.dialog_image);
         Button dialogReady = dialogEditGroup.findViewById(R.id.dialog_ready);
 
-        dialogNameUser.setText(groups.get(groupPosition).groupName.getName());
         dialogNameUser.setHint(context.getString(R.string.enter_your_group));
-        dialogImage.setImageURI(Uri.parse(groups.get(groupPosition).groupName.getPhoto()));
+
 
 
         groupName = convertView.findViewById(R.id.group_head_name);
@@ -106,6 +105,8 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         groupEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogNameUser.setText(groups.get(groupPosition).groupName.getName());
+                dialogImage.setImageURI(Uri.parse(groups.get(groupPosition).groupName.getPhoto()));
                 dialogEditGroup.show();
             }
         });

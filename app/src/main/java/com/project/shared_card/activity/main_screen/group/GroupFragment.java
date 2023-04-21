@@ -61,8 +61,6 @@ public class GroupFragment extends Fragment {
         EditText dialogNameUser = dialogEditUser.findViewById(R.id.dialog_edit_name);
         ImageView dialogImage = dialogEditUser.findViewById(R.id.dialog_image);
         Button dialogReady = dialogEditUser.findViewById(R.id.dialog_ready);
-        dialogNameUser.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
-        dialogImage.setImageURI(Uri.parse(USER_PATH));
 
         textName.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
 
@@ -73,6 +71,8 @@ public class GroupFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogNameUser.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
+                dialogImage.setImageURI(Uri.parse(USER_PATH));
                 dialogEditUser.show();
             }
         });
