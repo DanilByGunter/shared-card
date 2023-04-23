@@ -77,6 +77,7 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
         if(ruleRegistration) {
 //##############################Сохранение id группы, id пользователя и имени пользователя#########################
             prefEditor = settings.edit();
+            //TODO server
             //Запрос на сервер возврат последнего id пользователя. если интернета нет, то id = -1
             long idUser = -1;
             prefEditor.putString(getString(R.string.key_for_user_id), String.valueOf(idUser)).apply();
@@ -120,6 +121,7 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
         else{
 //##############################Сохранение id группы#########################
             //Запрос на сервер возврат последнего id группы
+            //TODO server
             long idGroup = 1;
             //Сохраняем идентификатор в SharedPreference в виде (название#id)
             String identifierGroup = settings.getString(getString(R.string.key_for_select_group_id),"XD");
