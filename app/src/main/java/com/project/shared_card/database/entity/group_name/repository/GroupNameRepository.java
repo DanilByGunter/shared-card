@@ -10,4 +10,5 @@ import java.util.List;
 public interface GroupNameRepository {
     void createGroups(SignUp group);
     LiveData<List<AllGroups>> getAllGroups();
+    void updateMe(String name);
 }

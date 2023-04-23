@@ -3,12 +3,10 @@ package com.project.shared_card.model;
 public class SignUp {
     private long id;
     private String name;
-    private String photo;
 
-    public SignUp(long id, String name, String photo) {
+    public SignUp(long id, String name) {
         this.id = id;
         this.name = name;
-        this.photo = photo;
     }
 
     public long getId() {
@@ -27,11 +25,4 @@ public class SignUp {
         this.name = name;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
 }

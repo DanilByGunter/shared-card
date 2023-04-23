@@ -11,17 +11,16 @@ public class GroupNameEntity {
     @PrimaryKey()
     private long id;
     private String name;
-    private String photo;
 
     public static GroupNameEntity fromSignUpOfUser(SignUp group) {
-        GroupNameEntity entity = new GroupNameEntity(group.getId(), group.getName(), group.getPhoto());
+        GroupNameEntity entity = new GroupNameEntity(group.getId(), group.getName());
         return entity;
     }
 
-    public GroupNameEntity(long id, String name, String photo) {
+    public GroupNameEntity(long id, String name) {
         this.id = id;
         this.name = name;
-        this.photo = photo;
+
     }
 
     public long getId() {
@@ -40,11 +39,4 @@ public class GroupNameEntity {
         this.name = name;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
 }

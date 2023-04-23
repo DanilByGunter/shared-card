@@ -82,8 +82,7 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
             prefEditor.putString(getString(R.string.key_for_user_id), String.valueOf(idUser)).apply();
             prefEditor.putString(getString(R.string.key_for_user_name), editText.getText().toString()).apply();
 
-            long idGroup = -1;
-            String identifierGroup = String.valueOf(idGroup) + "#" + editText.getText().toString();
+            String identifierGroup ="-1#" + editText.getText().toString();
             prefEditor.putString(getString(R.string.key_for_select_group_id),identifierGroup).apply();
 
 //####################Сохранение фотки###############################
@@ -101,8 +100,8 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
                 picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable().getCurrent()).getBitmap());
             }
             try {
-                fosUser = new FileOutputStream(getFilesDir()+"/user"+"/me.png");
-                fosGroup = new FileOutputStream(getFilesDir()+"/group"+String.format("/%s.png",identifierGroup));
+                fosUser = new FileOutputStream(getFilesDir()+"/user/"+idUser +".png");
+                fosGroup = new FileOutputStream(getFilesDir()+"/group"+"/-1.png");
                 fosUser.write(picture);
                 fosGroup.write(picture);
             } catch (IOException e) {
@@ -110,15 +109,13 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
             }
 //############################добавление в БД#########################
 
-            String userPath = getFilesDir()+"/user"+"/me.png";
-            user = new SignUp(idUser, editText.getText().toString(), userPath);
+            user = new SignUp(idUser, editText.getText().toString());
             db.getUserNameRepository().createUser(user);
 
 
-            String groupPath = getFilesDir()+"/group"+String.format("/%s.png",identifierGroup);
-            group = new SignUp(idGroup, editText.getText().toString(), groupPath);
+            group = new SignUp(idUser, editText.getText().toString());
             db.getGroupNameRepository().createGroups(group);
-            db.getGroupRepository().createRepository(new GroupEntity(idUser, idGroup, true));
+            db.getGroupRepository().createRepository(new GroupEntity(idUser, idUser, true));
         }
         else{
 //##############################Сохранение id группы#########################
@@ -145,7 +142,7 @@ public class UserGroupRegistrationActivity extends AppCompatActivity {
             }
 //############################добавление в БД#########################
             String groupPath = getFilesDir()+"/group"+String.format("{0}.png",identifierGroup);
-            SignUp group = new SignUp(idGroup, editText.getText().toString(), groupPath);
+            SignUp group = new SignUp(idGroup, editText.getText().toString());
             db.getGroupNameRepository().createGroups(group);
         }
         Intent intent = new Intent(this, MainActivity.class);

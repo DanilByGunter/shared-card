@@ -10,4 +10,5 @@ import java.util.List;
 public interface UserNameRepository {
     void createUser(SignUp user);
     LiveData<List<UserNameEntity>> allUsers();
+    void updateMe(String name);
 }

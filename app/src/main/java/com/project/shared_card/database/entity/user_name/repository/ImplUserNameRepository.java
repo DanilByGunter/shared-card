@@ -33,4 +33,16 @@ public class ImplUserNameRepository implements UserNameRepository {
         return  userNameDao.findAll();
     }
 
+    @Override
+    public void updateMe(String name) {
+        UserNameEntity me = new UserNameEntity(-1,name);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                userNameDao.update(me);
+            }
+        });
+        thread.start();
+    }
+
 }

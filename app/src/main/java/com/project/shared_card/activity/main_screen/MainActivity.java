@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageGroup;
     private StoryFragment storyFragment = new StoryFragment();
     private StatisticsFragment statisticsFragment = new StatisticsFragment();
-    private GroupFragment groupFragment = new GroupFragment();
+    private GroupFragment groupFragment;
     private CheckFragment checkFragment = new CheckFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
         imageGroup = findViewById(R.id.main_image_group);
         String idGroup = settings.getString(getString(R.string.key_for_select_group_id),"XD");
         String name = idGroup.split("#")[1];
+        String id = idGroup.split("#")[0];
         nameGroup.setText(name);
-        String groupPath =getFilesDir() + "/group/"+ idGroup+ ".png";
+        String groupPath =getFilesDir() + "/group/"+ id+ ".png";
         imageGroup.setImageURI(Uri.parse(groupPath));
 
+        groupFragment = new GroupFragment(findViewById(R.id.toolbar));
 
         navigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager()

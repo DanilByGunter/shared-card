@@ -101,12 +101,13 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
 
         groupId.setText("ID: " + groups.get(groupPosition).groupName.getId());
         groupName.setText(groups.get(groupPosition).groupName.getName());
-        groupImage.setImageURI(Uri.parse(groups.get(groupPosition).groupName.getPhoto()));
+        String path = context.getFilesDir() + "/group/" + groups.get(groupPosition).groupName.getId() + ".png";
+        groupImage.setImageURI(Uri.parse(path));
         groupEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogNameUser.setText(groups.get(groupPosition).groupName.getName());
-                dialogImage.setImageURI(Uri.parse(groups.get(groupPosition).groupName.getPhoto()));
+                dialogImage.setImageURI(Uri.parse(path));
                 dialogEditGroup.show();
             }
         });
@@ -122,7 +123,8 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         userImage = convertView.findViewById(R.id.group_user_image);
 
         userName.setText(groups.get(groupPosition).groupEntities.get(childPosition).userName.getName());
-        userImage.setImageURI(Uri.parse(groups.get(groupPosition).groupEntities.get(childPosition).userName.getPhoto()));
+        String path = context.getFilesDir() + "/user/" + groups.get(groupPosition).groupEntities.get(childPosition).userName.getId() + ".png";
+        userImage.setImageURI(Uri.parse(path));
         return convertView;
     }
 

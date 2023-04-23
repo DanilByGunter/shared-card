@@ -11,20 +11,14 @@ public class UserNameEntity {
     @PrimaryKey()
     private long id;
     private String name;
-    private String photo;
 
     public static UserNameEntity fromSignUpOfUser(SignUp user) {
-        UserNameEntity entity = new UserNameEntity(user.getId(), user.getName(), user.getPhoto());
+        UserNameEntity entity = new UserNameEntity(user.getId(), user.getName());
         return entity;
     }
-    public static SignUp toSignUpOfUser(UserNameEntity entity){
-        SignUp user = new SignUp(entity.getId(), entity.getName(), entity.getPhoto());
-        return user;
-    }
-    public UserNameEntity(long id, String name, String photo) {
+    public UserNameEntity(long id, String name) {
         this.id = id;
         this.name = name;
-        this.photo = photo;
     }
 
     public long getId() {
@@ -41,14 +35,6 @@ public class UserNameEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
     }
 
     }
