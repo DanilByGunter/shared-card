@@ -11,4 +11,5 @@ public interface GroupNameRepository {
     void createGroups(SignUp group);
     LiveData<List<AllGroups>> getAllGroups();
     void updateMe(String name);
+    void updateForId(long id,String name);
 }

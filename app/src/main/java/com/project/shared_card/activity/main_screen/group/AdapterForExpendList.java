@@ -1,27 +1,32 @@
 package com.project.shared_card.activity.main_screen.group;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.shared_card.R;
+import com.project.shared_card.converter.DbBitmapUtility;
+import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group_name.AllGroups;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class AdapterForExpendList  extends BaseExpandableListAdapter {
     private Context context;
     private SharedPreferences settings;
-    Dialog dialogEditGroup;
+    private SharedPreferences.Editor prefEditor;
+    DialogEdit dialog;
     private List<AllGroups> groups;
     TextView userName;
     TextView groupName;
@@ -29,13 +34,19 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     ImageView groupImage;
     ImageView userImage;
     Button groupEdit;
+    //ActivityResultLauncher<String> getContent;
+    View mainToolBar;
+    interface updateExpandableListView{
+        void update(String name, Drawable image);
+    }
+    updateExpandableListView expandableListView;
 
-    public AdapterForExpendList(Context context, List<AllGroups> groups) {
+    public AdapterForExpendList(Context context, List<AllGroups> groups, DialogEdit dialog, View mainToolBar, updateExpandableListView updateExpandableListView) {
         this.context = context;
         this.groups = groups;
-        dialogEditGroup = new Dialog(context);
-        dialogEditGroup.setContentView(R.layout.dialog_edit_profile);
-        dialogEditGroup.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        this.mainToolBar = mainToolBar;
+        this.dialog = dialog;
+        this.expandableListView= updateExpandableListView;
     }
 
     @Override
@@ -86,18 +97,50 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
             //Изменяем что-нибудь, если текущая Group скрыта
         }
         settings = context.getSharedPreferences(context.getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
-        EditText dialogNameUser = dialogEditGroup.findViewById(R.id.dialog_edit_name);
-        ImageView dialogImage = dialogEditGroup.findViewById(R.id.dialog_image);
-        Button dialogReady = dialogEditGroup.findViewById(R.id.dialog_ready);
-
-        dialogNameUser.setHint(context.getString(R.string.enter_your_group));
-
-
+        prefEditor = settings.edit();
+        long GROUP_ID = groups.get(groupPosition).groupName.getId();
+        String GROUP_PATH = context.getFilesDir() + "/group/" +GROUP_ID +".png";
+        dialog.name.setHint(context.getString(R.string.enter_your_group));
 
         groupName = convertView.findViewById(R.id.group_head_name);
         groupId = convertView.findViewById(R.id.group_head_id);
         groupImage = convertView.findViewById(R.id.group_head_image);
         groupEdit = convertView.findViewById(R.id.group_edit);
+        dialog.ready.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialog.image.getDrawable().equals(groupImage.getDrawable()) && dialog.name.getText().equals(groupName.getText())){
+                    dialog.dialog.dismiss();
+                }
+                if(dialog.image.getDrawable()!=null && !dialog.name.getText().equals(null)){
+                    //TODO server
+                    ImplDB db = new ImplDB(context);
+                    db.getGroupNameRepository().updateForId(GROUP_ID, dialog.name.getText().toString());
+                    byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
+                    FileOutputStream fos;
+                    try {
+                        fos = new FileOutputStream(GROUP_PATH);
+                        fos.write(picture);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    expandableListView.update(String.valueOf(dialog.name.getText()),dialog.image.getDrawable());
+
+                    String select_group_id = settings.getString(context.getString(R.string.key_for_select_group_id), "XD");
+                    String select_id= select_group_id.split("#")[0];
+                    groups.get(groupPosition).groupName.setName(dialog.name.getText().toString());
+                    if (select_id.equals(String.valueOf(GROUP_ID))){
+                        String id = GROUP_ID+"#" + dialog.name.getText();
+                        prefEditor.putString(context.getString(R.string.key_for_select_group_id), id).apply();
+                        TextView name = mainToolBar.findViewById(R.id.main_name_group);
+                        ImageView image = mainToolBar.findViewById(R.id.main_image_group);
+                        name.setText(dialog.name.getText());
+                        image.setImageDrawable(dialog.image.getDrawable());
+                    }
+                    dialog.dialog.dismiss();
+                }
+            }
+        });
 
         groupId.setText("ID: " + groups.get(groupPosition).groupName.getId());
         groupName.setText(groups.get(groupPosition).groupName.getName());
@@ -106,9 +149,9 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         groupEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogNameUser.setText(groups.get(groupPosition).groupName.getName());
-                dialogImage.setImageURI(Uri.parse(path));
-                dialogEditGroup.show();
+                dialog.name.setText(groups.get(groupPosition).groupName.getName());
+                dialog.image.setImageURI(Uri.parse(path));
+                dialog.dialog.show();
             }
         });
         return convertView;

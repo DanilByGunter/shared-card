@@ -44,4 +44,16 @@ public class ImplGroupNameRepository implements GroupNameRepository {
         });
         thread.start();
     }
+
+    @Override
+    public void updateForId(long id,String name) {
+        GroupNameEntity entity = new GroupNameEntity(id,name);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                groupNameDao.update(entity);
+            }
+        });
+        thread.start();
+    }
 }

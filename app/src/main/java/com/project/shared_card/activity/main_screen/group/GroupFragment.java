@@ -3,6 +3,7 @@ package com.project.shared_card.activity.main_screen.group;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.room.Update;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +24,8 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.project.shared_card.R;
-import com.project.shared_card.activity.main_screen.MainActivity;
 import com.project.shared_card.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group_name.AllGroups;
@@ -35,7 +35,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class GroupFragment extends Fragment {
-    DialogEditUser dialog;
+    DialogEdit dialogUser;
+    DialogEdit dialogGroup;
+    ExpandableListView expandableListView;
     private SharedPreferences.Editor prefEditor;
     private SharedPreferences settings;
     View mainToolBar;
@@ -60,7 +62,7 @@ public class GroupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ExpandableListView expandableListView = view.findViewById(R.id.group_expand_list);
+        expandableListView = view.findViewById(R.id.group_expand_list);
         settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
         String USER_ID = settings.getString(getString(R.string.key_for_user_id),"XD");
         String USER_PATH = getContext().getFilesDir() + "/user/"  + USER_ID +".png";
@@ -73,20 +75,22 @@ public class GroupFragment extends Fragment {
         ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
-                dialog.dialogImage.setImageURI(result);
+                dialogUser.image.setImageURI(result);
+                dialogGroup.image.setImageURI(result);
             }
         });
-        dialog = new DialogEditUser(getContext(),getContent);
-        dialog.dialogReady.setOnClickListener(new View.OnClickListener() {
+        dialogUser = new DialogEdit(getContext(),getContent);
+        dialogGroup = new DialogEdit(getContext(),getContent);
+        dialogUser.ready.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialog.dialogImage.getDrawable()!=null && !dialog.dialogNameUser.getText().equals(null)){
+                if(dialogUser.image.getDrawable()!=null && !dialogUser.name.getText().equals(null)){
                     //TODO server
                     prefEditor = settings.edit();
-                    prefEditor.putString(getString(R.string.key_for_user_name), dialog.dialogNameUser.getText().toString()).apply();
-                    db.getUserNameRepository().updateMe(dialog.dialogNameUser.getText().toString());
-                    db.getGroupNameRepository().updateMe(dialog.dialogNameUser.getText().toString());
-                    byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.dialogImage.getDrawable().getCurrent()).getBitmap());
+                    prefEditor.putString(getString(R.string.key_for_user_name), dialogUser.name.getText().toString()).apply();
+                    db.getUserNameRepository().updateMe(dialogUser.name.getText().toString());
+                    db.getGroupNameRepository().updateMe(dialogUser.name.getText().toString());
+                    byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialogUser.image.getDrawable().getCurrent()).getBitmap());
                     FileOutputStream fos;
                     try {
                         fos = new FileOutputStream(USER_PATH);
@@ -96,15 +100,17 @@ public class GroupFragment extends Fragment {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    imageView.setImageDrawable(dialog.dialogImage.getDrawable());
+                    imageView.setImageDrawable(dialogUser.image.getDrawable());
+                    textName.setText(dialogUser.name.getText());
                     if (settings.getString(getString(R.string.key_for_select_group_id),"XD").split("#")[0].equals("-1")){
-                        String id = "-1#" + dialog.dialogNameUser.getText();
+                        String id = "-1#" + dialogUser.name.getText();
                         prefEditor.putString(getString(R.string.key_for_select_group_id), id).apply();
                         TextView name = mainToolBar.findViewById(R.id.main_name_group);
                         ImageView image = mainToolBar.findViewById(R.id.main_image_group);
-                        name.setText(dialog.dialogNameUser.getText());
-                        image.setImageDrawable(dialog.dialogImage.getDrawable());
+                        name.setText(dialogUser.name.getText());
+                        image.setImageDrawable(dialogUser.image.getDrawable());
                     }
+                    dialogGroup.dialog.dismiss();
                 }
             }
         });
@@ -117,19 +123,29 @@ public class GroupFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dialogNameUser.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
-                dialog.dialogImage.setImageURI(Uri.parse(USER_PATH));
-                dialog.dialog.show();
+                dialogUser.name.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
+                dialogUser.image.setImageURI(Uri.parse(USER_PATH));
+                dialogUser.dialog.show();
             }
         });
+        AdapterForExpendList.updateExpandableListView updateExpandableListView = new AdapterForExpendList.updateExpandableListView() {
+            @Override
+            public void update(String name, Drawable image) {
+                AdapterForExpendList adapter = (AdapterForExpendList) expandableListView.getExpandableListAdapter();
+                adapter.groupName.setText(name);
+                adapter.groupImage.setImageDrawable(image);
+                expandableListView.setAdapter(adapter);
+            }
+        };
         db.getGroupNameRepository().getAllGroups().observe((LifecycleOwner) getContext(), new Observer<List<AllGroups>>() {
             @Override
             public void onChanged(List<AllGroups> allGroups) {
-                AdapterForExpendList adapter = new AdapterForExpendList(getContext(),allGroups);
+                AdapterForExpendList adapter = new AdapterForExpendList(getContext(),allGroups,dialogGroup,mainToolBar,updateExpandableListView);
                 expandableListView.setAdapter(adapter);
             }
         });
     }
+
 
 
 
