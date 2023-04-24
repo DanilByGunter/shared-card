@@ -84,22 +84,28 @@ public class GroupFragment extends Fragment {
         dialogUser.ready.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialogUser.image.getDrawable()!=null && !dialogUser.name.getText().equals(null)){
+                if(!dialogUser.name.getText().toString().equals("") && dialogUser.image.getDrawable().getCurrent()!=null){
                     //TODO server
                     prefEditor = settings.edit();
                     prefEditor.putString(getString(R.string.key_for_user_name), dialogUser.name.getText().toString()).apply();
                     db.getUserNameRepository().updateMe(dialogUser.name.getText().toString());
                     db.getGroupNameRepository().updateMe(dialogUser.name.getText().toString());
                     byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialogUser.image.getDrawable().getCurrent()).getBitmap());
-                    FileOutputStream fos;
-                    try {
-                        fos = new FileOutputStream(USER_PATH);
-                        fos.write(picture);
-                        fos = new FileOutputStream(GROUP_USER_PATH);
-                        fos.write(picture);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            FileOutputStream fos;
+                            try {
+                                fos = new FileOutputStream(USER_PATH);
+                                fos.write(picture);
+                                fos = new FileOutputStream(GROUP_USER_PATH);
+                                fos.write(picture);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                    thread.start();
                     imageView.setImageDrawable(dialogUser.image.getDrawable());
                     textName.setText(dialogUser.name.getText());
                     if (settings.getString(getString(R.string.key_for_select_group_id),"XD").split("#")[0].equals("-1")){
@@ -110,7 +116,7 @@ public class GroupFragment extends Fragment {
                         name.setText(dialogUser.name.getText());
                         image.setImageDrawable(dialogUser.image.getDrawable());
                     }
-                    dialogGroup.dialog.dismiss();
+                    dialogUser.dialog.dismiss();
                 }
             }
         });

@@ -109,23 +109,25 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         dialog.ready.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialog.image.getDrawable().equals(groupImage.getDrawable()) && dialog.name.getText().equals(groupName.getText())){
-                    dialog.dialog.dismiss();
-                }
-                if(dialog.image.getDrawable()!=null && !dialog.name.getText().equals(null)){
+                if(!dialog.name.getText().toString().equals("") && dialog.image.getDrawable().getCurrent()!=null){
                     //TODO server
                     ImplDB db = new ImplDB(context);
                     db.getGroupNameRepository().updateForId(GROUP_ID, dialog.name.getText().toString());
                     byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
-                    FileOutputStream fos;
-                    try {
-                        fos = new FileOutputStream(GROUP_PATH);
-                        fos.write(picture);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            FileOutputStream fos;
+                            try {
+                                fos = new FileOutputStream(GROUP_PATH);
+                                fos.write(picture);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                    thread.start();
                     expandableListView.update(String.valueOf(dialog.name.getText()),dialog.image.getDrawable());
-
                     String select_group_id = settings.getString(context.getString(R.string.key_for_select_group_id), "XD");
                     String select_id= select_group_id.split("#")[0];
                     groups.get(groupPosition).groupName.setName(dialog.name.getText().toString());
