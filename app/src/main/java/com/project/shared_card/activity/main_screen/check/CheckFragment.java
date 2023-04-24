@@ -1,35 +1,36 @@
 package com.project.shared_card.activity.main_screen.check;
 
-import android.animation.ValueAnimator;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
+import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.categories.CategoriesEntity;
+import com.project.shared_card.retrofit.RetrofitService;
+import com.project.shared_card.retrofit.api.CategoryApi;
+import com.project.shared_card.retrofit.model.Category;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class CheckFragment extends Fragment {
@@ -55,6 +56,26 @@ public class CheckFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RetrofitService retrofitService = new RetrofitService();
+        CategoryApi categoryApi = retrofitService.getRetrofit().create(CategoryApi.class);
+        categoryApi.getAllCategory()
+                .enqueue(new Callback<List<Category>>() {
+                    @Override
+                    public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                        assert response.body() != null;
+                        for (Category cat: response.body()) {
+                            CategoriesEntity categoriesEntity = new CategoriesEntity(cat.getId(), cat.getName());
+                            ImplDB implDB = new ImplDB(getContext());
+                            implDB.getCategoriesRepository().addCategory(categoriesEntity);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<Category>> call, Throwable t) {
+                        System.out.println("Failed to load category " + String.valueOf(t));
+                    }
+                });
+
         String[] metrics = {"пупа", "лупа", "залупа"};
         String[] categories = {"алкоголь","молочка","мясо"};
 

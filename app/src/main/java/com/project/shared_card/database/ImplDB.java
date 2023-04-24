@@ -3,6 +3,8 @@ package com.project.shared_card.database;
 import android.content.Context;
 
 import androidx.room.Room;
+
+import com.project.shared_card.database.entity.categories.repository.ImplCategoriesRepository;
 import com.project.shared_card.database.entity.group.repository.ImplGroupRepository;
 import com.project.shared_card.database.entity.group_name.repository.ImplGroupNameRepository;
 import com.project.shared_card.database.entity.user_name.repository.ImplUserNameRepository;
@@ -28,5 +30,8 @@ public class ImplDB {
     }
     public ImplGroupRepository getGroupRepository(){
         return new ImplGroupRepository(db.getGroupDao());
+    }
+    public ImplCategoriesRepository getCategoriesRepository(){
+        return new ImplCategoriesRepository(db.getCategoriesDao());
     }
 }
