@@ -6,6 +6,12 @@ public class User {
     private long id;
     private String name;
     private byte[] photo;
+
+    public User(String name, byte[] photo) {
+        this.name = name;
+        this.photo = photo;
+    }
+
     public long getId_user() {
         return id;}
 

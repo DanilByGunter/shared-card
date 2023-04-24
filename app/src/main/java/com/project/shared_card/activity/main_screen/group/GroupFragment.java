@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.shared_card.R;
-import com.project.shared_card.converter.DbBitmapUtility;
+import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group_name.AllGroups;
 

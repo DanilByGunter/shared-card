@@ -8,12 +8,12 @@
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
-    <show-object-properties value="false" />
+    <show-object-properties value="true" />
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="c0f80089-5837-4686-863a-9982f0ca1ffb">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+    <connection id="82d1463d-7ef9-491b-a417-5064ade4c4ff">
+      <console name="Connection" type="STANDARD" schema="" session="Main"><![CDATA[select sql from sqlite_schema]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -42,13 +42,13 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="c0f80089-5837-4686-863a-9982f0ca1ffb" active="true" signed="true">
+      <connection id="82d1463d-7ef9-491b-a417-5064ade4c4ff" active="true" signed="true">
         <database>
           <name value="Connection" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="9999.0" />
+          <database-version value="3.39" />
           <driver-source value="BUILTIN" />
           <driver-library value="" />
           <driver value="" />
@@ -57,7 +57,7 @@
           <port value="" />
           <database value="" />
           <files>
-            <file path="C:\Users\mikha\AppData\Local\Google\AndroidStudio2022.2\device-explorer\realme RMX3085\data\data\com.project.shared_card\databases\Sample.db-wal" schema="main" />
+            <file path="D:\misha\Desktop\Sample.db.lck" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

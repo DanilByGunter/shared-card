@@ -64,9 +64,10 @@ public class CheckFragment extends Fragment {
                     @Override
                     public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                         assert response.body() != null;
+                        ImplDB implDB = new ImplDB(getContext());
                         for (Category cat: response.body()) {
                             CategoriesEntity categoriesEntity = new CategoriesEntity(cat.getId(), cat.getName());
-                            ImplDB implDB = new ImplDB(getContext());
+                            System.out.println(cat.getName());
                             implDB.getCategoriesRepository().addCategory(categoriesEntity);
                         }
                     }
