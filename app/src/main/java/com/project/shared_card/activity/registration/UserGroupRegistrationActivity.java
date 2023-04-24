@@ -18,14 +18,13 @@ import android.widget.TextView;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.MainActivity;
-import com.project.shared_card.converter.DbBitmapUtility;
+import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group.GroupEntity;
 import com.project.shared_card.model.SignUp;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class UserGroupRegistrationActivity extends AppCompatActivity {

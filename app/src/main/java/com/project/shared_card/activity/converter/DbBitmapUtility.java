@@ -1,4 +1,4 @@
-package com.project.shared_card.converter;
+package com.project.shared_card.activity.converter;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
