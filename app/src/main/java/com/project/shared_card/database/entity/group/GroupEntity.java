@@ -8,12 +8,11 @@ import androidx.room.PrimaryKey;
 
 import com.project.shared_card.database.entity.group_name.GroupNameEntity;
 import com.project.shared_card.database.entity.user_name.UserNameEntity;
-
+//       foreignKeys = {
+//        @ForeignKey(entity = UserNameEntity.class,parentColumns = "id",childColumns ="user_name_id"),
+//        @ForeignKey(entity = GroupNameEntity.class,parentColumns = "id",childColumns ="group_name_id")}
 @Entity(tableName = "group",
-        primaryKeys = {"user_name_id","group_name_id"},
-        foreignKeys = {
-        @ForeignKey(entity = UserNameEntity.class,parentColumns = "id",childColumns ="user_name_id"),
-        @ForeignKey(entity = GroupNameEntity.class,parentColumns = "id",childColumns ="group_name_id")})
+        primaryKeys = {"user_name_id","group_name_id"})
 public class GroupEntity {
 
     @ColumnInfo(name = "user_name_id")

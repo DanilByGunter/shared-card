@@ -57,25 +57,6 @@ public class CheckFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RetrofitService retrofitService = new RetrofitService();
-        CategoryApi categoryApi = retrofitService.getRetrofit().create(CategoryApi.class);
-        categoryApi.getAllCategory()
-                .enqueue(new Callback<List<Category>>() {
-                    @Override
-                    public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                        assert response.body() != null;
-                        ImplDB implDB = new ImplDB(getContext());
-                        for (Category cat: response.body()) {
-                            CategoriesEntity categoriesEntity = new CategoriesEntity(cat.getId(), cat.getName());
-                            System.out.println(cat.getName());
-                            implDB.getCategoriesRepository().addCategory(categoriesEntity);
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<List<Category>> call, Throwable t) {
-                        System.out.println("Failed to load category " + String.valueOf(t));
-                    }
-                });
 
         String[] metrics = {"пупа", "лупа", "залупа"};
         String[] categories = {"алкоголь","молочка","мясо"};
