@@ -21,6 +21,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
+import com.project.shared_card.database.ImplDB;
+
+import java.util.List;
 
 
 public class CheckFragment extends Fragment {
