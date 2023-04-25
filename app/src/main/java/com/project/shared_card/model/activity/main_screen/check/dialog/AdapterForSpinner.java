@@ -11,11 +11,13 @@ import androidx.annotation.NonNull;
 
 import com.project.shared_card.R;
 
+import java.util.List;
+
 public class AdapterForSpinner extends ArrayAdapter<String> {
 
-    String[] list;
+    List<String> list;
 
-    public AdapterForSpinner(@NonNull Context context, @NonNull String[] objects) {
+    public AdapterForSpinner(@NonNull Context context, @NonNull List<String> objects) {
         super(context, 0, objects);
         this.list = objects;
     }
@@ -26,7 +28,7 @@ public class AdapterForSpinner extends ArrayAdapter<String> {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.spinner_dropdown, parent, false);
         TextView textView =  view.findViewById(R.id.spinner_text);
-        textView.setText(list[position]);
+        textView.setText(list.get(position));
         return view;
     }
 
@@ -40,7 +42,7 @@ public class AdapterForSpinner extends ArrayAdapter<String> {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.spinner_head, parent, false);
         TextView textView =  view.findViewById(R.id.spinner_text);
-        textView.setText(list[position]);
+        textView.setText(list.get(position));
         return view;
     }
 }

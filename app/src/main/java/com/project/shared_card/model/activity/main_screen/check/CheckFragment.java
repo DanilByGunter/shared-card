@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -44,10 +46,9 @@ public class CheckFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImplDB db = new ImplDB(getContext());
 
 
-        String[] metrics = {"пупа", "лупа", "залупа"};
-        String[] categories = {"алкоголь","молочка","мясо"};
 
         dialogCreateProduct = new Dialog(getContext());
         dialogCreateProduct.setContentView(R.layout.dialog_create_product);
@@ -58,12 +59,37 @@ public class CheckFragment extends Fragment {
         viewPager = view.findViewById(R.id.check_pager);
         buttonAddProduct = view.findViewById(R.id.add_fab);
 
-
-        AdapterForSpinner adapterForCategory = new AdapterForSpinner(getContext(),categories);
-        AdapterForSpinner adapterForMetric = new AdapterForSpinner(getContext(),metrics);
-        category.setAdapter(adapterForCategory);
-        metric.setAdapter(adapterForMetric);
-
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if(position ==0){
+                    db.getCategoriesRepository().getforPorduct().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
+                        @Override
+                        public void onChanged(List<String> strings) {
+                            AdapterForSpinner adapterForCategory = new AdapterForSpinner(getContext(),strings);
+                            category.setAdapter(adapterForCategory);
+                        }
+                    });
+                }
+                else{
+                    db.getCategoriesRepository().getForTarget().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
+                        @Override
+                        public void onChanged(List<String> strings) {
+                            AdapterForSpinner adapterForCategory = new AdapterForSpinner(getContext(),strings);
+                            category.setAdapter(adapterForCategory);
+                        }
+                    });
+                }
+            }
+        });
+        db.getMetricsRepository().getAll().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                AdapterForSpinner adapterForMetric = new AdapterForSpinner(getContext(),strings);
+                metric.setAdapter(adapterForMetric);
+            }
+        });
         FragmentStateAdapter adapter = new AdapterForPage(getActivity());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);

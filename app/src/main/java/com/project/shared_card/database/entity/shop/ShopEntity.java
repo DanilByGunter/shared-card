@@ -8,10 +8,11 @@ public class ShopEntity {
     @PrimaryKey()
     private long id;
     private String name;
-
-    public ShopEntity(long id, String name) {
+    private Boolean status;
+    public ShopEntity(long id, String name, Boolean status) {
         this.id = id;
         this.name = name;
+        this.status = status;
     }
 
     public long getId() {
@@ -28,5 +29,13 @@ public class ShopEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }
