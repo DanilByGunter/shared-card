@@ -22,7 +22,11 @@ import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.MainActivity;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.categories.CategoriesEntity;
 import com.project.shared_card.database.entity.group.GroupEntity;
+import com.project.shared_card.database.entity.metrics.MetricsDao;
+import com.project.shared_card.database.entity.metrics.MetricsEntity;
+import com.project.shared_card.database.entity.shop.ShopEntity;
 import com.project.shared_card.model.SignUp;
 import com.project.shared_card.retrofit.RetrofitService;
 import com.project.shared_card.retrofit.api.UserApi;
@@ -31,6 +35,9 @@ import com.project.shared_card.retrofit.model.User;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,6 +66,7 @@ public class RegistrationActivity extends AppCompatActivity {
         editText = findViewById(R.id.edit_text_your_name);
         button = findViewById(R.id.button_continue);
         button.setOnClickListener(this::onClick);
+        createCategoryMetricShop();
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +156,37 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
     private void createCategoryMetricShop(){
+        List<MetricsEntity> metrics = Arrays.asList(
+                new MetricsEntity(1,"шт"),
+                new MetricsEntity(2,"кг"),
+                new MetricsEntity(3,"л"),
+                new MetricsEntity(4, "мл"));
+        List<ShopEntity> shops = Arrays.asList(
+                new ShopEntity(1,"продуктовый",true),
+                new ShopEntity(2,"рынок", true),
+                new ShopEntity(3,"Пятерочка", true),
+                new ShopEntity(4,"Магнит",true),
+                new ShopEntity(5,"Перекресток", true),
+                new ShopEntity(6,"Вкусвилл", true),
+                new ShopEntity(7,"продуктовый",false),
+                new ShopEntity(8,"онлайн", false),
+                new ShopEntity(9,"продукты", false),
+                new ShopEntity(10,"электротехника",false),
+                new ShopEntity(11,"автосалон", false),
+                new ShopEntity(12,"хобби-гипермаркет", false));
+        List<CategoriesEntity> categories = Arrays.asList(
+                new CategoriesEntity(1,"мясо",true),
+                new CategoriesEntity(2,"рыба",true),
+                new CategoriesEntity(3,"молочные продукты", true),
+                new CategoriesEntity(4, "алкоголь",true),
+                new CategoriesEntity(5,"продукты",false),
+                new CategoriesEntity(6,"авто",false),
+                new CategoriesEntity(7,"искусство", false),
+                new CategoriesEntity(8, "электротовары",false));
 
+        db.getMetricsRepository().addMetrics(metrics);
+        db.getShopRepository().addShop(shops);
+        db.getCategoriesRepository().add(categories);
     }
 }
 
