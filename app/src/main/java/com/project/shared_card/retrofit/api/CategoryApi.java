@@ -13,6 +13,9 @@ public interface CategoryApi {
     @GET("/category/get_all")
     Call<List<Category>> getAllCategory();
 
+    @GET("/category/get_count")
+    Call<Long> getCountCategory();
+
     @GET("/category/{id}")
     Call<Category> getCategoryById(@Path("id") Integer id);
 
