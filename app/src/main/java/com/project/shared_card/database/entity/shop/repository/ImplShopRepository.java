@@ -3,6 +3,8 @@ package com.project.shared_card.database.entity.shop.repository;
 import com.project.shared_card.database.entity.shop.ShopDao;
 import com.project.shared_card.database.entity.shop.ShopEntity;
 
+import java.util.List;
+
 public class ImplShopRepository implements ShopRepository{
     ShopDao shopDao;
 
@@ -11,7 +13,7 @@ public class ImplShopRepository implements ShopRepository{
     }
 
     @Override
-    public void addShop(ShopEntity shopEntity) {
+    public void addShop(List<ShopEntity> shopEntity) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
