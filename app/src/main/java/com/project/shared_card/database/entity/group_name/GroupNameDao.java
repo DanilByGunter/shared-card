@@ -20,4 +20,6 @@ public interface GroupNameDao {
 
     @Update
     void update(GroupNameEntity entity);
+    @Query("select * from group_name where id=:id")
+    LiveData<GroupNameEntity> getGroupById(Long id);
 }

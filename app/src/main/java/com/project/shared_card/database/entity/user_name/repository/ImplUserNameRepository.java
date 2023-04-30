@@ -45,4 +45,18 @@ public class ImplUserNameRepository implements UserNameRepository {
         thread.start();
     }
 
+    @Override
+    public LiveData<UserNameEntity> getMe() {
+        return userNameDao.getMe();
+    }
+    @Override
+    public void delete(UserNameEntity entity) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                userNameDao.delete(entity);
+            }
+        });
+    }
+
 }

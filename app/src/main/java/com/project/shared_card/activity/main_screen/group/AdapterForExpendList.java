@@ -36,6 +36,11 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     Button groupEdit;
     //ActivityResultLauncher<String> getContent;
     View mainToolBar;
+    String GROUP_PATH;
+    String USER_PATH;
+    long GROUP_ID;
+    int groupPosition;
+    int childPosition;
     interface updateExpandableListView{
         void update(String name, Drawable image);
     }
@@ -96,67 +101,71 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         else{
             //Изменяем что-нибудь, если текущая Group скрыта
         }
-        settings = context.getSharedPreferences(context.getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
-        prefEditor = settings.edit();
-        long GROUP_ID = groups.get(groupPosition).groupName.getId();
-        String GROUP_PATH = context.getFilesDir() + "/group/" +GROUP_ID +".png";
+        initGroup(convertView, groupPosition);
         dialog.name.setHint(context.getString(R.string.enter_your_group));
 
-        groupName = convertView.findViewById(R.id.group_head_name);
-        groupId = convertView.findViewById(R.id.group_head_id);
-        groupImage = convertView.findViewById(R.id.group_head_image);
-        groupEdit = convertView.findViewById(R.id.group_edit);
-        dialog.ready.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!dialog.name.getText().toString().equals("") && dialog.image.getDrawable().getCurrent()!=null){
-                    //TODO server
-                    ImplDB db = new ImplDB(context);
-                    db.getGroupNameRepository().updateForId(GROUP_ID, dialog.name.getText().toString());
-                    byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            FileOutputStream fos;
-                            try {
-                                fos = new FileOutputStream(GROUP_PATH);
-                                fos.write(picture);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
-                    thread.start();
-                    expandableListView.update(String.valueOf(dialog.name.getText()),dialog.image.getDrawable());
-                    String select_group_id = settings.getString(context.getString(R.string.key_for_select_group_id), "XD");
-                    String select_id= select_group_id.split("#")[0];
-                    groups.get(groupPosition).groupName.setName(dialog.name.getText().toString());
-                    if (select_id.equals(String.valueOf(GROUP_ID))){
-                        String id = GROUP_ID+"#" + dialog.name.getText();
-                        prefEditor.putString(context.getString(R.string.key_for_select_group_id), id).apply();
-                        TextView name = mainToolBar.findViewById(R.id.main_name_group);
-                        ImageView image = mainToolBar.findViewById(R.id.main_image_group);
-                        name.setText(dialog.name.getText());
-                        image.setImageDrawable(dialog.image.getDrawable());
-                    }
-                    dialog.dialog.dismiss();
-                }
-            }
-        });
-
-        groupId.setText("ID: " + groups.get(groupPosition).groupName.getId());
+        groupId.setText(groups.get(groupPosition).groupName.getId() + "#" + groups.get(groupPosition).groupName.getName());
         groupName.setText(groups.get(groupPosition).groupName.getName());
-        String path = context.getFilesDir() + "/group/" + groups.get(groupPosition).groupName.getId() + ".png";
-        groupImage.setImageURI(Uri.parse(path));
-        groupEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.name.setText(groups.get(groupPosition).groupName.getName());
-                dialog.image.setImageURI(Uri.parse(path));
-                dialog.dialog.show();
-            }
-        });
+        groupImage.setImageURI(Uri.parse(GROUP_PATH));
+
+        groupEdit.setOnClickListener(this::clickOnBtnGroupEdit);
+        dialog.ready.setOnClickListener(this::clickOnBtnReady);
+
         return convertView;
+    }
+
+
+    private void clickOnBtnGroupEdit(View v){
+        dialog.name.setText(groups.get(groupPosition).groupName.getName());
+        dialog.image.setImageURI(Uri.parse(GROUP_PATH));
+        dialog.dialog.show();
+    }
+
+    private void clickOnBtnReady(View v){
+        if(!dialog.name.getText().toString().equals("") && dialog.image.getDrawable().getCurrent()!=null){
+            ImplDB db = new ImplDB(context);
+            db.getGroupNameRepository().updateForId(GROUP_ID, dialog.name.getText().toString());
+            byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    FileOutputStream fos;
+                    try {
+                        fos = new FileOutputStream(GROUP_PATH);
+                        fos.write(picture);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            thread.start();
+            expandableListView.update(String.valueOf(dialog.name.getText()),dialog.image.getDrawable());
+            groups.get(groupPosition).groupName.setName(dialog.name.getText().toString());
+
+            String selectedGroupId= settings.getString(context.getString(R.string.key_for_select_group_id), "XD");
+
+            if (selectedGroupId.equals(String.valueOf(GROUP_ID))){
+                TextView name = mainToolBar.findViewById(R.id.main_name_group);
+                ImageView image = mainToolBar.findViewById(R.id.main_image_group);
+                name.setText(dialog.name.getText());
+                image.setImageDrawable(dialog.image.getDrawable());
+            }
+
+            dialog.dialog.dismiss();
+        }
+    }
+
+    void initGroup(View v, int groupPosition){
+        settings = context.getSharedPreferences(context.getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
+        prefEditor = settings.edit();
+        this.groupPosition= groupPosition;
+        groupName = v.findViewById(R.id.group_head_name);
+        groupId = v.findViewById(R.id.group_head_id);
+        groupImage = v.findViewById(R.id.group_head_image);
+        groupEdit = v.findViewById(R.id.group_edit);
+
+        GROUP_ID = groups.get(groupPosition).groupName.getId();
+        GROUP_PATH = context.getFilesDir() + "/group/" +GROUP_ID;
     }
 
     @Override
@@ -164,13 +173,21 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.group_user, parent, false);
         }
-        userName = convertView.findViewById(R.id.group_user_name);
-        userImage = convertView.findViewById(R.id.group_user_image);
+        initUser(convertView,childPosition);
 
         userName.setText(groups.get(groupPosition).groupEntities.get(childPosition).userName.getName());
-        String path = context.getFilesDir() + "/user/" + groups.get(groupPosition).groupEntities.get(childPosition).userName.getId() + ".png";
-        userImage.setImageURI(Uri.parse(path));
+        userImage.setImageURI(Uri.parse(USER_PATH));
+
         return convertView;
+    }
+
+    void initUser(View v, int childPosition){
+        userName = v.findViewById(R.id.group_user_name);
+        userImage = v.findViewById(R.id.group_user_image);
+
+        USER_PATH = context.getFilesDir() + "/user/" + groups.get(groupPosition).groupEntities.get(childPosition).userName.getId();
+
+        this.childPosition = childPosition;
     }
 
     @Override

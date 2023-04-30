@@ -20,14 +20,16 @@ public class DialogEdit {
     ActivityResultLauncher<String> getContent;
     public DialogEdit(Context context, ActivityResultLauncher<String> getContent) {
         dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_edit_profile);
         this.context = context;
         this.getContent = getContent;
-        dialog.setContentView(R.layout.dialog_edit_profile);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         name = dialog.findViewById(R.id.dialog_edit_name);
         image = dialog.findViewById(R.id.dialog_image);
-        image.setOnClickListener(this::imageOnClick);
         ready = dialog.findViewById(R.id.dialog_ready);
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        image.setOnClickListener(this::imageOnClick);
     }
     void imageOnClick(View v){
         getContent.launch("image/*");

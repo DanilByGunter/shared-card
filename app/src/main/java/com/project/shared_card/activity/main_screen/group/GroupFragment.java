@@ -40,7 +40,15 @@ public class GroupFragment extends Fragment {
     private SharedPreferences.Editor prefEditor;
     private SharedPreferences settings;
     View mainToolBar;
-
+    ImageView imageMe;
+    AdapterForExpendList adapter;
+    TextView textNameMe;
+    Button editProfile;
+    String USER_PATH;
+    String GROUP_USER_PATH;
+    ImplDB db;
+    AdapterForExpendList.updateExpandableListView updateExpandableListView;
+    ActivityResultLauncher<String> getContent;
     public GroupFragment() {
     }
 
@@ -61,98 +69,97 @@ public class GroupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        expandableListView = view.findViewById(R.id.group_expand_list);
-        settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
-        String USER_ID = settings.getString(getString(R.string.key_for_user_id),"XD");
-        String USER_PATH = getContext().getFilesDir() + "/user/"  + USER_ID +".png";
-        String GROUP_USER_PATH = getContext().getFilesDir() + "/group/" + "-1.png";
-        ImplDB db = new ImplDB(getContext());
-
-        TextView textName = view.findViewById(R.id.group_head_name);
-        ImageView imageView = view.findViewById(R.id.group_head_image);
-        Button editProfile = view.findViewById(R.id.user_edit);
-        ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri result) {
-                dialogUser.image.setImageURI(result);
-                dialogGroup.image.setImageURI(result);
-            }
-        });
-        dialogUser = new DialogEdit(getContext(),getContent);
-        dialogGroup = new DialogEdit(getContext(),getContent);
-        dialogUser.ready.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!dialogUser.name.getText().toString().equals("") && dialogUser.image.getDrawable().getCurrent()!=null){
-                    //TODO server
-                    prefEditor = settings.edit();
-                    prefEditor.putString(getString(R.string.key_for_user_name), dialogUser.name.getText().toString()).apply();
-                    db.getUserNameRepository().updateMe(dialogUser.name.getText().toString());
-                    db.getGroupNameRepository().updateMe(dialogUser.name.getText().toString());
-                    byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialogUser.image.getDrawable().getCurrent()).getBitmap());
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            FileOutputStream fos;
-                            try {
-                                fos = new FileOutputStream(USER_PATH);
-                                fos.write(picture);
-                                fos = new FileOutputStream(GROUP_USER_PATH);
-                                fos.write(picture);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
-                    thread.start();
-                    imageView.setImageDrawable(dialogUser.image.getDrawable());
-                    textName.setText(dialogUser.name.getText());
-                    if (settings.getString(getString(R.string.key_for_select_group_id),"XD").split("#")[0].equals("-1")){
-                        String id = "-1#" + dialogUser.name.getText();
-                        prefEditor.putString(getString(R.string.key_for_select_group_id), id).apply();
-                        TextView name = mainToolBar.findViewById(R.id.main_name_group);
-                        ImageView image = mainToolBar.findViewById(R.id.main_image_group);
-                        name.setText(dialogUser.name.getText());
-                        image.setImageDrawable(dialogUser.image.getDrawable());
-                    }
-                    dialogUser.dialog.dismiss();
-                }
-            }
-        });
+        init(view);
+        textNameMe.setText(settings.getString(getString(R.string.key_for_me_name),"no_name"));
+        imageMe.setImageURI(Uri.parse(USER_PATH));
 
 
-        textName.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
-        imageView.setImageURI(Uri.parse(USER_PATH));
-
-
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogUser.name.setText(settings.getString(getString(R.string.key_for_user_name),"XD"));
-                dialogUser.image.setImageURI(Uri.parse(USER_PATH));
-                dialogUser.dialog.show();
-            }
-        });
-        AdapterForExpendList.updateExpandableListView updateExpandableListView = new AdapterForExpendList.updateExpandableListView() {
-            @Override
-            public void update(String name, Drawable image) {
-                AdapterForExpendList adapter = (AdapterForExpendList) expandableListView.getExpandableListAdapter();
-                adapter.groupName.setText(name);
-                adapter.groupImage.setImageDrawable(image);
-                expandableListView.setAdapter(adapter);
-            }
-        };
+        editProfile.setOnClickListener(this::clickOnEditProfile);
+        dialogUser.ready.setOnClickListener(this::clickOnSaveDialogEdit);
         db.getGroupNameRepository().getAllGroups().observe((LifecycleOwner) getContext(), new Observer<List<AllGroups>>() {
             @Override
             public void onChanged(List<AllGroups> allGroups) {
-                AdapterForExpendList adapter = new AdapterForExpendList(getContext(),allGroups,dialogGroup,mainToolBar,updateExpandableListView);
+                adapter = new AdapterForExpendList(getContext(),allGroups,dialogGroup,mainToolBar,updateExpandableListView);
                 expandableListView.setAdapter(adapter);
             }
         });
     }
 
 
+    void init(View view){
+        expandableListView = view.findViewById(R.id.group_expand_list);
+        settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
+        prefEditor = settings.edit();
+        db = new ImplDB(getContext());
 
+        textNameMe = view.findViewById(R.id.group_head_name);
+        imageMe = view.findViewById(R.id.group_head_image);
+        editProfile = view.findViewById(R.id.user_edit);
+
+        USER_PATH = getContext().getFilesDir() + "/user/"  + getString(R.string.me_id);
+        GROUP_USER_PATH = getContext().getFilesDir() + "/group/" +getString(R.string.me_id);
+
+        getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), this::onActivityResult);
+        dialogUser = new DialogEdit(getContext(),getContent);
+        dialogGroup = new DialogEdit(getContext(),getContent);
+
+        updateExpandableListView = new AdapterForExpendList.updateExpandableListView() {
+            @Override
+            public void update(String name, Drawable image) {
+                adapter = (AdapterForExpendList) expandableListView.getExpandableListAdapter();
+                adapter.groupName.setText(name);
+                adapter.groupImage.setImageDrawable(image);
+                expandableListView.setAdapter(adapter);
+            }
+        };
+    }
+
+    private void onActivityResult(Uri result) {
+        dialogUser.image.setImageURI(result);
+        dialogGroup.image.setImageURI(result);
+    }
+
+
+    private void clickOnEditProfile(View v){
+        dialogUser.name.setText(settings.getString(getString(R.string.key_for_me_name),"XD"));
+        dialogUser.image.setImageURI(Uri.parse(USER_PATH));
+        dialogUser.dialog.show();
+    }
+    private void clickOnSaveDialogEdit(View v){
+        if(!dialogUser.name.getText().toString().equals("") && dialogUser.image.getDrawable().getCurrent()!=null){
+
+            prefEditor.putString(getString(R.string.key_for_me_name), dialogUser.name.getText().toString()).apply();
+
+            db.getUserNameRepository().updateMe(dialogUser.name.getText().toString());
+            db.getGroupNameRepository().updateMe(dialogUser.name.getText().toString());
+            byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialogUser.image.getDrawable().getCurrent()).getBitmap());
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    FileOutputStream fos;
+                    try {
+                        fos = new FileOutputStream(USER_PATH);
+                        fos.write(picture);
+                        fos = new FileOutputStream(GROUP_USER_PATH);
+                        fos.write(picture);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            thread.start();
+            imageMe.setImageDrawable(dialogUser.image.getDrawable());
+            textNameMe.setText(dialogUser.name.getText());
+
+            if (settings.getString(getString(R.string.key_for_select_group_id),"XD").equals(getString(R.string.me_id))){
+                TextView name = mainToolBar.findViewById(R.id.main_name_group);
+                ImageView image = mainToolBar.findViewById(R.id.main_image_group);
+                name.setText(dialogUser.name.getText());
+                image.setImageDrawable(dialogUser.image.getDrawable());
+            }
+            dialogUser.dialog.dismiss();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

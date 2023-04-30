@@ -1,9 +1,10 @@
 <resources>
+    <string name="key_for_me_id_server">me_id_server</string>
     <string name="key_for_shared_preference">CONFIG</string>
     <string name="current_list">продукты</string>
     <string name="target_list">цели</string>
-    <string name="key_for_user_id">user_id</string>
-    <string name="key_for_user_name">user_name</string>
+    <string name="me_id">-1</string>
+    <string name="key_for_me_name">me_name</string>
     <string name="key_for_select_group_id">select_group</string>
     <string name="app_name">SHARED CARD</string>
     <string name="enter_your_name">Введите ваше имя</string>

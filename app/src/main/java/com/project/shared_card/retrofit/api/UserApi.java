@@ -16,7 +16,7 @@ public interface UserApi {
     Call<Long> getLastUserId();
 
     @POST("/user/save")
-    Call<User> addUser(@Body User user);
+    Call<Long> addUser(@Body User user);
 
     @GET("/user/{id}")
     Call<User> getUserById(@Path("id") Long id, @Body User user);

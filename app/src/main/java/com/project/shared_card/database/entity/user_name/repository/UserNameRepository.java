@@ -11,4 +11,7 @@ public interface UserNameRepository {
     void createUser(SignUp user);
     LiveData<List<UserNameEntity>> allUsers();
     void updateMe(String name);
+    LiveData<UserNameEntity> getMe();
+
+    void delete(UserNameEntity entity);
 }

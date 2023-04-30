@@ -56,4 +56,9 @@ public class ImplGroupNameRepository implements GroupNameRepository {
         });
         thread.start();
     }
+
+    @Override
+    public LiveData<GroupNameEntity> getGroupById(Long id) {
+        return groupNameDao.getGroupById(id);
+    }
 }
