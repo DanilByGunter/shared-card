@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.project.shared_card"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -53,6 +53,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.google.android.material:material:1.8.0-alpha01'
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 //    // ViewModel
 //    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     // LiveData

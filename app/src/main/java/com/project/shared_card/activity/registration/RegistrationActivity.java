@@ -49,7 +49,6 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         init();
-        createCategoryMetricShop();
         button.setOnClickListener(this::clickOnButton);
         image.setOnClickListener(this::clickOnImage);
     }
@@ -83,7 +82,7 @@ public class RegistrationActivity extends AppCompatActivity {
             });
             thread.start();
         }
-
+        createCategoryMetricShop();
         long idUser = Long.parseLong(getString(R.string.me_id));
         createUser(idUser);
     }

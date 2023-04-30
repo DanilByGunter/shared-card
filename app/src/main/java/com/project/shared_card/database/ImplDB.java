@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.project.shared_card.database.entity.categories.repository.ImplCategoriesRepository;
+import com.project.shared_card.database.entity.check.repository.ImplCheckRepository;
 import com.project.shared_card.database.entity.group.repository.ImplGroupRepository;
 import com.project.shared_card.database.entity.group_name.repository.ImplGroupNameRepository;
 import com.project.shared_card.database.entity.metrics.repository.ImplMetricsRepository;
@@ -41,5 +42,8 @@ public class ImplDB {
     }
     public ImplMetricsRepository getMetricsRepository(){
         return new ImplMetricsRepository(db.getMetricsDao());
+    }
+    public ImplCheckRepository getCheckRepository(){
+        return new ImplCheckRepository(db.getCheckDao());
     }
 }

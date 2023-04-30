@@ -6,6 +6,7 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
 import com.project.shared_card.database.entity.categories.CategoriesDao;
+import com.project.shared_card.database.entity.check.CheckDao;
 import com.project.shared_card.database.entity.group.GroupDao;
 import com.project.shared_card.database.entity.group_name.GroupNameDao;
 import com.project.shared_card.database.entity.metrics.MetricsDao;
@@ -27,4 +28,5 @@ public abstract class AppDatabase extends RoomDatabase {
     abstract UserNameDao getUserNameDao();
     abstract MetricsDao getMetricsDao();
     abstract ShopDao getShopDao();
+    abstract CheckDao getCheckDao();
 }

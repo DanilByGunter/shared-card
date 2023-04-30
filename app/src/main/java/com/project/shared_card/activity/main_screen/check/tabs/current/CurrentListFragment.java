@@ -1,11 +1,15 @@
 package com.project.shared_card.activity.main_screen.check.tabs.current;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +17,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.project.shared_card.R;
+import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.PopupMenu;
+import com.project.shared_card.activity.main_screen.check.tabs.current.model.Check;
+import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.check.FullCheck;
+
+import java.util.List;
 
 
 public class CurrentListFragment extends Fragment {
     Button buttonSort;
     RecyclerView list;
     PopupMenu popupMenu;
+    Adapter adapter;
+    ImplDB db;
+    SharedPreferences settings;
+    String idGroup;
+    SwipeRefreshLayout swipe;
     public CurrentListFragment() {
     }
 
@@ -39,20 +54,40 @@ public class CurrentListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        list = view.findViewById(R.id.list_product);
-        buttonSort = view.findViewById(R.id.button_sort);
-        popupMenu = new PopupMenu(getContext(),buttonSort);
-
-        Adapter adapter = new Adapter(getContext());
+        init(view);
+        getCheck();
+        swipe.setOnRefreshListener(this::getCheck);
         list.setAdapter(adapter);
-        buttonSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupMenu.popupMenu();
-            }
-        });
+        buttonSort.setOnClickListener(this::clickOnOpenSort);
     }
 
+    void clickOnOpenSort(View v){
+        popupMenu.popupMenu();
+    }
+
+    void init(View v){
+        settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
+        idGroup = settings.getString(getString(R.string.key_for_select_group_id),"no_id");
+        list = v.findViewById(R.id.list_product);
+        buttonSort = v.findViewById(R.id.button_sort);
+        swipe = v.findViewById(R.id.swipe_current);
+        popupMenu = new PopupMenu(getContext(),buttonSort);
+
+        db = new ImplDB(getContext());
+
+    }
+    void getCheck(){
+        db.getCheckRepository().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullCheck>>() {
+            @Override
+            public void onChanged(List<FullCheck> fullChecks) {
+                List<Check> check = ModelConverter.FromCheckEntityToCheckModel(fullChecks);
+                adapter = new Adapter(getContext(),check);
+                list.setAdapter(adapter);
+            }
+        });
+        
+        swipe.setRefreshing(false);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
