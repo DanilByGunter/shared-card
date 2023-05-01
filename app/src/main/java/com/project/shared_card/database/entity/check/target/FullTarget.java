@@ -1,19 +1,19 @@
-package com.project.shared_card.database.entity.check;
+package com.project.shared_card.database.entity.check.target;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
 import com.project.shared_card.database.entity.categories.CategoriesEntity;
+import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.metrics.MetricsEntity;
 import com.project.shared_card.database.entity.shop.ShopEntity;
-import com.project.shared_card.database.entity.user_name.UserNameDao;
 import com.project.shared_card.database.entity.user_name.UserNameEntity;
 
-public class FullCheck {
+public class FullTarget {
     @Embedded
-    public CheckEntity check;
+    public TargetEntity target;
     @Relation(
-            parentColumn = "metric_id",
+            parentColumn = "currency_id",
             entityColumn = "id")
     public MetricsEntity metric;
     @Relation(
@@ -32,6 +32,5 @@ public class FullCheck {
             parentColumn = "user_name_buyer_id",
             entityColumn = "id")
     public UserNameEntity buyer;
-
 
 }

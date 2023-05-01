@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 
@@ -18,10 +19,12 @@ public class DialogAddProduct {
     public EditText name,count;
     public Spinner category, metric;
     public Button ready;
+    public TextView label;
     public DialogAddProduct(Context context) {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_create_product);
         this.context = context;
+        label = dialog.findViewById(R.id.dialog_text_add_product);
         name = dialog.findViewById(R.id.dialog_edit_text_product);
         count = dialog.findViewById(R.id.dialog_count_of_product);
         category = dialog.findViewById(R.id.dialog_text_category);

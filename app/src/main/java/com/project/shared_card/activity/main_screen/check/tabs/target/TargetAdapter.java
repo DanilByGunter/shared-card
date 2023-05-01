@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.shared_card.R;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
+public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder>{
     private final LayoutInflater inflater;
 
-    public Adapter(Context context) {
+    public TargetAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
     }
 

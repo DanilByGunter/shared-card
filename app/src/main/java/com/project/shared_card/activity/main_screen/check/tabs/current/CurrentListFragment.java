@@ -19,9 +19,9 @@ import android.widget.Button;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.PopupMenu;
-import com.project.shared_card.activity.main_screen.check.tabs.current.model.Check;
+import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
 import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.check.FullCheck;
+import com.project.shared_card.database.entity.check.product.FullProduct;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class CurrentListFragment extends Fragment {
     Button buttonSort;
     RecyclerView list;
     PopupMenu popupMenu;
-    Adapter adapter;
+    ProductAdapter productAdapter;
     ImplDB db;
     SharedPreferences settings;
     String idGroup;
@@ -55,9 +55,16 @@ public class CurrentListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-        getCheck();
         swipe.setOnRefreshListener(this::getCheck);
-        list.setAdapter(adapter);
+        db.getProductRepository().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
+            @Override
+            public void onChanged(List<FullProduct> fullProducts) {
+                List<Product> products = ModelConverter.FromCheckEntityToCheckModel(fullProducts);
+                productAdapter = new ProductAdapter(getContext(),products,Long.valueOf(idGroup));
+                list.setAdapter(productAdapter);
+            }
+        });
+
         buttonSort.setOnClickListener(this::clickOnOpenSort);
     }
 
@@ -75,17 +82,11 @@ public class CurrentListFragment extends Fragment {
 
         db = new ImplDB(getContext());
 
+
+
     }
     void getCheck(){
-        db.getCheckRepository().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullCheck>>() {
-            @Override
-            public void onChanged(List<FullCheck> fullChecks) {
-                List<Check> check = ModelConverter.FromCheckEntityToCheckModel(fullChecks);
-                adapter = new Adapter(getContext(),check);
-                list.setAdapter(adapter);
-            }
-        });
-        
+        productAdapter.update(Long.parseLong(idGroup));
         swipe.setRefreshing(false);
     }
     @Override

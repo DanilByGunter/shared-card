@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -21,10 +21,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
+import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
+import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
+import com.project.shared_card.activity.main_screen.check.tabs.target.TargetAdapter;
 import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.check.CheckEntity;
+import com.project.shared_card.database.entity.check.product.FullProduct;
+import com.project.shared_card.database.entity.check.product.ProductEntity;
+import com.project.shared_card.database.entity.check.target.TargetEntity;
 
 import java.util.List;
 
@@ -81,24 +86,52 @@ public class CheckFragment extends Fragment {
     }
 
     void clickOnReadyToCreateProduct(View v) {
-        CheckEntity check = new CheckEntity();
-        check.setProductName(dialogAddProduct.name.getText().toString());
-        check.setProductCount(Integer.parseInt(dialogAddProduct.count.getText().toString()));
-        check.setMetricId(dialogAddProduct.metric.getSelectedItemPosition()+1);
-        check.setCategoryId(dialogAddProduct.category.getSelectedItemPosition()+1);
-        check.setDateFirst(DateConverter.FromNowDateToLong());
-
+        RecyclerView pager = (RecyclerView) viewPager.getChildAt(0);
+        View view = pager.getChildAt(viewPager.getCurrentItem());
+        RecyclerView recyclerView = view.findViewById(R.id.list_product);
         String groupId = settings.getString(getString(R.string.key_for_select_group_id), "no id");
-        check.setGroupNameId(Long.parseLong(groupId));
-
-        if (groupId.equals(getString(R.string.me_id))) {
-            check.setUserNameCreatorId(Long.parseLong(groupId));
-        } else {
-            String userId = settings.getString(getString(R.string.key_for_me_id_server), "no id");
-            check.setUserNameCreatorId(Long.parseLong(userId));
+        if(viewPager.getCurrentItem()==0) {
+            ProductEntity check = new ProductEntity();
+            check.setProductName(dialogAddProduct.name.getText().toString());
+            check.setProductCount(Integer.parseInt(dialogAddProduct.count.getText().toString()));
+            check.setMetricId(dialogAddProduct.metric.getSelectedItemPosition() + 1);
+            check.setCategoryId(dialogAddProduct.category.getSelectedItemPosition() + 1);
+            check.setDateFirst(DateConverter.FromNowDateToLong());
+            check.setGroupNameId(Long.parseLong(groupId));
+            check.setStatus(false);
+            if (groupId.equals(getString(R.string.me_id))) {
+                check.setUserNameCreatorId(Long.parseLong(groupId));
+            } else {
+                String userId = settings.getString(getString(R.string.key_for_me_id_server), "no id");
+                check.setUserNameCreatorId(Long.parseLong(userId));
+            }
+            db.getProductRepository().add(check);
+            db.getProductRepository().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
+                @Override
+                public void onChanged(List<FullProduct> fullProducts) {
+                    recyclerView.setAdapter(new ProductAdapter(getContext(), ModelConverter.FromCheckEntityToCheckModel(fullProducts),Long.valueOf(groupId)));
+                }
+            });
         }
-        db.getCheckRepository().addCheck(check);
+        else{
+            TargetEntity target = new TargetEntity();
+            target.setTargetName(dialogAddProduct.name.getText().toString());
+            target.setPrice(Integer.parseInt(dialogAddProduct.count.getText().toString()));
+            target.setCurrencyId(dialogAddProduct.metric.getSelectedItemPosition() + 1);
+            target.setCategoryId(dialogAddProduct.category.getSelectedItemPosition() + 1);
+            target.setDateFirst(DateConverter.FromNowDateToLong());
+            target.setGroupNameId(Long.parseLong(groupId));
 
+            if (groupId.equals(getString(R.string.me_id))) {
+                target.setUserNameCreatorId(Long.parseLong(groupId));
+            } else {
+                String userId = settings.getString(getString(R.string.key_for_me_id_server), "no id");
+                target.setUserNameCreatorId(Long.parseLong(userId));
+            }
+            db.getTargetRepository().add(target);
+        }
+        dialogAddProduct.name.clearComposingText();
+        dialogAddProduct.count.clearComposingText();
         dialogAddProduct.dialog.dismiss();
     }
 
@@ -115,6 +148,9 @@ public class CheckFragment extends Fragment {
 
     void changeCategory(int position) {
         if (position == 0) {
+            dialogAddProduct.label.setText(getString(R.string.dialog_add_product));
+            dialogAddProduct.name.setHint(getString(R.string.dialog_text_hint_porduct));
+            dialogAddProduct.count.setHint(getString(R.string.dialog_text_hint_count));
             db.getCategoriesRepository().getforPorduct().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
                 @Override
                 public void onChanged(List<String> strings) {
@@ -122,6 +158,9 @@ public class CheckFragment extends Fragment {
                 }
             });
         } else {
+            dialogAddProduct.label.setText(getString(R.string.dialog_add_target));
+            dialogAddProduct.name.setHint(getString(R.string.dialog_text_hint_target));
+            dialogAddProduct.count.setHint(getString(R.string.dialog_text_hint_currency));
             db.getCategoriesRepository().getForTarget().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
                 @Override
                 public void onChanged(List<String> strings) {

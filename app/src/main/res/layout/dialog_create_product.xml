@@ -26,7 +26,7 @@
         android:textSize="18sp"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:hint="Наименование товара"
+        android:hint="@string/dialog_text_hint_porduct"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dialog_text_add_product"/>
@@ -61,7 +61,7 @@
             android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:background="@drawable/dialog_edit_text_underline"
-            android:hint="Кол-во"
+            android:hint="@string/dialog_text_hint_count"
             android:inputType="number"
             android:padding="5dp" />
 

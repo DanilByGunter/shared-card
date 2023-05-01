@@ -1,4 +1,4 @@
-package com.project.shared_card.database.entity.check;
+package com.project.shared_card.database.entity.check.product;
 
 
 import androidx.room.ColumnInfo;
@@ -15,8 +15,8 @@ import androidx.room.PrimaryKey;
 //@ForeignKey(entity = GroupEntity.class,
 //        parentColumns = {"user_name_id","group_name_id"},childColumns = {"user_name_creator_id", "group_name_id"}),
 //        }
-@Entity(tableName = "check")
-public class CheckEntity {
+@Entity(tableName = "product")
+public class ProductEntity {
     @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo(name = "group_name_id")
@@ -40,24 +40,21 @@ public class CheckEntity {
     private int price;
     @ColumnInfo(name = "shop_id")
     private long shopId;
-
-    public CheckEntity() {
+    private boolean status;
+    public ProductEntity() {
     }
 
-    public CheckEntity(long groupNameId, long userNameCreatorId, String productName, int productCount, long categoryId, long metricId, long dateFirst, long shopId) {
+    public ProductEntity(long groupNameId, long userNameCreatorId, String productName, int productCount, long categoryId, long metricId, long dateFirst, long shopId, boolean status) {
         this.groupNameId = groupNameId;
         this.userNameCreatorId = userNameCreatorId;
-        //this.userNameBuyerId = userNameBuyerId;
         this.productName = productName;
-        //this.price = price;
         this.productCount = productCount;
         this.categoryId = categoryId;
         this.metricId = metricId;
         this.dateFirst = dateFirst;
-        //this.dateLast = dateLast;
         this.shopId = shopId;
+        this.status = status;
     }
-
     public long getId() {
         return id;
     }
@@ -152,5 +149,14 @@ public class CheckEntity {
 
     public void setShopId(long shopId) {
         this.shopId = shopId;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

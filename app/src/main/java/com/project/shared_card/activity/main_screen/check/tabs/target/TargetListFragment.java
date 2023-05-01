@@ -36,8 +36,8 @@ public class TargetListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button buttonSort = view.findViewById(R.id.button_sort);
         RecyclerView list = view.findViewById(R.id.list_product);
-        Adapter adapter = new Adapter(getContext());
-        list.setAdapter(adapter);
+        TargetAdapter targetAdapter = new TargetAdapter(getContext());
+        list.setAdapter(targetAdapter);
         PopupMenu popupMenu = new PopupMenu(getContext(),buttonSort);
         buttonSort.setOnClickListener(new View.OnClickListener() {
             @Override
