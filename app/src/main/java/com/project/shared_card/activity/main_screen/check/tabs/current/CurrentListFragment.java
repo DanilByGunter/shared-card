@@ -56,7 +56,7 @@ public class CurrentListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init(view);
         swipe.setOnRefreshListener(this::getCheck);
-        db.getProductRepository().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
+        db.product().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
             @Override
             public void onChanged(List<FullProduct> fullProducts) {
                 List<Product> products = ModelConverter.FromCheckEntityToCheckModel(fullProducts);
@@ -86,8 +86,14 @@ public class CurrentListFragment extends Fragment {
 
     }
     void getCheck(){
-        productAdapter.update(Long.parseLong(idGroup));
-        swipe.setRefreshing(false);
+        db.product().getAll(Long.valueOf(idGroup)).observe(this, new Observer<List<FullProduct>>() {
+            @Override
+            public void onChanged(List<FullProduct> fullProducts) {
+                productAdapter.update( ModelConverter.FromCheckEntityToCheckModel(fullProducts));
+                swipe.setRefreshing(false);
+            }
+        });
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

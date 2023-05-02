@@ -4,13 +4,16 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.project.shared_card.database.entity.categories.repository.ImplCategoriesRepository;
+import com.project.shared_card.database.entity.categories.product.repository.ImplCategoriesProductRepository;
+import com.project.shared_card.database.entity.categories.target.repository.ImplCategoriesTargetRepository;
 import com.project.shared_card.database.entity.check.product.repository.ImplProductRepository;
 import com.project.shared_card.database.entity.check.target.repository.ImplTargetRepository;
+import com.project.shared_card.database.entity.currency.repository.ImplCurrencyRepository;
 import com.project.shared_card.database.entity.group.repository.ImplGroupRepository;
 import com.project.shared_card.database.entity.group_name.repository.ImplGroupNameRepository;
 import com.project.shared_card.database.entity.metrics.repository.ImplMetricsRepository;
-import com.project.shared_card.database.entity.shop.repository.ImplShopRepository;
+import com.project.shared_card.database.entity.shop.product.repository.ImplShopProductRepository;
+import com.project.shared_card.database.entity.shop.target.repository.ImplShopTargetRepository;
 import com.project.shared_card.database.entity.user_name.repository.ImplUserNameRepository;
 
 public class ImplDB {
@@ -26,28 +29,37 @@ public class ImplDB {
         return db;
     }
 
-    public ImplUserNameRepository getUserNameRepository() {
+    public ImplUserNameRepository user_name() {
         return new ImplUserNameRepository(db.getUserNameDao());
     }
-    public ImplGroupNameRepository getGroupNameRepository(){
+    public ImplGroupNameRepository group_name(){
         return new ImplGroupNameRepository(db.getGroupNameDao());
     }
-    public ImplGroupRepository getGroupRepository(){
+    public ImplGroupRepository group(){
         return new ImplGroupRepository(db.getGroupDao());
     }
-    public ImplCategoriesRepository getCategoriesRepository(){
-        return new ImplCategoriesRepository(db.getCategoriesDao());
+    public ImplCategoriesProductRepository category_product(){
+        return new ImplCategoriesProductRepository(db.getCategoriesProductDao());
     }
-    public ImplShopRepository getShopRepository(){
-        return new ImplShopRepository(db.getShopDao());
+    public ImplShopProductRepository shop_product(){
+        return new ImplShopProductRepository(db.getShopProductDao());
     }
-    public ImplMetricsRepository getMetricsRepository(){
+    public ImplShopTargetRepository shop_target(){
+        return new ImplShopTargetRepository(db.getShopTargetDao());
+    }
+    public ImplMetricsRepository metric(){
         return new ImplMetricsRepository(db.getMetricsDao());
     }
-    public ImplProductRepository getProductRepository(){
+    public ImplProductRepository product(){
         return new ImplProductRepository(db.getProductDao());
     }
-    public ImplTargetRepository getTargetRepository(){
+    public ImplTargetRepository target(){
         return new ImplTargetRepository(db.getTargetDao());
+    }
+    public ImplCategoriesTargetRepository category_target(){
+        return new ImplCategoriesTargetRepository(db.getCategoriesTargetDao());
+    }
+    public ImplCurrencyRepository currency(){
+        return  new ImplCurrencyRepository(db.getCurrencyDao());
     }
 }

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.shared_card.R;
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         ImplDB db = new ImplDB(this);
-        db.getGroupNameRepository().getGroupById(idGroup).observe(this, new Observer<GroupNameEntity>() {
+        db.group_name().getGroupById(idGroup).observe(this, new Observer<GroupNameEntity>() {
             @Override
             public void onChanged(GroupNameEntity entity) {
                 nameGroup.setText(entity.getName());

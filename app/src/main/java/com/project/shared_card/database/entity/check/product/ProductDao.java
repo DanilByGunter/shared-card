@@ -10,7 +10,7 @@ import java.util.List;
 
 @Dao
 public interface ProductDao {
-    @Query("select * from product where group_name_id = :id")
+    @Query("select * from product where group_name_id = :id order by status")
     LiveData<List<FullProduct>> getAll(long id);
     @Insert
     void add(ProductEntity product);

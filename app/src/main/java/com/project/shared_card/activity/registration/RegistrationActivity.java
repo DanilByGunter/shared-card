@@ -11,24 +11,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.activity.main_screen.MainActivity;
 import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.categories.CategoriesEntity;
+import com.project.shared_card.database.entity.categories.product.CategoriesProductEntity;
+import com.project.shared_card.database.entity.categories.target.CategoriesTargetEntity;
+import com.project.shared_card.database.entity.currency.CurrencyEntity;
 import com.project.shared_card.database.entity.group.GroupEntity;
 import com.project.shared_card.database.entity.metrics.MetricsEntity;
-import com.project.shared_card.database.entity.shop.ShopEntity;
+import com.project.shared_card.database.entity.shop.product.ShopProductEntity;
+import com.project.shared_card.database.entity.shop.target.ShopTargetEntity;
 import com.project.shared_card.model.SignUp;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,9 +94,9 @@ public class RegistrationActivity extends AppCompatActivity {
         SignUp user = new SignUp(idUser, editText.getText().toString());
         SignUp group = new SignUp(idUser, editText.getText().toString());
 
-        db.getUserNameRepository().createUser(user);
-        db.getGroupNameRepository().createGroups(group);
-        db.getGroupRepository().createRepository(new GroupEntity(idUser, idUser, true));
+        db.user_name().createUser(user);
+        db.group_name().createGroups(group);
+        db.group().createRepository(new GroupEntity(idUser, idUser, true));
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -136,36 +136,46 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void createCategoryMetricShop() {
         List<MetricsEntity> metrics = Arrays.asList(
-                new MetricsEntity(1, "шт"),
-                new MetricsEntity(2, "кг"),
-                new MetricsEntity(3, "л"),
-                new MetricsEntity(4, "мл"));
-        List<ShopEntity> shops = Arrays.asList(
-                new ShopEntity(1, "продуктовый", true),
-                new ShopEntity(2, "рынок", true),
-                new ShopEntity(3, "Пятерочка", true),
-                new ShopEntity(4, "Магнит", true),
-                new ShopEntity(5, "Перекресток", true),
-                new ShopEntity(6, "Вкусвилл", true),
-                new ShopEntity(7, "продуктовый", false),
-                new ShopEntity(8, "онлайн", false),
-                new ShopEntity(9, "продукты", false),
-                new ShopEntity(10, "электротехника", false),
-                new ShopEntity(11, "автосалон", false),
-                new ShopEntity(12, "хобби-гипермаркет", false));
-        List<CategoriesEntity> categories = Arrays.asList(
-                new CategoriesEntity(1, "мясо", true),
-                new CategoriesEntity(2, "рыба", true),
-                new CategoriesEntity(3, "молочные продукты", true),
-                new CategoriesEntity(4, "алкоголь", true),
-                new CategoriesEntity(5, "продукты", false),
-                new CategoriesEntity(6, "авто", false),
-                new CategoriesEntity(7, "искусство", false),
-                new CategoriesEntity(8, "электротовары", false));
+                new MetricsEntity("шт"),
+                new MetricsEntity("кг"),
+                new MetricsEntity("л"),
+                new MetricsEntity("мл"));
+        List<CurrencyEntity> currencies = Arrays.asList(
+                new CurrencyEntity("руб"),
+                new CurrencyEntity("$"),
+                new CurrencyEntity("евро")
+        );
+        List<ShopProductEntity> shopProduct = Arrays.asList(
+                new ShopProductEntity("продуктовый"),
+                new ShopProductEntity("рынок"),
+                new ShopProductEntity("Пятерочка"),
+                new ShopProductEntity("Магнит"),
+                new ShopProductEntity("Перекресток"),
+                new ShopProductEntity("Вкусвилл"));
+        List<ShopTargetEntity> shopTarget = Arrays.asList(
+                new ShopTargetEntity("продуктовый"),
+                new ShopTargetEntity("онлайн"),
+                new ShopTargetEntity("продукты"),
+                new ShopTargetEntity("электротехника"),
+                new ShopTargetEntity("автосалон"),
+                new ShopTargetEntity("хобби-гипермаркет"));
+        List<CategoriesProductEntity> categoriesProduct = Arrays.asList(
+                new CategoriesProductEntity("мясо"),
+                new CategoriesProductEntity("рыба"),
+                new CategoriesProductEntity("молочные продукты"),
+                new CategoriesProductEntity("алкоголь"));
+        List<CategoriesTargetEntity> categoriesTarget = Arrays.asList(
+                new CategoriesTargetEntity("продукты"),
+                new CategoriesTargetEntity("авто"),
+                new CategoriesTargetEntity("искусство"),
+                new CategoriesTargetEntity("электротовары"));
 
-        db.getMetricsRepository().addMetrics(metrics);
-        db.getShopRepository().addShop(shops);
-        db.getCategoriesRepository().add(categories);
+        db.metric().addMetrics(metrics);
+        db.shop_product().add(shopProduct);
+        db.shop_target().add(shopTarget);
+        db.currency().add(currencies);
+        db.category_target().add(categoriesTarget);
+        db.category_product().add(categoriesProduct);
     }
 }
 

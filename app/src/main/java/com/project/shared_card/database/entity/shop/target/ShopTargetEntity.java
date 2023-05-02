@@ -1,16 +1,14 @@
-package com.project.shared_card.database.entity.metrics;
-
+package com.project.shared_card.database.entity.shop.target;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "metric")
-public class MetricsEntity {
+@Entity(tableName = "shop_target")
+public class ShopTargetEntity {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
-
-    public MetricsEntity( String name) {
+    public ShopTargetEntity(String name) {
         this.name = name;
     }
 

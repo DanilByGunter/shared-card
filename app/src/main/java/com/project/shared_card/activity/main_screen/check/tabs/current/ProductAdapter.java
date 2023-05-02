@@ -1,13 +1,10 @@
 package com.project.shared_card.activity.main_screen.check.tabs.current;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +13,8 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.shared_card.R;
-import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
 import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
 
 import java.time.LocalDateTime;
@@ -35,15 +30,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         this.checks = checks;
         this.idGroup = idGroup;
     }
-    public void update(long idGroup){
-        ImplDB db = new ImplDB(inflater.getContext());
-        db.getProductRepository().getAll(Long.valueOf(idGroup)).observe((LifecycleOwner) inflater.getContext(), new Observer<List<FullProduct>>() {
-            @Override
-            public void onChanged(List<FullProduct> fullProducts) {
-                checks = ModelConverter.FromCheckEntityToCheckModel(fullProducts);
-                notifyDataSetChanged();
-            }
-        });
+    public void update(List<Product> products){
+        checks = products;
+        notifyDataSetChanged();
     }
     @NonNull
     @Override
@@ -65,22 +54,31 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.user.setText(check.getNameCreator());
         holder.select.setChecked(check.getStatus());
         //todo
-//        holder.select.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(holder.select.isChecked()){
-//                    ImplDB db = new ImplDB(inflater.getContext());
-//                    db.getProductRepository().get(holder.getAdapterPosition()+1).observe((LifecycleOwner) inflater.getContext(), new Observer<ProductEntity>() {
-//                        @Override
-//                        public void onChanged(ProductEntity product) {
-//                            product.setStatus(true);
-//                            db.getProductRepository().update(product);
-//                            update(idGroup);
-//                        }
-//                    });
-//                }
-//            }
-//        });
+        holder.select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.select.isChecked()){
+                    ImplDB db = new ImplDB(inflater.getContext());
+                    db.product().get(holder.getAdapterPosition()+1).observe((LifecycleOwner) inflater.getContext(), new Observer<ProductEntity>() {
+                        @Override
+                        public void onChanged(ProductEntity product) {
+                            product.setStatus(true);
+                            db.product().update(product);
+                        }
+                    });
+                }
+                else {
+                    ImplDB db = new ImplDB(inflater.getContext());
+                    db.product().get(holder.getAdapterPosition() + 1).observe((LifecycleOwner) inflater.getContext(), new Observer<ProductEntity>() {
+                        @Override
+                        public void onChanged(ProductEntity product) {
+                            product.setStatus(false);
+                            db.product().update(product);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override

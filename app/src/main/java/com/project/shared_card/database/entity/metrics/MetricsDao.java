@@ -5,8 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.project.shared_card.database.entity.categories.CategoriesEntity;
-
 import java.util.List;
 
 @Dao

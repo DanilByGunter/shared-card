@@ -124,7 +124,7 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     private void clickOnBtnReady(View v){
         if(!dialog.name.getText().toString().equals("") && dialog.image.getDrawable().getCurrent()!=null){
             ImplDB db = new ImplDB(context);
-            db.getGroupNameRepository().updateForId(GROUP_ID, dialog.name.getText().toString());
+            db.group_name().updateForId(GROUP_ID, dialog.name.getText().toString());
             byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
             Thread thread = new Thread(new Runnable() {
                 @Override

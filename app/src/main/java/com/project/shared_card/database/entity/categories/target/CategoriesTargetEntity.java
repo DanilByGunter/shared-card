@@ -1,19 +1,16 @@
-package com.project.shared_card.database.entity.categories;
+package com.project.shared_card.database.entity.categories.target;
 
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "category")
-public class CategoriesEntity {
+@Entity(tableName = "category_target")
+public class CategoriesTargetEntity {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
-    private Boolean status;
-    public CategoriesEntity(long id, String name, Boolean status) {
-        this.id = id;
+    public CategoriesTargetEntity(String name) {
         this.name = name;
-        this.status = status;
     }
 
     public long getId() {
@@ -30,13 +27,5 @@ public class CategoriesEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
     }
 }

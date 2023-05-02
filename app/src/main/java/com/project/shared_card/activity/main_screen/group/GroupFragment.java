@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -76,7 +75,7 @@ public class GroupFragment extends Fragment {
 
         editProfile.setOnClickListener(this::clickOnEditProfile);
         dialogUser.ready.setOnClickListener(this::clickOnSaveDialogEdit);
-        db.getGroupNameRepository().getAllGroups().observe((LifecycleOwner) getContext(), new Observer<List<AllGroups>>() {
+        db.group_name().getAllGroups().observe((LifecycleOwner) getContext(), new Observer<List<AllGroups>>() {
             @Override
             public void onChanged(List<AllGroups> allGroups) {
                 adapter = new AdapterForExpendList(getContext(),allGroups,dialogGroup,mainToolBar,updateExpandableListView);
@@ -130,8 +129,8 @@ public class GroupFragment extends Fragment {
 
             prefEditor.putString(getString(R.string.key_for_me_name), dialogUser.name.getText().toString()).apply();
 
-            db.getUserNameRepository().updateMe(dialogUser.name.getText().toString());
-            db.getGroupNameRepository().updateMe(dialogUser.name.getText().toString());
+            db.user_name().updateMe(dialogUser.name.getText().toString());
+            db.group_name().updateMe(dialogUser.name.getText().toString());
             byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialogUser.image.getDrawable().getCurrent()).getBitmap());
             Thread thread = new Thread(new Runnable() {
                 @Override

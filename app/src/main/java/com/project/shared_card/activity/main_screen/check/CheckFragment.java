@@ -25,11 +25,11 @@ import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
 import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
-import com.project.shared_card.activity.main_screen.check.tabs.target.TargetAdapter;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
+import com.project.shared_card.database.entity.currency.CurrencyEntity;
 
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class CheckFragment extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
 
-        db.getMetricsRepository().getAll().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
+        db.metric().getAll().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> strings) {
                 dialogAddProduct.metric.setAdapter(new AdapterForSpinner(getContext(), strings));
@@ -105,8 +105,8 @@ public class CheckFragment extends Fragment {
                 String userId = settings.getString(getString(R.string.key_for_me_id_server), "no id");
                 check.setUserNameCreatorId(Long.parseLong(userId));
             }
-            db.getProductRepository().add(check);
-            db.getProductRepository().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
+            db.product().add(check);
+            db.product().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
                 @Override
                 public void onChanged(List<FullProduct> fullProducts) {
                     recyclerView.setAdapter(new ProductAdapter(getContext(), ModelConverter.FromCheckEntityToCheckModel(fullProducts),Long.valueOf(groupId)));
@@ -128,7 +128,7 @@ public class CheckFragment extends Fragment {
                 String userId = settings.getString(getString(R.string.key_for_me_id_server), "no id");
                 target.setUserNameCreatorId(Long.parseLong(userId));
             }
-            db.getTargetRepository().add(target);
+            db.target().add(target);
         }
         dialogAddProduct.name.clearComposingText();
         dialogAddProduct.count.clearComposingText();
@@ -151,20 +151,33 @@ public class CheckFragment extends Fragment {
             dialogAddProduct.label.setText(getString(R.string.dialog_add_product));
             dialogAddProduct.name.setHint(getString(R.string.dialog_text_hint_porduct));
             dialogAddProduct.count.setHint(getString(R.string.dialog_text_hint_count));
-            db.getCategoriesRepository().getforPorduct().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
+            //todo
+            db.category_product().getAll().observe(this, new Observer<List<String>>() {
                 @Override
                 public void onChanged(List<String> strings) {
                     dialogAddProduct.category.setAdapter(new AdapterForSpinner(getContext(), strings));
+                }
+            });
+            db.metric().getAll().observe(this, new Observer<List<String>>() {
+                @Override
+                public void onChanged(List<String> strings) {
+                    dialogAddProduct.metric.setAdapter(new AdapterForSpinner(getContext(),strings));
                 }
             });
         } else {
             dialogAddProduct.label.setText(getString(R.string.dialog_add_target));
             dialogAddProduct.name.setHint(getString(R.string.dialog_text_hint_target));
             dialogAddProduct.count.setHint(getString(R.string.dialog_text_hint_currency));
-            db.getCategoriesRepository().getForTarget().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
+            db.category_target().getAll().observe(this, new Observer<List<String>>() {
                 @Override
                 public void onChanged(List<String> strings) {
                     dialogAddProduct.category.setAdapter(new AdapterForSpinner(getContext(), strings));
+                }
+            });
+            db.currency().getAll().observe(this, new Observer<List<String>>() {
+                @Override
+                public void onChanged(List<String> strings) {
+                    dialogAddProduct.metric.setAdapter(new AdapterForSpinner(getContext(),strings));
                 }
             });
         }
