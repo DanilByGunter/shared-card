@@ -59,7 +59,7 @@ public class CurrentListFragment extends Fragment {
         db.product().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
             @Override
             public void onChanged(List<FullProduct> fullProducts) {
-                List<Product> products = ModelConverter.FromCheckEntityToCheckModel(fullProducts);
+                List<Product> products = ModelConverter.FromProductEntityToProductModel(fullProducts);
                 productAdapter = new ProductAdapter(getContext(),products,Long.valueOf(idGroup));
                 list.setAdapter(productAdapter);
             }
@@ -89,11 +89,10 @@ public class CurrentListFragment extends Fragment {
         db.product().getAll(Long.valueOf(idGroup)).observe(this, new Observer<List<FullProduct>>() {
             @Override
             public void onChanged(List<FullProduct> fullProducts) {
-                productAdapter.update( ModelConverter.FromCheckEntityToCheckModel(fullProducts));
+                productAdapter.update( ModelConverter.FromProductEntityToProductModel(fullProducts));
                 swipe.setRefreshing(false);
             }
         });
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -25,11 +25,12 @@ import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
 import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
+import com.project.shared_card.activity.main_screen.check.tabs.target.TargetAdapter;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
+import com.project.shared_card.database.entity.check.target.FullTarget;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
-import com.project.shared_card.database.entity.currency.CurrencyEntity;
 
 import java.util.List;
 
@@ -88,9 +89,10 @@ public class CheckFragment extends Fragment {
     void clickOnReadyToCreateProduct(View v) {
         RecyclerView pager = (RecyclerView) viewPager.getChildAt(0);
         View view = pager.getChildAt(viewPager.getCurrentItem());
-        RecyclerView recyclerView = view.findViewById(R.id.list_product);
+        RecyclerView recyclerView;
         String groupId = settings.getString(getString(R.string.key_for_select_group_id), "no id");
         if(viewPager.getCurrentItem()==0) {
+            recyclerView = view.findViewById(R.id.list_product);
             ProductEntity check = new ProductEntity();
             check.setProductName(dialogAddProduct.name.getText().toString());
             check.setProductCount(Integer.parseInt(dialogAddProduct.count.getText().toString()));
@@ -109,11 +111,12 @@ public class CheckFragment extends Fragment {
             db.product().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
                 @Override
                 public void onChanged(List<FullProduct> fullProducts) {
-                    recyclerView.setAdapter(new ProductAdapter(getContext(), ModelConverter.FromCheckEntityToCheckModel(fullProducts),Long.valueOf(groupId)));
+                    recyclerView.setAdapter(new ProductAdapter(getContext(), ModelConverter.FromProductEntityToProductModel(fullProducts),Long.valueOf(groupId)));
                 }
             });
         }
         else{
+            recyclerView = view.findViewById(R.id.list_target);
             TargetEntity target = new TargetEntity();
             target.setTargetName(dialogAddProduct.name.getText().toString());
             target.setPrice(Integer.parseInt(dialogAddProduct.count.getText().toString()));
@@ -129,9 +132,15 @@ public class CheckFragment extends Fragment {
                 target.setUserNameCreatorId(Long.parseLong(userId));
             }
             db.target().add(target);
+            db.target().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullTarget>>() {
+                @Override
+                public void onChanged(List<FullTarget> fullTargets) {
+                    recyclerView.setAdapter(new TargetAdapter(getContext(), ModelConverter.FromTargetEntityToTargetModel(fullTargets),Long.valueOf(groupId)));
+                }
+            });
         }
-        dialogAddProduct.name.clearComposingText();
-        dialogAddProduct.count.clearComposingText();
+        dialogAddProduct.name.setText("");
+        dialogAddProduct.count.setText("");
         dialogAddProduct.dialog.dismiss();
     }
 

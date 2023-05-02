@@ -54,31 +54,31 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.user.setText(check.getNameCreator());
         holder.select.setChecked(check.getStatus());
         //todo
-        holder.select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(holder.select.isChecked()){
-                    ImplDB db = new ImplDB(inflater.getContext());
-                    db.product().get(holder.getAdapterPosition()+1).observe((LifecycleOwner) inflater.getContext(), new Observer<ProductEntity>() {
-                        @Override
-                        public void onChanged(ProductEntity product) {
-                            product.setStatus(true);
-                            db.product().update(product);
-                        }
-                    });
-                }
-                else {
-                    ImplDB db = new ImplDB(inflater.getContext());
-                    db.product().get(holder.getAdapterPosition() + 1).observe((LifecycleOwner) inflater.getContext(), new Observer<ProductEntity>() {
-                        @Override
-                        public void onChanged(ProductEntity product) {
-                            product.setStatus(false);
-                            db.product().update(product);
-                        }
-                    });
-                }
-            }
-        });
+//        holder.select.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(holder.select.isChecked()){
+//                    ImplDB db = new ImplDB(inflater.getContext());
+//                    db.product().get(holder.getAdapterPosition()+1).observe((LifecycleOwner) inflater.getContext(), new Observer<ProductEntity>() {
+//                        @Override
+//                        public void onChanged(ProductEntity product) {
+//                            product.setStatus(true);
+//                            db.product().update(product);
+//                        }
+//                    });
+//                }
+//                else {
+//                    ImplDB db = new ImplDB(inflater.getContext());
+//                    db.product().get(holder.getAdapterPosition() + 1).observe((LifecycleOwner) inflater.getContext(), new Observer<ProductEntity>() {
+//                        @Override
+//                        public void onChanged(ProductEntity product) {
+//                            product.setStatus(false);
+//                            db.product().update(product);
+//                        }
+//                    });
+//                }
+//            }
+//        });
     }
 
     @Override
