@@ -30,4 +30,14 @@ public class ImplTargetRepository implements TargetRepository{
     public LiveData<List<FullTarget>> getAll(Long groupId) {
         return targetDao.getAll(groupId);
     }
+
+    @Override
+    public void update(TargetEntity entity) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                targetDao.update(entity);
+            }
+        });
+    }
 }

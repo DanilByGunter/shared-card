@@ -11,4 +11,5 @@ import java.util.List;
 public interface TargetRepository {
     void add(TargetEntity entity);
     LiveData<List<FullTarget>> getAll(Long groupId);
+    void update(TargetEntity entity);
 }

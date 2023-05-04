@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
+import com.project.shared_card.database.ImplDB;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,11 +22,13 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     private final LayoutInflater inflater;
     private List<Target> checks;
     private long idGroup;
+    private ImplDB db;
 
     public TargetAdapter(Context context,List<Target> checks,long idGroup) {
         this.inflater = LayoutInflater.from(context);
         this.checks =checks;
         this.idGroup = idGroup;
+        db = new ImplDB(context);
     }
 
     @NonNull
@@ -50,6 +53,18 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
         holder.date.setText(visualDate);
         holder.user.setText(check.getNameCreator());
         holder.select.setChecked(check.getStatus());
+        holder.select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.select.isChecked()) {
+                    checks.get(holder.getAdapterPosition()).getEntity().setStatus(true);
+                } else {
+                    checks.get(holder.getAdapterPosition()).getEntity().setStatus(false);
+                }
+                db.target().update(checks.get(holder.getAdapterPosition()).getEntity());
+
+            }
+        });
     }
 
     @Override

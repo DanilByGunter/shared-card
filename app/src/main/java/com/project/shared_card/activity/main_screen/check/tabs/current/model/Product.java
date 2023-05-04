@@ -1,8 +1,11 @@
 package com.project.shared_card.activity.main_screen.check.tabs.current.model;
 
+import com.project.shared_card.database.entity.check.product.ProductEntity;
+
 import java.time.LocalDateTime;
 
 public class Product {
+    ProductEntity entity;
     String name;
     String category;
     int count;
@@ -15,7 +18,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String category, int count, LocalDateTime date, String nameCreator, String metric,Boolean status) {
+    public Product(String name, String category, int count, LocalDateTime date, String nameCreator, String metric,Boolean status,ProductEntity entity) {
         this.name = name;
         this.category = category;
         this.count = count;
@@ -23,6 +26,15 @@ public class Product {
         this.nameCreator = nameCreator;
         this.metric = metric;
         this.status = status;
+        this.entity =entity;
+    }
+
+    public ProductEntity getEntity() {
+        return entity;
+    }
+
+    public void setEntity(ProductEntity entity) {
+        this.entity = entity;
     }
 
     public Boolean getStatus() {
