@@ -23,8 +23,8 @@ import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.PopupMenu;
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
-import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.check.product.FullProduct;
+import com.project.shared_card.activity.database.ImplDB;
+import com.project.shared_card.activity.database.entity.check.product.FullProduct;
 
 import java.util.List;
 

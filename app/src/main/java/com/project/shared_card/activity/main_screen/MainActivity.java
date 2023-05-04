@@ -18,8 +18,8 @@ import com.project.shared_card.activity.main_screen.check.CheckFragment;
 import com.project.shared_card.activity.main_screen.group.GroupFragment;
 import com.project.shared_card.activity.main_screen.statistic.StatisticsFragment;
 import com.project.shared_card.activity.main_screen.story.StoryFragment;
-import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.group_name.GroupNameEntity;
+import com.project.shared_card.activity.database.ImplDB;
+import com.project.shared_card.activity.database.entity.group_name.GroupNameEntity;
 
 
 public class MainActivity extends AppCompatActivity {
