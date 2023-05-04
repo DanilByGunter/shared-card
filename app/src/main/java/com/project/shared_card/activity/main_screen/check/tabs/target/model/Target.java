@@ -1,6 +1,6 @@
 package com.project.shared_card.activity.main_screen.check.tabs.target.model;
 
-import com.project.shared_card.database.entity.check.target.TargetEntity;
+import com.project.shared_card.activity.database.entity.check.target.TargetEntity;
 
 import java.time.LocalDateTime;
 
