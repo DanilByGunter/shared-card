@@ -1,6 +1,6 @@
 package com.project.shared_card.activity.main_screen.check.tabs.current.model;
 
-import com.project.shared_card.activity.database.entity.check.product.ProductEntity;
+import com.project.shared_card.database.entity.check.product.ProductEntity;
 
 import java.time.LocalDateTime;
 

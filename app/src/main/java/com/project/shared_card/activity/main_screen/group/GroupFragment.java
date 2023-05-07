@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
-import com.project.shared_card.activity.database.ImplDB;
-import com.project.shared_card.activity.database.entity.group_name.AllGroups;
+import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.group_name.AllGroups;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

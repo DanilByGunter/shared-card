@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
-import com.project.shared_card.activity.database.ImplDB;
+import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.check.product.ProductEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
