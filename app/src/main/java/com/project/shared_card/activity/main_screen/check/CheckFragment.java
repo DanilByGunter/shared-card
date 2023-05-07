@@ -15,13 +15,12 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
+import com.project.shared_card.activity.converter.ModelConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
-import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
 import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
@@ -44,6 +43,7 @@ public class CheckFragment extends Fragment {
     TabLayout tabLayout;
     FragmentStateAdapter adapter;
     SharedPreferences settings;
+
 
     public CheckFragment() {
     }
@@ -100,7 +100,7 @@ public class CheckFragment extends Fragment {
             check.setCategoryId(dialogAddProduct.category.getSelectedItemPosition() + 1);
             check.setDateFirst(DateConverter.FromNowDateToLong());
             check.setGroupNameId(Long.parseLong(groupId));
-            check.setStatus(false);
+            check.setStatus(0);
             if (groupId.equals(getString(R.string.me_id))) {
                 check.setUserNameCreatorId(Long.parseLong(groupId));
             } else {
@@ -111,7 +111,8 @@ public class CheckFragment extends Fragment {
             db.product().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
                 @Override
                 public void onChanged(List<FullProduct> fullProducts) {
-                    recyclerView.setAdapter(new ProductAdapter(getContext(), ModelConverter.FromProductEntityToProductModel(fullProducts),Long.valueOf(groupId)));
+                    ProductAdapter productAdapter= (ProductAdapter) recyclerView.getAdapter();
+                    productAdapter.update(ModelConverter.FromProductEntityToProductModel(fullProducts));
                 }
             });
         }
@@ -135,7 +136,8 @@ public class CheckFragment extends Fragment {
             db.target().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullTarget>>() {
                 @Override
                 public void onChanged(List<FullTarget> fullTargets) {
-                    recyclerView.setAdapter(new TargetAdapter(getContext(), ModelConverter.FromTargetEntityToTargetModel(fullTargets),Long.valueOf(groupId)));
+                    TargetAdapter targetAdapter= (TargetAdapter) recyclerView.getAdapter();
+                    targetAdapter.update(ModelConverter.FromTargetEntityToTargetModel(fullTargets));
                 }
             });
         }

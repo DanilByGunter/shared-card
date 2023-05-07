@@ -14,6 +14,8 @@ import androidx.lifecycle.Observer;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.shared_card.R;
+import com.project.shared_card.activity.converter.DateConverter;
+import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.activity.main_screen.check.CheckFragment;
 import com.project.shared_card.activity.main_screen.group.GroupFragment;
 import com.project.shared_card.activity.main_screen.statistic.StatisticsFragment;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.show_fragment, checkFragment)
                 .commit();
+
         navigationView.setSelectedItemId(R.id.menu_check);
         navigationView.setOnItemSelectedListener(this::onNavigationItemSelected);
     }
