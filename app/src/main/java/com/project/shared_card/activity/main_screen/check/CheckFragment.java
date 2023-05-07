@@ -21,7 +21,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
-import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
 import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
@@ -31,7 +30,7 @@ import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.check.target.FullTarget;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
-
+import com.project.shared_card.activity.converter.ModelConverter;
 import java.util.List;
 
 
@@ -44,6 +43,7 @@ public class CheckFragment extends Fragment {
     TabLayout tabLayout;
     FragmentStateAdapter adapter;
     SharedPreferences settings;
+
 
     public CheckFragment() {
     }
@@ -112,7 +112,7 @@ public class CheckFragment extends Fragment {
                 @Override
                 public void onChanged(List<FullProduct> fullProducts) {
                     ProductAdapter productAdapter= (ProductAdapter) recyclerView.getAdapter();
-                    productAdapter.update( ModelConverter.FromProductEntityToProductModel(fullProducts));
+                    productAdapter.update(ModelConverter.FromProductEntityToProductModel(fullProducts));
                 }
             });
         }
