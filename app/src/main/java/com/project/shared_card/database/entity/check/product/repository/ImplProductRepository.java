@@ -17,7 +17,7 @@ public class ImplProductRepository implements ProductRepository {
 
     @Override
     public LiveData<List<FullProduct>> getAll(Long groupId) {
-        return productDao.getAll(groupId);
+        return productDao.getAllForCheck(groupId);
     }
 
     @Override
@@ -45,5 +45,16 @@ public class ImplProductRepository implements ProductRepository {
     @Override
     public LiveData<ProductEntity> get(long id) {
         return productDao.get(id);
+    }
+
+    @Override
+    public void delete(ProductEntity product) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                productDao.delete(product);
+            }
+        });
+        thread.start();
     }
 }

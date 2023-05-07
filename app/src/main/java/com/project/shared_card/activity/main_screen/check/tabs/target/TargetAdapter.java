@@ -14,21 +14,22 @@ import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
 import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.check.target.TargetEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder>{
     private final LayoutInflater inflater;
-    private List<Target> checks;
-    private long idGroup;
+    public List<Target> checks;
     private ImplDB db;
+    private int countSelectedItems;
 
-    public TargetAdapter(Context context,List<Target> checks,long idGroup) {
+    public TargetAdapter(Context context,List<Target> checks) {
         this.inflater = LayoutInflater.from(context);
         this.checks =checks;
-        this.idGroup = idGroup;
         db = new ImplDB(context);
+        addCountSelectedItems(checks);
     }
 
     @NonNull
@@ -41,10 +42,19 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     public void update(List<Target> checks){
         this.checks = checks;
         notifyDataSetChanged();
+        addCountSelectedItems(checks);
+    }
+    void addCountSelectedItems(List<Target> targets){
+        countSelectedItems=0;
+        for (Target target: targets) {
+            if(target.getStatus()==1)
+                countSelectedItems++;
+        }
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Target check = checks.get(position);
+        holder.setTarget(check.getEntity());
         holder.name.setText(check.getName());
         holder.category.setText(check.getCategory());
         holder.price.setText(String.valueOf(check.getPrice())+ " " + check.getCurrency());
@@ -52,17 +62,30 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
         String visualDate =date.getDayOfMonth() +"."+ date.getMonthValue()+" "+ date.getHour() + ":" + date.getMinute();
         holder.date.setText(visualDate);
         holder.user.setText(check.getNameCreator());
-        holder.select.setChecked(check.getStatus());
+        if(check.getStatus()==0){
+            holder.select.setChecked(false);
+        }
+        else{
+            holder.select.setChecked(true);
+        }
         holder.select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (holder.select.isChecked()) {
-                    checks.get(holder.getAdapterPosition()).getEntity().setStatus(true);
+                    holder.target.setStatus(1);
+                    db.target().update(holder.target);
+                    if(holder.getAdapterPosition()!=checks.size()-countSelectedItems-1)
+                        notifyItemMoved(holder.getAdapterPosition(), checks.size()-1);
+                    countSelectedItems++;
                 } else {
-                    checks.get(holder.getAdapterPosition()).getEntity().setStatus(false);
-                }
-                db.target().update(checks.get(holder.getAdapterPosition()).getEntity());
+                    holder.target.setStatus(0);
+                    db.target().update(holder.target);
+                    if(holder.getAdapterPosition()>checks.size()-countSelectedItems){
+                        notifyItemMoved(holder.getAdapterPosition(), checks.size()-countSelectedItems);
+                    }
+                    countSelectedItems--;
 
+                }
             }
         });
     }
@@ -75,6 +98,7 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         final TextView name, category, price, date, user;
         final CheckBox select;
+        TargetEntity target;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.name = itemView.findViewById(R.id.text_product);
@@ -83,6 +107,14 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
             this.date = itemView.findViewById(R.id.text_date);
             this.user = itemView.findViewById(R.id.text_user);
             this.select = itemView.findViewById(R.id.checkbox);
+        }
+
+        public TargetEntity getTarget() {
+            return target;
+        }
+
+        public void setTarget(TargetEntity target) {
+            this.target = target;
         }
     }
 }

@@ -39,5 +39,17 @@ public class ImplTargetRepository implements TargetRepository{
                 targetDao.update(entity);
             }
         });
+        thread.start();
+    }
+
+    @Override
+    public void delete(TargetEntity entity) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                targetDao.delete(entity);
+            }
+        });
+        thread.start();
     }
 }

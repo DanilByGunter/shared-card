@@ -20,7 +20,7 @@ public class ModelConverter {
                     DateConverter.FromLongDateToLocalDateTime(item.product.getDateFirst()),
                     item.creator.getName(),
                     item.metric.getName(),
-                    item.product.isStatus(),
+                    item.product.getStatus(),
                     item.product));
         }
         return checks;
@@ -35,7 +35,7 @@ public class ModelConverter {
                     DateConverter.FromLongDateToLocalDateTime(item.target.getDateFirst()),
                     item.creator.getName(),
                     item.currency.getName(),
-                    item.target.isStatus(),
+                    item.target.getStatus(),
                     item.target));
         }
         return checks;

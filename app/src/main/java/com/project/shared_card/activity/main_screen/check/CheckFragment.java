@@ -100,7 +100,7 @@ public class CheckFragment extends Fragment {
             check.setCategoryId(dialogAddProduct.category.getSelectedItemPosition() + 1);
             check.setDateFirst(DateConverter.FromNowDateToLong());
             check.setGroupNameId(Long.parseLong(groupId));
-            check.setStatus(false);
+            check.setStatus(0);
             if (groupId.equals(getString(R.string.me_id))) {
                 check.setUserNameCreatorId(Long.parseLong(groupId));
             } else {
@@ -111,7 +111,8 @@ public class CheckFragment extends Fragment {
             db.product().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
                 @Override
                 public void onChanged(List<FullProduct> fullProducts) {
-                    recyclerView.setAdapter(new ProductAdapter(getContext(), ModelConverter.FromProductEntityToProductModel(fullProducts),Long.valueOf(groupId)));
+                    ProductAdapter productAdapter= (ProductAdapter) recyclerView.getAdapter();
+                    productAdapter.update( ModelConverter.FromProductEntityToProductModel(fullProducts));
                 }
             });
         }
@@ -135,7 +136,8 @@ public class CheckFragment extends Fragment {
             db.target().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullTarget>>() {
                 @Override
                 public void onChanged(List<FullTarget> fullTargets) {
-                    recyclerView.setAdapter(new TargetAdapter(getContext(), ModelConverter.FromTargetEntityToTargetModel(fullTargets),Long.valueOf(groupId)));
+                    TargetAdapter targetAdapter= (TargetAdapter) recyclerView.getAdapter();
+                    targetAdapter.update(ModelConverter.FromTargetEntityToTargetModel(fullTargets));
                 }
             });
         }

@@ -12,13 +12,13 @@ public class Product {
     LocalDateTime date;
     String nameCreator;
     String metric;
-    Boolean status;
+    int status;
 
 
     public Product() {
     }
 
-    public Product(String name, String category, int count, LocalDateTime date, String nameCreator, String metric,Boolean status,ProductEntity entity) {
+    public Product(String name, String category, int count, LocalDateTime date, String nameCreator, String metric,int status,ProductEntity entity) {
         this.name = name;
         this.category = category;
         this.count = count;
@@ -37,11 +37,11 @@ public class Product {
         this.entity = entity;
     }
 
-    public Boolean getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

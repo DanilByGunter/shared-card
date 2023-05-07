@@ -40,11 +40,11 @@ public class ProductEntity {
     private int price;
     @ColumnInfo(name = "shop_id")
     private long shopId;
-    private boolean status;
+    private int status;
     public ProductEntity() {
     }
 
-    public ProductEntity(long groupNameId, long userNameCreatorId, String productName, int productCount, long categoryId, long metricId, long dateFirst, long shopId, boolean status) {
+    public ProductEntity(long groupNameId, long userNameCreatorId, String productName, int productCount, long categoryId, long metricId, long dateFirst, long shopId, int status) {
         this.groupNameId = groupNameId;
         this.userNameCreatorId = userNameCreatorId;
         this.productName = productName;
@@ -151,12 +151,12 @@ public class ProductEntity {
         this.shopId = shopId;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 }

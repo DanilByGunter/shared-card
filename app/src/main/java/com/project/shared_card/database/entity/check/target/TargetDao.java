@@ -2,6 +2,7 @@ package com.project.shared_card.database.entity.check.target;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -19,4 +20,6 @@ public interface TargetDao {
     LiveData<List<FullTarget>> getAll(long id);
     @Update
     void update(TargetEntity entity);
+    @Delete
+    void delete(TargetEntity entity);
 }

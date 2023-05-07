@@ -25,14 +25,14 @@ public class TargetEntity {
     @ColumnInfo(name = "date_last")
     private long dateLast;
     private int price;
-    private boolean status;
+    private int status;
     @ColumnInfo(name = "shop_id")
     private long shopId;
 
     public TargetEntity() {
     }
 
-    public TargetEntity(long groupNameId, long categoryId, String targetName, long currencyId, long userNameCreatorId, long dateFirst, int price) {
+    public TargetEntity(long groupNameId, long categoryId, String targetName, long currencyId, long userNameCreatorId, long dateFirst, int price,int status) {
         this.groupNameId = groupNameId;
         this.categoryId = categoryId;
         this.targetName = targetName;
@@ -40,7 +40,7 @@ public class TargetEntity {
         this.userNameCreatorId = userNameCreatorId;
         this.dateFirst = dateFirst;
         this.price = price;
-        this.status=false;
+        this.status=status;
     }
 
     public long getId() {
@@ -123,11 +123,11 @@ public class TargetEntity {
         this.price = price;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

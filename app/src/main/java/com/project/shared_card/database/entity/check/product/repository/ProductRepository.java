@@ -12,4 +12,5 @@ public interface ProductRepository {
     void add(ProductEntity check);
     void update(ProductEntity entity);
     LiveData<ProductEntity> get(long id);
+    void delete(ProductEntity product);
 }
