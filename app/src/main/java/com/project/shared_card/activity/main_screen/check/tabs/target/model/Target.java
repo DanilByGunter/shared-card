@@ -11,10 +11,10 @@ public class Target {
     LocalDateTime date;
     String nameCreator;
     String currency;
-    Boolean status;
+    int status;
     TargetEntity entity;
 
-    public Target(String name, String category, int price, LocalDateTime date, String nameCreator, String currency, Boolean status, TargetEntity entity) {
+    public Target(String name, String category, int price, LocalDateTime date, String nameCreator, String currency, int status, TargetEntity entity) {
         this.name = name;
         this.category = category;
         this.price = price;
@@ -81,11 +81,11 @@ public class Target {
         this.currency = currency;
     }
 
-    public Boolean getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 }

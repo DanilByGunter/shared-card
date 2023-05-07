@@ -74,15 +74,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if (holder.select.isChecked()) {
                     holder.product.setStatus(1);
                     db.product().update(holder.product);
-                    if(holder.getAdapterPosition()!=checks.size()-countSelectedItems-1)
-                        notifyItemMoved(holder.getAdapterPosition(), checks.size()-1);
+                    if(holder.getBindingAdapterPosition()!=checks.size()-countSelectedItems-1)
+                        notifyItemMoved(holder.getBindingAdapterPosition(), checks.size()-1);
                     countSelectedItems++;
 
                 } else {
                     holder.product.setStatus(0);
                     db.product().update(holder.product);
-                    if(holder.getAdapterPosition()>checks.size()-countSelectedItems){
-                        notifyItemMoved(holder.getAdapterPosition(), checks.size()-countSelectedItems);
+                    if(holder.getBindingAdapterPosition()>checks.size()-countSelectedItems){
+                        notifyItemMoved(holder.getBindingAdapterPosition(), checks.size()-countSelectedItems);
                     }
                     countSelectedItems--;
 
