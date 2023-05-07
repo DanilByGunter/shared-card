@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
+import com.project.shared_card.activity.converter.ModelConverter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -30,7 +30,6 @@ import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.check.target.FullTarget;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
-import com.project.shared_card.activity.converter.ModelConverter;
 import java.util.List;
 
 
