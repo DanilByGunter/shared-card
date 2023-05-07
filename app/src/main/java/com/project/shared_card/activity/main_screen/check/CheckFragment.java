@@ -26,11 +26,11 @@ import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinn
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
 import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
 import com.project.shared_card.activity.main_screen.check.tabs.target.TargetAdapter;
-import com.project.shared_card.activity.database.ImplDB;
-import com.project.shared_card.activity.database.entity.check.product.FullProduct;
-import com.project.shared_card.activity.database.entity.check.product.ProductEntity;
-import com.project.shared_card.activity.database.entity.check.target.FullTarget;
-import com.project.shared_card.activity.database.entity.check.target.TargetEntity;
+import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.check.product.FullProduct;
+import com.project.shared_card.database.entity.check.product.ProductEntity;
+import com.project.shared_card.entity.check.target.FullTarget;
+import com.project.shared_card.entity.check.target.TargetEntity;
 
 import java.util.List;
 

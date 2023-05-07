@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -23,8 +22,8 @@ import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.PopupMenu;
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
-import com.project.shared_card.activity.database.ImplDB;
-import com.project.shared_card.activity.database.entity.check.product.FullProduct;
+import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.check.product.FullProduct;
 
 import java.util.List;
 

@@ -15,8 +15,6 @@ import com.project.shared_card.activity.main_screen.check.tabs.current.model.Pro
 import com.project.shared_card.activity.database.ImplDB;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
