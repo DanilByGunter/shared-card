@@ -17,7 +17,7 @@ public class ImplProductRepository implements ProductRepository {
 
     @Override
     public LiveData<List<FullProduct>> getAll(Long groupId) {
-        return productDao.getAllForCheck(groupId);
+        return productDao.getAll(groupId);
     }
 
     @Override
