@@ -26,11 +26,11 @@ import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinn
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
 import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
 import com.project.shared_card.activity.main_screen.check.tabs.target.TargetAdapter;
-import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.check.product.FullProduct;
-import com.project.shared_card.database.entity.check.product.ProductEntity;
-import com.project.shared_card.entity.check.target.FullTarget;
-import com.project.shared_card.entity.check.target.TargetEntity;
+import com.project.shared_card.activity.database.ImplDB;
+import com.project.shared_card.activity.database.entity.check.product.FullProduct;
+import com.project.shared_card.activity.database.entity.check.product.ProductEntity;
+import com.project.shared_card.activity.database.entity.check.target.FullTarget;
+import com.project.shared_card.activity.database.entity.check.target.TargetEntity;
 
 import java.util.List;
 
@@ -100,7 +100,7 @@ public class CheckFragment extends Fragment {
             check.setCategoryId(dialogAddProduct.category.getSelectedItemPosition() + 1);
             check.setDateFirst(DateConverter.FromNowDateToLong());
             check.setGroupNameId(Long.parseLong(groupId));
-            check.setStatus(0);
+            check.setStatus(false);
             if (groupId.equals(getString(R.string.me_id))) {
                 check.setUserNameCreatorId(Long.parseLong(groupId));
             } else {
@@ -111,8 +111,7 @@ public class CheckFragment extends Fragment {
             db.product().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
                 @Override
                 public void onChanged(List<FullProduct> fullProducts) {
-                    ProductAdapter productAdapter= (ProductAdapter) recyclerView.getAdapter();
-                    productAdapter.update( ModelConverter.FromProductEntityToProductModel(fullProducts));
+                    recyclerView.setAdapter(new ProductAdapter(getContext(), ModelConverter.FromProductEntityToProductModel(fullProducts),Long.valueOf(groupId)));
                 }
             });
         }
@@ -136,8 +135,7 @@ public class CheckFragment extends Fragment {
             db.target().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullTarget>>() {
                 @Override
                 public void onChanged(List<FullTarget> fullTargets) {
-                    TargetAdapter targetAdapter= (TargetAdapter) recyclerView.getAdapter();
-                    targetAdapter.update(ModelConverter.FromTargetEntityToTargetModel(fullTargets));
+                    recyclerView.setAdapter(new TargetAdapter(getContext(), ModelConverter.FromTargetEntityToTargetModel(fullTargets),Long.valueOf(groupId)));
                 }
             });
         }

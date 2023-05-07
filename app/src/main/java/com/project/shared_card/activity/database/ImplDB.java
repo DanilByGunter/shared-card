@@ -1,20 +1,20 @@
-package com.project.shared_card.database;
+package com.project.shared_card.activity.database;
 
 import android.content.Context;
 
 import androidx.room.Room;
 
-import com.project.shared_card.database.entity.group_name.repository.ImplGroupNameRepository;
-import com.project.shared_card.database.entity.categories.product.repository.ImplCategoriesProductRepository;
-import com.project.shared_card.database.entity.categories.target.repository.ImplCategoriesTargetRepository;
-import com.project.shared_card.database.entity.check.product.repository.ImplProductRepository;
-import com.project.shared_card.entity.check.target.repository.ImplTargetRepository;
-import com.project.shared_card.database.entity.currency.repository.ImplCurrencyRepository;
-import com.project.shared_card.database.entity.group.repository.ImplGroupRepository;
-import com.project.shared_card.database.entity.metrics.repository.ImplMetricsRepository;
-import com.project.shared_card.database.entity.shop.product.repository.ImplShopProductRepository;
-import com.project.shared_card.database.entity.shop.target.repository.ImplShopTargetRepository;
-import com.project.shared_card.database.entity.user_name.repository.ImplUserNameRepository;
+import com.project.shared_card.activity.database.entity.group_name.repository.ImplGroupNameRepository;
+import com.project.shared_card.activity.database.entity.categories.product.repository.ImplCategoriesProductRepository;
+import com.project.shared_card.activity.database.entity.categories.target.repository.ImplCategoriesTargetRepository;
+import com.project.shared_card.activity.database.entity.check.product.repository.ImplProductRepository;
+import com.project.shared_card.activity.database.entity.check.target.repository.ImplTargetRepository;
+import com.project.shared_card.activity.database.entity.currency.repository.ImplCurrencyRepository;
+import com.project.shared_card.activity.database.entity.group.repository.ImplGroupRepository;
+import com.project.shared_card.activity.database.entity.metrics.repository.ImplMetricsRepository;
+import com.project.shared_card.activity.database.entity.shop.product.repository.ImplShopProductRepository;
+import com.project.shared_card.activity.database.entity.shop.target.repository.ImplShopTargetRepository;
+import com.project.shared_card.activity.database.entity.user_name.repository.ImplUserNameRepository;
 
 public class ImplDB {
     private AppDatabase db;

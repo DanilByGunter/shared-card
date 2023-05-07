@@ -2,14 +2,12 @@ package com.project.shared_card.activity.main_screen.check.tabs.target;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -23,11 +21,9 @@ import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.PopupMenu;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
 import com.project.shared_card.activity.database.ImplDB;
-import com.project.shared_card.entity.check.target.FullTarget;
+import com.project.shared_card.activity.database.entity.check.target.FullTarget;
 
 import java.util.List;
-
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class TargetListFragment extends Fragment {
     Button buttonSort;
@@ -38,7 +34,6 @@ public class TargetListFragment extends Fragment {
     SharedPreferences settings;
     String idGroup;
     SwipeRefreshLayout swipe;
-    ItemTouchHelper itemTouchHelper;
     public TargetListFragment() {
 
     }
@@ -64,11 +59,10 @@ public class TargetListFragment extends Fragment {
             @Override
             public void onChanged(List<FullTarget> fullTargets) {
                 List<Target> targets = ModelConverter.FromTargetEntityToTargetModel(fullTargets);
-                adapter = new TargetAdapter(getContext(),targets);
+                adapter = new TargetAdapter(getContext(),targets,Long.valueOf(idGroup));
                 list.setAdapter(adapter);
             }
         });
-        itemTouchHelper.attachToRecyclerView(list);
     }
     void clickOnOpenSort(View v){
         popupMenu.popupMenu();
@@ -80,7 +74,7 @@ public class TargetListFragment extends Fragment {
         buttonSort = v.findViewById(R.id.button_sort);
         swipe = v.findViewById(R.id.swipe_target);
         popupMenu = new PopupMenu(getContext(),buttonSort);
-        itemTouchHelper = new ItemTouchHelper(simpleCallback);
+
         db = new ImplDB(getContext());
     }
     void getCheck(){
@@ -97,31 +91,4 @@ public class TargetListFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_target_list, container, false);
     }
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-            switch(direction){
-                case ItemTouchHelper.LEFT:
-                    db.target().delete(adapter.checks.get(position).getEntity());
-                    adapter.notifyItemRemoved(position);
-                    break;
-                case ItemTouchHelper.RIGHT:
-                    break;
-            }
-        }
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftActionIcon(R.drawable.baseline_restore_from_trash_24)
-                    .create()
-                    .decorate();
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
 }

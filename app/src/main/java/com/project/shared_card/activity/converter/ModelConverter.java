@@ -2,9 +2,9 @@ package com.project.shared_card.activity.converter;
 
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
-import com.project.shared_card.database.entity.check.product.FullProduct;
-import com.project.shared_card.database.entity.check.product.ProductEntity;
-import com.project.shared_card.entity.check.target.FullTarget;
+import com.project.shared_card.activity.database.entity.check.product.FullProduct;
+import com.project.shared_card.activity.database.entity.check.product.ProductEntity;
+import com.project.shared_card.activity.database.entity.check.target.FullTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class ModelConverter {
                     DateConverter.FromLongDateToLocalDateTime(item.product.getDateFirst()),
                     item.creator.getName(),
                     item.metric.getName(),
-                    item.product.getStatus(),
+                    item.product.isStatus(),
                     item.product));
         }
         return checks;
@@ -35,7 +35,7 @@ public class ModelConverter {
                     DateConverter.FromLongDateToLocalDateTime(item.target.getDateFirst()),
                     item.creator.getName(),
                     item.currency.getName(),
-                    item.target.getStatus(),
+                    item.target.isStatus(),
                     item.target));
         }
         return checks;

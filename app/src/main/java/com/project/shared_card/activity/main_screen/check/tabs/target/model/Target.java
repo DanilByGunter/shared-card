@@ -1,6 +1,6 @@
 package com.project.shared_card.activity.main_screen.check.tabs.target.model;
 
-import com.project.shared_card.entity.check.target.TargetEntity;
+import com.project.shared_card.activity.database.entity.check.target.TargetEntity;
 
 import java.time.LocalDateTime;
 
@@ -11,10 +11,10 @@ public class Target {
     LocalDateTime date;
     String nameCreator;
     String currency;
-    int status;
+    Boolean status;
     TargetEntity entity;
 
-    public Target(String name, String category, int price, LocalDateTime date, String nameCreator, String currency, int status, TargetEntity entity) {
+    public Target(String name, String category, int price, LocalDateTime date, String nameCreator, String currency, Boolean status, TargetEntity entity) {
         this.name = name;
         this.category = category;
         this.price = price;
@@ -81,11 +81,11 @@ public class Target {
         this.currency = currency;
     }
 
-    public int getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 }
