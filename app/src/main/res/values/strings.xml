@@ -24,4 +24,6 @@
     <string name="dialog_text_hint_target">Название цели</string>
     <string name="dialog_text_hint_count">Кол-во</string>
     <string name="dialog_text_hint_currency">Цена</string>
+    <string name="add_product">Добавить</string>
+    <string name="bought">Куплено</string>
 </resources>

@@ -8,7 +8,8 @@ import com.project.shared_card.database.entity.check.product.ProductEntity;
 import java.util.List;
 
 public interface ProductRepository {
-    LiveData<List<FullProduct>> getAll(Long groupId);
+    LiveData<List<FullProduct>> getAllForCheck(Long groupId);
+    LiveData<List<FullProduct>> getAllForHistory(Long groupId);
     void add(ProductEntity check);
     void update(ProductEntity entity);
     LiveData<ProductEntity> get(long id);

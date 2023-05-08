@@ -11,8 +11,10 @@ import java.util.List;
 
 @Dao
 public interface ProductDao {
-    @Query("select * from product where group_name_id = :id order by status")
-    LiveData<List<FullProduct>> getAll(long id);
+    @Query("select * from product where group_name_id = :id and status != 2 order by status")
+    LiveData<List<FullProduct>> getAllForCheck(long id);
+    @Query("select * from product where group_name_id = :id and status = 2 order by status")
+    LiveData<List<FullProduct>> getAllForHistory(long id);
     @Insert
     void add(ProductEntity product);
     @Update

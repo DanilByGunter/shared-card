@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "996c8dd56b3536b2c7e9a931f734d214",
+    "identityHash": "7020131092389dba3213abbd5a679122",
     "entities": [
       {
         "tableName": "category_product",
@@ -84,7 +84,7 @@
       },
       {
         "tableName": "product",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `group_name_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, `product_name` TEXT, `product_count` INTEGER NOT NULL, `metric_id` INTEGER NOT NULL, `user_name_creator_id` INTEGER NOT NULL, `user_name_buyer_id` INTEGER NOT NULL, `date_first` INTEGER NOT NULL, `date_last` INTEGER NOT NULL, `price` INTEGER NOT NULL, `shop_id` INTEGER NOT NULL, `status` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `group_name_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, `product_name` TEXT, `product_count` INTEGER NOT NULL, `metric_id` INTEGER NOT NULL, `currency_id` INTEGER NOT NULL, `user_name_creator_id` INTEGER NOT NULL, `user_name_buyer_id` INTEGER NOT NULL, `date_first` INTEGER NOT NULL, `date_last` INTEGER NOT NULL, `price` INTEGER NOT NULL, `shop_id` INTEGER NOT NULL, `status` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -119,6 +119,12 @@
           {
             "fieldPath": "metricId",
             "columnName": "metric_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currencyId",
+            "columnName": "currency_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -427,7 +433,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '996c8dd56b3536b2c7e9a931f734d214')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7020131092389dba3213abbd5a679122')"
     ]
   }
 }

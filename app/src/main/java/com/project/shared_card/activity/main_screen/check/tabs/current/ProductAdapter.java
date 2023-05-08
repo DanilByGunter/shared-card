@@ -56,6 +56,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Product check = checks.get(position);
         holder.setProduct(check.getEntity());
         holder.nameProduct.setText(check.getName());
+        holder.nameProduct.setSelected(true);
+        holder.category.setSelected(true);
+        holder.user.setSelected(true);
+        holder.count.setSelected(true);
+        holder.date.setSelected(true);
         holder.category.setText(check.getCategory());
         holder.count.setText(String.valueOf(check.getCount()) + " " + check.getMetric());
         LocalDateTime date = check.getDate();

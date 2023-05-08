@@ -55,6 +55,11 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Target check = checks.get(position);
         holder.setTarget(check.getEntity());
+        holder.name.setSelected(true);
+        holder.category.setSelected(true);
+        holder.user.setSelected(true);
+        holder.price.setSelected(true);
+        holder.date.setSelected(true);
         holder.name.setText(check.getName());
         holder.category.setText(check.getCategory());
         holder.price.setText(String.valueOf(check.getPrice())+ " " + check.getCurrency());

@@ -3,6 +3,8 @@ package com.project.shared_card.database.entity.check.product;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
+import com.project.shared_card.activity.main_screen.check.tabs.current.CurrentListFragment;
+import com.project.shared_card.database.entity.currency.CurrencyEntity;
 import com.project.shared_card.database.entity.shop.product.ShopProductEntity;
 import com.project.shared_card.database.entity.categories.product.CategoriesProductEntity;
 import com.project.shared_card.database.entity.metrics.MetricsEntity;
@@ -20,6 +22,10 @@ public class FullProduct {
             entityColumn = "id")
     public CategoriesProductEntity category;
     @Relation(
+            parentColumn = "currency_id",
+            entityColumn = "id")
+    public CurrencyEntity currency;
+    @Relation(
             parentColumn = "shop_id",
             entityColumn = "id")
     public ShopProductEntity shop;
@@ -31,6 +37,7 @@ public class FullProduct {
             parentColumn = "user_name_buyer_id",
             entityColumn = "id")
     public UserNameEntity buyer;
+
 
 
 }

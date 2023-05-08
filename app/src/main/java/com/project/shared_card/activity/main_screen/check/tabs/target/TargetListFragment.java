@@ -19,11 +19,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.project.shared_card.R;
+import com.project.shared_card.activity.converter.DateConverter;
 import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.PopupMenu;
+import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
+import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProductToHistory;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
 import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.check.target.FullTarget;
+import com.project.shared_card.database.entity.check.target.TargetEntity;
 
 import java.util.List;
 
@@ -39,6 +44,8 @@ public class TargetListFragment extends Fragment {
     String idGroup;
     SwipeRefreshLayout swipe;
     ItemTouchHelper itemTouchHelper;
+    DialogAddProductToHistory dialog;
+    AdapterForSpinner adapterForSpinner;
     public TargetListFragment() {
 
     }
@@ -60,7 +67,7 @@ public class TargetListFragment extends Fragment {
         swipe.setOnRefreshListener(this::getCheck);
         list.setAdapter(adapter);
         buttonSort.setOnClickListener(this::clickOnOpenSort);
-        db.target().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
+        db.target().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
             @Override
             public void onChanged(List<FullTarget> fullTargets) {
                 List<Target> targets = ModelConverter.FromTargetEntityToTargetModel(fullTargets);
@@ -69,8 +76,28 @@ public class TargetListFragment extends Fragment {
             }
         });
         itemTouchHelper.attachToRecyclerView(list);
+        dialog.product.setSelected(true);
+        dialog.ready.setOnClickListener(this::clickOnDialogReady);
     }
-    void clickOnOpenSort(View v){
+    void clickOnDialogReady(View v) {
+        if (dialog.price.getText().toString().equals(""))
+            return;
+        TargetEntity target = dialog.targetEntity;
+        target.setStatus(2);
+        target.setDateLast(DateConverter.FromNowDateToLong());
+        target.setPrice(Integer.parseInt(dialog.price.getText().toString()));
+        target.setShopId(dialog.shop.getSelectedItemPosition() + 1);
+        target.setCurrencyId(dialog.currency.getSelectedItemPosition() + 1);
+        if (!settings.getString(getString(R.string.key_for_me_id_server), "no_id").equals("no_id")) {
+            target.setUserNameBuyerId(Long.parseLong(settings.getString(getString(R.string.key_for_me_id_server), "no_id")));
+        } else {
+            target.setUserNameBuyerId(Long.parseLong(getString(R.string.me_id)));
+        }
+        db.target().update(target);
+        dialog.price.setText("");
+        dialog.dialog.dismiss();
+    }
+        void clickOnOpenSort(View v){
         popupMenu.popupMenu();
     }
     void init(View v){
@@ -82,9 +109,24 @@ public class TargetListFragment extends Fragment {
         popupMenu = new PopupMenu(getContext(),buttonSort);
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
         db = new ImplDB(getContext());
+        dialog = new DialogAddProductToHistory(getContext());
+        db.currency().getAll().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                adapterForSpinner = new AdapterForSpinner(getContext(), strings);
+                dialog.currency.setAdapter(adapterForSpinner);
+            }
+        });
+        db.shop_target().getAll().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                adapterForSpinner = new AdapterForSpinner(getContext(), strings);
+                dialog.shop.setAdapter(adapterForSpinner);
+            }
+        });
     }
     void getCheck(){
-        db.target().getAll(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
+        db.target().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
             @Override
             public void onChanged(List<FullTarget> fullTargets) {
                 adapter.update( ModelConverter.FromTargetEntityToTargetModel(fullTargets));
@@ -105,13 +147,17 @@ public class TargetListFragment extends Fragment {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
+            int position = viewHolder.getBindingAdapterPosition();
             switch(direction){
                 case ItemTouchHelper.LEFT:
                     db.target().delete(adapter.checks.get(position).getEntity());
                     adapter.notifyItemRemoved(position);
                     break;
                 case ItemTouchHelper.RIGHT:
+                    dialog.targetEntity = adapter.checks.get(position).getEntity();
+                    dialog.product.setText(adapter.checks.get(position).getName());
+                    dialog.dialog.show();
+                    adapter.notifyItemRemoved(position);
                     break;
             }
         }
@@ -120,6 +166,7 @@ public class TargetListFragment extends Fragment {
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftActionIcon(R.drawable.baseline_restore_from_trash_24)
+                    .addSwipeRightActionIcon(R.drawable.icon_story_vector)
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

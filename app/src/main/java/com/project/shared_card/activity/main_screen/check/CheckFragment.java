@@ -87,6 +87,8 @@ public class CheckFragment extends Fragment {
     }
 
     void clickOnReadyToCreateProduct(View v) {
+        if(dialogAddProduct.name.getText().toString().equals("") || dialogAddProduct.count.getText().toString().equals(""))
+            return;
         RecyclerView pager = (RecyclerView) viewPager.getChildAt(0);
         View view = pager.getChildAt(viewPager.getCurrentItem());
         RecyclerView recyclerView;
@@ -108,7 +110,7 @@ public class CheckFragment extends Fragment {
                 check.setUserNameCreatorId(Long.parseLong(userId));
             }
             db.product().add(check);
-            db.product().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
+            db.product().getAllForCheck(Long.valueOf(groupId)).observe(this, new Observer<List<FullProduct>>() {
                 @Override
                 public void onChanged(List<FullProduct> fullProducts) {
                     ProductAdapter productAdapter= (ProductAdapter) recyclerView.getAdapter();
@@ -133,7 +135,7 @@ public class CheckFragment extends Fragment {
                 target.setUserNameCreatorId(Long.parseLong(userId));
             }
             db.target().add(target);
-            db.target().getAll(Long.valueOf(groupId)).observe(this, new Observer<List<FullTarget>>() {
+            db.target().getAllForCheck(Long.valueOf(groupId)).observe(this, new Observer<List<FullTarget>>() {
                 @Override
                 public void onChanged(List<FullTarget> fullTargets) {
                     TargetAdapter targetAdapter= (TargetAdapter) recyclerView.getAdapter();

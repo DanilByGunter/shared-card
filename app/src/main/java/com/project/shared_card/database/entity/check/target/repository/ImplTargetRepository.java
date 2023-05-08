@@ -2,6 +2,7 @@ package com.project.shared_card.database.entity.check.target.repository;
 
 import androidx.lifecycle.LiveData;
 
+import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.target.TargetDao;
 import com.project.shared_card.database.entity.check.target.FullTarget;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
@@ -26,10 +27,17 @@ public class ImplTargetRepository implements TargetRepository{
         thread.start();
     }
 
+
     @Override
-    public LiveData<List<FullTarget>> getAll(Long groupId) {
-        return targetDao.getAll(groupId);
+    public LiveData<List<FullTarget>> getAllForCheck(Long groupId) {
+        return targetDao.getAllForCheck(groupId);
     }
+
+    @Override
+    public LiveData<List<FullTarget>> getAllForHistory(Long groupId) {
+        return targetDao.getAllForHistory(groupId);
+    }
+
 
     @Override
     public void update(TargetEntity entity) {

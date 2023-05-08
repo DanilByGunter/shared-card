@@ -29,6 +29,8 @@ public class ProductEntity {
     private int productCount;
     @ColumnInfo(name = "metric_id")
     private long metricId;
+    @ColumnInfo(name = "currency_id")
+    private long currencyId;
     @ColumnInfo(name = "user_name_creator_id")
     private long userNameCreatorId;
     @ColumnInfo(name = "user_name_buyer_id")
@@ -55,6 +57,15 @@ public class ProductEntity {
         this.shopId = shopId;
         this.status = status;
     }
+
+    public long getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(long currencyId) {
+        this.currencyId = currencyId;
+    }
+
     public long getId() {
         return id;
     }

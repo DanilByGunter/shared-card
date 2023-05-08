@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/light_green_2"
         android:layout_margin="5dp"
-        android:text="Добавить"
+        android:text="@string/add_product"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
