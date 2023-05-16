@@ -21,10 +21,10 @@ import android.widget.EditText;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.check.PopupMenu;
-import com.project.shared_card.activity.main_screen.story.model.History;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.target.FullTarget;
+import com.project.shared_card.database.entity.story.model.History;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,6 @@ public class StoryFragment extends Fragment {
     Adapter adapter;
     ImplDB db;
     long groupId;
-    List<History> histories;
     com.project.shared_card.activity.main_screen.check.PopupMenu popupMenu;
     public StoryFragment() {
     }
@@ -59,7 +58,6 @@ public class StoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-        recyclerView.setAdapter(adapter);
 
 
         buttonSort.setOnClickListener(this::clickOnButtonSort);
@@ -92,27 +90,35 @@ public class StoryFragment extends Fragment {
         buttonSort = view.findViewById(R.id.button_sort);
         popupMenu = new PopupMenu(getContext(),buttonSort);
         db = new ImplDB(getContext());
-        histories = new ArrayList<>();
-        db.product().getAllForHistory(groupId).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
+        db.story().getAll().observe(getViewLifecycleOwner(), new Observer<List<com.project.shared_card.database.entity.story.model.History>>() {
             @Override
-            public void onChanged(List<FullProduct> fullProducts) {
-//                recyclerView.setAdapter(new Adapter(getContext(),ModelConverter.FromProductsEntityToHistory(fullProducts)));
-                for (FullProduct fullProduct: fullProducts) {
-                    histories.add(ModelConverter.FromProductEntityToHistory(fullProduct));
-                    adapter.notifyItemChanged(histories.size()-1);
-                }
+            public void onChanged(List<History> histories) {
+                adapter = new Adapter(getContext(),histories);
+                recyclerView.setAdapter(adapter);
             }
         });
-        db.target().getAllForHistory(groupId).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
-            @Override
-            public void onChanged(List<FullTarget> fullTargets) {
-                for (FullTarget fullTarget: fullTargets) {
-                    histories.add(ModelConverter.FromTargetEntityToHistory(fullTarget));
-                    adapter.notifyItemChanged(histories.size()-1);
-                }
-            }
-        });
-        adapter = new Adapter(getContext(),histories);
+////        db.product().getAllForHistory(groupId).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
+////            @Override
+////            public void onChanged(List<FullProduct> fullProducts) {
+//////                recyclerView.setAdapter(new Adapter(getContext(),ModelConverter.FromProductsEntityToHistory(fullProducts)));
+////                for (FullProduct fullProduct: fullProducts) {
+////                    histories.add(ModelConverter.FromProductEntityToHistory(fullProduct));
+////                    //adapter.notifyItemChanged(histories.size()-1);
+////                }
+////                adapter.sorted(1);
+////            }
+////        });
+////        db.target().getAllForHistory(groupId).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
+////            @Override
+////            public void onChanged(List<FullTarget> fullTargets) {
+////                for (FullTarget fullTarget: fullTargets) {
+////                    histories.add(ModelConverter.FromTargetEntityToHistory(fullTarget));
+////                    //adapter.notifyItemChanged(histories.size()-1);
+////                }
+////                adapter.sorted(1);
+////            }
+////        });
+////        adapter = new Adapter(getContext(),histories);
     }
 
     @Override

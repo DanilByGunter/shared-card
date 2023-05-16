@@ -2,10 +2,10 @@ package com.project.shared_card.activity.converter;
 
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
-import com.project.shared_card.activity.main_screen.story.model.History;
 import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.check.target.FullTarget;
+import com.project.shared_card.database.entity.story.model.History;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,50 +49,44 @@ public class ModelConverter {
         return null;
     }
 
-    public static List<History> FromProductsEntityToHistory(List<FullProduct> fullProduct) {
-        List<History> histories = new ArrayList<>();
-        for (FullProduct fullProduct1 : fullProduct)
-            histories.add(new History(
-                    fullProduct1.product.getProductName(),
-                    fullProduct1.category.getName(),
-                    fullProduct1.shop.getName(),
-                    fullProduct1.creator.getName(),
-                    fullProduct1.buyer.getName(),
-                    DateConverter.FromLongDateToLocalDateTime(fullProduct1.product.getDateFirst()),
-                    DateConverter.FromLongDateToLocalDateTime(fullProduct1.product.getDateLast()),
-                    fullProduct1.product.getPrice(),
-                    fullProduct1.currency.getName(),
-                    String.valueOf(fullProduct1.product.getProductCount()),
-                    fullProduct1.metric.getName()));
-        return histories;
-    }
-    public static History FromProductEntityToHistory(FullProduct fullProduct) {
-        return new History(
-                fullProduct.product.getProductName(),
-                fullProduct.category.getName(),
-                fullProduct.shop.getName(),
-                fullProduct.creator.getName(),
-                fullProduct.buyer.getName(),
-                DateConverter.FromLongDateToLocalDateTime(fullProduct.product.getDateFirst()),
-                DateConverter.FromLongDateToLocalDateTime(fullProduct.product.getDateLast()),
-                fullProduct.product.getPrice(),
-                fullProduct.currency.getName(),
-                String.valueOf(fullProduct.product.getProductCount()),
-                fullProduct.metric.getName());
-    }
-    public static History FromTargetEntityToHistory(FullTarget fullTarget) {
-        return new History(
-                fullTarget.target.getTargetName(),
-                fullTarget.category.getName(),
-                fullTarget.shop.getName(),
-                fullTarget.creator.getName(),
-                fullTarget.buyer.getName(),
-                DateConverter.FromLongDateToLocalDateTime(fullTarget.target.getDateFirst()),
-                DateConverter.FromLongDateToLocalDateTime(fullTarget.target.getDateLast()),
-                fullTarget.target.getPrice(),
-                fullTarget.currency.getName(),
-                "",
-                ""
-                );
-    }
+//    public static List<History> FromProductsEntityToHistory(List<FullProduct> fullProduct) {
+//        List<History> histories = new ArrayList<>();
+//        for (FullProduct fullProduct1 : fullProduct)
+//            histories.add(new History(
+//                    fullProduct1.product.getProductName(),
+//                    fullProduct1.category.getName(),
+//                    fullProduct1.shop.getName(),
+//                    fullProduct1.buyer.getName(),
+//                    DateConverter.FromLongDateToLocalDateTime(fullProduct1.product.getDateLast()),
+//                    fullProduct1.product.getPrice(),
+//                    fullProduct1.currency.getName(),
+//                    String.valueOf(fullProduct1.product.getProductCount()),
+//                    fullProduct1.metric.getName()));
+//        return histories;
+//    }
+//    public static History FromProductEntityToHistory(FullProduct fullProduct) {
+//        return new History(
+//                fullProduct.product.getProductName(),
+//                fullProduct.category.getName(),
+//                fullProduct.shop.getName(),
+//                fullProduct.buyer.getName(),
+//                DateConverter.FromLongDateToLocalDateTime(fullProduct.product.getDateLast()),
+//                fullProduct.product.getPrice(),
+//                fullProduct.currency.getName(),
+//                String.valueOf(fullProduct.product.getProductCount()),
+//                fullProduct.metric.getName());
+//    }
+//    public static History FromTargetEntityToHistory(FullTarget fullTarget) {
+//        return new History(
+//                fullTarget.target.getTargetName(),
+//                fullTarget.category.getName(),
+//                fullTarget.shop.getName(),
+//                fullTarget.buyer.getName(),
+//                DateConverter.FromLongDateToLocalDateTime(fullTarget.target.getDateLast()),
+//                fullTarget.target.getPrice(),
+//                fullTarget.currency.getName(),
+//                "",
+//                ""
+//                );
+//    }
 }

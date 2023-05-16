@@ -1,4 +1,8 @@
-package com.project.shared_card.activity.main_screen.story.model;
+package com.project.shared_card.database.entity.story.model;
+
+import androidx.room.ColumnInfo;
+
+import com.project.shared_card.activity.converter.DateConverter;
 
 import java.time.LocalDateTime;
 
@@ -7,19 +11,19 @@ public class History {
     String product;
     String category;
     String shop;
-    String creator;
     String buyer;
-    LocalDateTime dataFirst;
-    LocalDateTime dataLast;
+    @ColumnInfo(name = "date_first")
+    long dataFirst;
+    @ColumnInfo(name = "date_last")
+    long dataLast;
     int price;
     String count;
     String metric;
 
-    public History(String product, String category, String shop, String creator, String buyer, LocalDateTime dataFirst, LocalDateTime dataLast, int price,String currency,String count,String metric) {
+    public History(String product, String category, String shop, String buyer, long dataFirst, long dataLast, int price, String currency, String count, String metric) {
         this.product = product;
         this.category = category;
         this.shop = shop;
-        this.creator = creator;
         this.buyer = buyer;
         this.dataFirst = dataFirst;
         this.dataLast = dataLast;
@@ -61,14 +65,6 @@ public class History {
         this.shop = shop;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
     public String getBuyer() {
         return buyer;
     }
@@ -77,19 +73,19 @@ public class History {
         this.buyer = buyer;
     }
 
-    public LocalDateTime getDataFirst() {
+    public long getDataFirst() {
         return dataFirst;
     }
 
-    public void setDataFirst(LocalDateTime dataFirst) {
+    public void setDataFirst(long dataFirst) {
         this.dataFirst = dataFirst;
     }
 
     public LocalDateTime getDataLast() {
-        return dataLast;
+        return DateConverter.FromLongDateToLocalDateTime(dataLast);
     }
 
-    public void setDataLast(LocalDateTime dataLast) {
+    public void setDataLast(long dataLast) {
         this.dataLast = dataLast;
     }
 

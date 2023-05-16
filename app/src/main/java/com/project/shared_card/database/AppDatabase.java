@@ -21,6 +21,8 @@ import com.project.shared_card.database.entity.shop.product.ShopProductDao;
 import com.project.shared_card.database.entity.shop.product.ShopProductEntity;
 import com.project.shared_card.database.entity.shop.target.ShopTargetDao;
 import com.project.shared_card.database.entity.shop.target.ShopTargetEntity;
+import com.project.shared_card.database.entity.story.StoryDao;
+import com.project.shared_card.database.entity.story.repository.StoryRepository;
 import com.project.shared_card.database.entity.user_name.UserNameDao;
 import com.project.shared_card.database.entity.user_name.UserNameEntity;
 import com.project.shared_card.database.entity.categories.product.CategoriesProductEntity;
@@ -52,4 +54,5 @@ public abstract class AppDatabase extends RoomDatabase {
     abstract TargetDao getTargetDao();
     abstract CategoriesTargetDao getCategoriesTargetDao();
     abstract CurrencyDao getCurrencyDao();
+    abstract StoryDao getStoryDao();
 }

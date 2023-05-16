@@ -12,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.shared_card.R;
-import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
-import com.project.shared_card.activity.main_screen.story.model.History;
+import com.project.shared_card.database.entity.story.model.History;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements Filterable {
     private final LayoutInflater inflater;
@@ -28,6 +30,26 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     public Adapter(Context context,List<History> histories) {
         this.inflater = LayoutInflater.from(context);
         this.histories = histories;
+        historiesFilter = histories;
+    }
+    public void sorted(int mode){
+        switch (mode){
+            case 1:
+                histories = histories.stream()
+                        .sorted(Comparator.comparingInt(History::getPrice))
+                        .collect(Collectors.toList());
+                notifyDataSetChanged();
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+        }
         historiesFilter = histories;
     }
 
@@ -44,7 +66,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         History history = histories.get(position);
         holder.productName.setText(history.getProduct());
         holder.productName.setSelected(true);
-        holder.metric.setText(history.getCount() + " " + history.getMetric());
+        if(history.getCount()==null && history.getMetric() == null){
+            holder.metric.setText("");
+        }
+        else {
+            holder.metric.setText(history.getCount() + " " + history.getMetric());
+        }
         holder.metric.setSelected(true);
         holder.buyer.setText(history.getBuyer());
         holder.buyer.setSelected(true);
