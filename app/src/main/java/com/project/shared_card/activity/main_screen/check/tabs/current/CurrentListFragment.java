@@ -13,10 +13,15 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
@@ -37,6 +42,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class CurrentListFragment extends Fragment {
     Button buttonSort;
     RecyclerView list;
+    EditText searchBar;
     PopupMenu popupMenu;
     ProductAdapter productAdapter;
     ImplDB db;
@@ -79,6 +85,22 @@ public class CurrentListFragment extends Fragment {
         buttonSort.setOnClickListener(this::clickOnOpenSort);
         dialog.product.setSelected(true);
         dialog.ready.setOnClickListener(this::clickOnDialogReady);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Filter filter = productAdapter.getFilter();
+                productAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     void clickOnDialogReady(View v) {
@@ -107,6 +129,7 @@ public class CurrentListFragment extends Fragment {
 
     void init(View v) {
         settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
+        searchBar = v.findViewById(R.id.input_line);
         idGroup = settings.getString(getString(R.string.key_for_select_group_id), "no_id");
         list = v.findViewById(R.id.list_product);
         buttonSort = v.findViewById(R.id.button_sort);
@@ -182,4 +205,6 @@ public class CurrentListFragment extends Fragment {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
+
 }

@@ -40,6 +40,7 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:layout_marginTop="4dp"
         android:layout_weight="1"
         android:background="@drawable/dialog_edit_text_underline_for_spinner"
         android:dropDownVerticalOffset="35dp"

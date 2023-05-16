@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,23 +19,27 @@ import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> implements Filterable {
     private final LayoutInflater inflater;
     public List<Product> checks;
+    public List<Product> checksFilter;
     private int countSelectedItems;
     ImplDB db;
 
     public ProductAdapter(Context context, List<Product> checks) {
         this.inflater = LayoutInflater.from(context);
         this.checks = checks;
+        checksFilter = checks;
         db = new ImplDB(context);
         addCountSelectedItems(checks);
     }
 
     public void update(List<Product> products) {
         checks = products;
+        checksFilter = products;
         notifyDataSetChanged();
         addCountSelectedItems(products);
     }
@@ -101,6 +108,39 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public int getItemCount() {
         return checks.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if(constraint==null || constraint.length() ==0){
+                    filterResults.values = checksFilter;
+                    filterResults.count = checksFilter.size();
+                }
+                else{
+                    String search = constraint.toString().toLowerCase();
+                    List<Product> list = new ArrayList<>();
+                    for(Product product:checksFilter){
+                        if(product.getName().toLowerCase().contains(search)){
+                            list.add(product);
+                        }
+                    }
+                    filterResults.values =list;
+                    filterResults.count = list.size();
+                }
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                checks = (List<Product>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

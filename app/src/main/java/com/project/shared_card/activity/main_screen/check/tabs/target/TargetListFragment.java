@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
@@ -36,6 +39,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class TargetListFragment extends Fragment {
     Button buttonSort;
+    EditText searchBar;
     RecyclerView list;
     PopupMenu popupMenu;
     TargetAdapter adapter;
@@ -78,6 +82,22 @@ public class TargetListFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(list);
         dialog.product.setSelected(true);
         dialog.ready.setOnClickListener(this::clickOnDialogReady);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
     void clickOnDialogReady(View v) {
         if (dialog.price.getText().toString().equals(""))
@@ -103,6 +123,7 @@ public class TargetListFragment extends Fragment {
     void init(View v){
         settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
         idGroup = settings.getString(getString(R.string.key_for_select_group_id),"no_id");
+        searchBar = v.findViewById(R.id.input_line);
         list = v.findViewById(R.id.list_target);
         buttonSort = v.findViewById(R.id.button_sort);
         swipe = v.findViewById(R.id.swipe_target);

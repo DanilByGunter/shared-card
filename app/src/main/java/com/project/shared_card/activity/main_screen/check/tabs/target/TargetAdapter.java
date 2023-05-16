@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,17 +19,20 @@ import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder>{
+public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder> implements Filterable {
     private final LayoutInflater inflater;
     public List<Target> checks;
+    public List<Target> checksFilter;
     private ImplDB db;
     int countSelectedItems;
 
     public TargetAdapter(Context context,List<Target> checks) {
         this.inflater = LayoutInflater.from(context);
         this.checks =checks;
+        checksFilter = checks;
         db = new ImplDB(context);
         addCountSelectedItems(checks);
     }
@@ -41,6 +46,7 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     }
     public void update(List<Target> checks){
         this.checks = checks;
+        checksFilter = checks;
         notifyDataSetChanged();
         addCountSelectedItems(checks);
     }
@@ -98,6 +104,39 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return checks.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if(constraint==null || constraint.length() ==0){
+                    filterResults.values = checksFilter;
+                    filterResults.count = checksFilter.size();
+                }
+                else{
+                    String search = constraint.toString().toLowerCase();
+                    List<Target> list = new ArrayList<>();
+                    for(Target target:checksFilter){
+                        if(target.getName().toLowerCase().contains(search)){
+                            list.add(target);
+                        }
+                    }
+                    filterResults.values =list;
+                    filterResults.count = list.size();
+                }
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                checks = (List<Target>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

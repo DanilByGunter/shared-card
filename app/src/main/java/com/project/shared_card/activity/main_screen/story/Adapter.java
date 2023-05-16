@@ -4,24 +4,31 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.shared_card.R;
+import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
 import com.project.shared_card.activity.main_screen.story.model.History;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements Filterable {
     private final LayoutInflater inflater;
     private List<History> histories;
+    private List<History> historiesFilter;
+
 
     public Adapter(Context context,List<History> histories) {
         this.inflater = LayoutInflater.from(context);
         this.histories = histories;
+        historiesFilter = histories;
     }
 
     @NonNull
@@ -56,6 +63,39 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     @Override
     public int getItemCount() {
         return histories.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if(constraint==null || constraint.length() ==0){
+                    filterResults.values = historiesFilter;
+                    filterResults.count = historiesFilter.size();
+                }
+                else{
+                    String search = constraint.toString().toLowerCase();
+                    List<History> list = new ArrayList<>();
+                    for(History history:historiesFilter){
+                        if(history.getProduct().toLowerCase().contains(search)){
+                            list.add(history);
+                        }
+                    }
+                    filterResults.values =list;
+                    filterResults.count = list.size();
+                }
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                histories = (List<History>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

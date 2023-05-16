@@ -49,6 +49,23 @@ public class ModelConverter {
         return null;
     }
 
+    public static List<History> FromProductsEntityToHistory(List<FullProduct> fullProduct) {
+        List<History> histories = new ArrayList<>();
+        for (FullProduct fullProduct1 : fullProduct)
+            histories.add(new History(
+                    fullProduct1.product.getProductName(),
+                    fullProduct1.category.getName(),
+                    fullProduct1.shop.getName(),
+                    fullProduct1.creator.getName(),
+                    fullProduct1.buyer.getName(),
+                    DateConverter.FromLongDateToLocalDateTime(fullProduct1.product.getDateFirst()),
+                    DateConverter.FromLongDateToLocalDateTime(fullProduct1.product.getDateLast()),
+                    fullProduct1.product.getPrice(),
+                    fullProduct1.currency.getName(),
+                    String.valueOf(fullProduct1.product.getProductCount()),
+                    fullProduct1.metric.getName()));
+        return histories;
+    }
     public static History FromProductEntityToHistory(FullProduct fullProduct) {
         return new History(
                 fullProduct.product.getProductName(),
