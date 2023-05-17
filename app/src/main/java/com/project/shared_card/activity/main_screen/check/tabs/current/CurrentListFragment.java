@@ -16,20 +16,20 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
-import android.widget.Filterable;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
 import com.project.shared_card.activity.converter.ModelConverter;
-import com.project.shared_card.activity.main_screen.check.PopupMenu;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProductToHistory;
 import com.project.shared_card.activity.main_screen.check.tabs.current.model.Product;
+import com.project.shared_card.activity.main_screen.PopupMenu;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.check.product.ProductEntity;
@@ -101,6 +101,25 @@ public class CurrentListFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
+        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
+    }
+    public boolean clickOnPopupMenu(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.by_product:
+                productAdapter.sorted(1);
+                return true;
+            case R.id.by_date:
+                productAdapter.sorted(2);
+                return true;
+            case R.id.by_category:
+                productAdapter.sorted(3);
+                return true;
+            case R.id.by_user:
+                productAdapter.sorted(4);
+                return true;
+            default:
+                return false;
+        }
     }
 
     void clickOnDialogReady(View v) {
@@ -124,7 +143,7 @@ public class CurrentListFragment extends Fragment {
     }
 
     void clickOnOpenSort(View v) {
-        popupMenu.popupMenu();
+        popupMenu.openPopupMenu();
     }
 
     void init(View v) {

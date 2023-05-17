@@ -13,20 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.project.shared_card.R;
-import com.project.shared_card.activity.converter.ModelConverter;
-import com.project.shared_card.activity.main_screen.check.PopupMenu;
+import com.project.shared_card.activity.main_screen.PopupMenu;
 import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.check.product.FullProduct;
-import com.project.shared_card.database.entity.check.target.FullTarget;
 import com.project.shared_card.database.entity.story.model.History;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,7 +35,7 @@ public class StoryFragment extends Fragment {
     Adapter adapter;
     ImplDB db;
     long groupId;
-    com.project.shared_card.activity.main_screen.check.PopupMenu popupMenu;
+    PopupMenu popupMenu;
     public StoryFragment() {
     }
 
@@ -58,7 +55,7 @@ public class StoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-
+        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
 
         buttonSort.setOnClickListener(this::clickOnButtonSort);
         searchBar.addTextChangedListener(new TextWatcher() {
@@ -78,8 +75,28 @@ public class StoryFragment extends Fragment {
             }
         });
     }
+
     void clickOnButtonSort(View v){
-        popupMenu.popupMenu();
+        popupMenu.openPopupMenu();
+    }
+
+    public boolean clickOnPopupMenu(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.by_product:
+                adapter.sorted(1);
+                return true;
+            case R.id.by_date:
+                adapter.sorted(2);
+                return true;
+            case R.id.by_category:
+                adapter.sorted(3);
+                return true;
+            case R.id.by_user:
+                adapter.sorted(4);
+                return true;
+            default:
+                return false;
+        }
     }
 
     void init(View view){
@@ -97,28 +114,6 @@ public class StoryFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
-////        db.product().getAllForHistory(groupId).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
-////            @Override
-////            public void onChanged(List<FullProduct> fullProducts) {
-//////                recyclerView.setAdapter(new Adapter(getContext(),ModelConverter.FromProductsEntityToHistory(fullProducts)));
-////                for (FullProduct fullProduct: fullProducts) {
-////                    histories.add(ModelConverter.FromProductEntityToHistory(fullProduct));
-////                    //adapter.notifyItemChanged(histories.size()-1);
-////                }
-////                adapter.sorted(1);
-////            }
-////        });
-////        db.target().getAllForHistory(groupId).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
-////            @Override
-////            public void onChanged(List<FullTarget> fullTargets) {
-////                for (FullTarget fullTarget: fullTargets) {
-////                    histories.add(ModelConverter.FromTargetEntityToHistory(fullTarget));
-////                    //adapter.notifyItemChanged(histories.size()-1);
-////                }
-////                adapter.sorted(1);
-////            }
-////        });
-////        adapter = new Adapter(getContext(),histories);
     }
 
     @Override

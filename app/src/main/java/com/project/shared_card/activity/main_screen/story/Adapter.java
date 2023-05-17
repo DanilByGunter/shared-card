@@ -25,6 +25,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     private final LayoutInflater inflater;
     private List<History> histories;
     private List<History> historiesFilter;
+    private boolean SORTED_PRODUCT = true;
+    private boolean SORTED_USER = true;
+    private boolean SORTED_CATEGORY = true;
+    private boolean SORTED_DATE = true;
 
 
     public Adapter(Context context,List<History> histories) {
@@ -35,19 +39,64 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     public void sorted(int mode){
         switch (mode){
             case 1:
-                histories = histories.stream()
-                        .sorted(Comparator.comparingInt(History::getPrice))
-                        .collect(Collectors.toList());
+                if(SORTED_PRODUCT) {
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getProduct))
+                            .collect(Collectors.toList());
+                    SORTED_PRODUCT = false;
+                }
+                else {
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getProduct).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_PRODUCT = true;
+                }
                 notifyDataSetChanged();
                 break;
             case 2:
-
+                if(SORTED_DATE) {
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getDataLast))
+                            .collect(Collectors.toList());
+                    SORTED_DATE =false;
+                }
+                else{
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getDataLast).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_DATE =true;
+                }
+                notifyDataSetChanged();
                 break;
             case 3:
-
+                if(SORTED_CATEGORY) {
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getCategory))
+                            .collect(Collectors.toList());
+                    SORTED_CATEGORY= false;
+                }
+                else{
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getCategory).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_CATEGORY= true;
+                }
+                notifyDataSetChanged();
                 break;
             case 4:
-
+                if(SORTED_USER) {
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getBuyer))
+                            .collect(Collectors.toList());
+                    SORTED_USER = false;
+                }
+                else{
+                    histories = histories.stream()
+                            .sorted(Comparator.comparing(History::getBuyer).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_USER = true;
+                }
+                notifyDataSetChanged();
                 break;
         }
         historiesFilter = histories;

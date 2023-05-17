@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,12 +25,11 @@ import android.widget.EditText;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
 import com.project.shared_card.activity.converter.ModelConverter;
-import com.project.shared_card.activity.main_screen.check.PopupMenu;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProductToHistory;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
+import com.project.shared_card.activity.main_screen.PopupMenu;
 import com.project.shared_card.database.ImplDB;
-import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.check.target.FullTarget;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
 
@@ -98,7 +98,28 @@ public class TargetListFragment extends Fragment {
 
             }
         });
+        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
     }
+
+    public boolean clickOnPopupMenu(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.by_product:
+                adapter.sorted(1);
+                return true;
+            case R.id.by_date:
+                adapter.sorted(2);
+                return true;
+            case R.id.by_category:
+                adapter.sorted(3);
+                return true;
+            case R.id.by_user:
+                adapter.sorted(4);
+                return true;
+            default:
+                return false;
+        }
+    }
+
     void clickOnDialogReady(View v) {
         if (dialog.price.getText().toString().equals(""))
             return;
@@ -118,7 +139,7 @@ public class TargetListFragment extends Fragment {
         dialog.dialog.dismiss();
     }
         void clickOnOpenSort(View v){
-        popupMenu.popupMenu();
+        popupMenu.openPopupMenu();
     }
     void init(View v){
         settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);

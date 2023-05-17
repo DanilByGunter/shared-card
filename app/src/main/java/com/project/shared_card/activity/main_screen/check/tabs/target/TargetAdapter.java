@@ -20,7 +20,9 @@ import com.project.shared_card.database.entity.check.target.TargetEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder> implements Filterable {
     private final LayoutInflater inflater;
@@ -28,6 +30,10 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
     public List<Target> checksFilter;
     private ImplDB db;
     int countSelectedItems;
+    private boolean SORTED_PRODUCT = true;
+    private boolean SORTED_USER = true;
+    private boolean SORTED_CATEGORY = true;
+    private boolean SORTED_DATE = true;
 
     public TargetAdapter(Context context,List<Target> checks) {
         this.inflater = LayoutInflater.from(context);
@@ -137,6 +143,72 @@ public class TargetAdapter extends RecyclerView.Adapter<TargetAdapter.ViewHolder
             }
         };
         return filter;
+    }
+
+    public void sorted(int mode){
+        switch (mode){
+            case 1:
+                if(SORTED_PRODUCT) {
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getName))
+                            .collect(Collectors.toList());
+                    SORTED_PRODUCT = false;
+                }
+                else {
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getName).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_PRODUCT = true;
+                }
+                notifyDataSetChanged();
+                break;
+            case 2:
+                if(SORTED_DATE) {
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getDate))
+                            .collect(Collectors.toList());
+                    SORTED_DATE =false;
+                }
+                else{
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getDate).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_DATE =true;
+                }
+                notifyDataSetChanged();
+                break;
+            case 3:
+                if(SORTED_CATEGORY) {
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getCategory))
+                            .collect(Collectors.toList());
+                    SORTED_CATEGORY= false;
+                }
+                else{
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getCategory).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_CATEGORY= true;
+                }
+                notifyDataSetChanged();
+                break;
+            case 4:
+                if(SORTED_USER) {
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getNameCreator))
+                            .collect(Collectors.toList());
+                    SORTED_USER = false;
+                }
+                else{
+                    checks = checks.stream()
+                            .sorted(Comparator.comparing(Target::getNameCreator).reversed())
+                            .collect(Collectors.toList());
+                    SORTED_USER = true;
+                }
+                notifyDataSetChanged();
+                break;
+        }
+        checksFilter = checks;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
