@@ -36,9 +36,9 @@ import java.util.List;
 
 public class CheckFragment extends Fragment {
 
-    ViewPager2 viewPager;
+    public ViewPager2 viewPager;
     DialogAddProduct dialogAddProduct;
-    FloatingActionButton buttonAddProduct;
+    public FloatingActionButton buttonAddProduct;
     ImplDB db;
     TabLayout tabLayout;
     FragmentStateAdapter adapter;

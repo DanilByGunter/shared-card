@@ -1,6 +1,7 @@
 package com.project.shared_card.activity.main_screen.check.tabs.target;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -50,6 +51,8 @@ public class TargetListFragment extends Fragment {
     ItemTouchHelper itemTouchHelper;
     DialogAddProductToHistory dialog;
     AdapterForSpinner adapterForSpinner;
+    Target targetRight;
+    int positionRight;
     public TargetListFragment() {
 
     }
@@ -82,6 +85,13 @@ public class TargetListFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(list);
         dialog.product.setSelected(true);
         dialog.ready.setOnClickListener(this::clickOnDialogReady);
+        dialog.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                adapter.checks.add(positionRight, targetRight);
+                adapter.notifyDataSetChanged();
+            }
+        });
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -199,6 +209,9 @@ public class TargetListFragment extends Fragment {
                     dialog.targetEntity = adapter.checks.get(position).getEntity();
                     dialog.product.setText(adapter.checks.get(position).getName());
                     dialog.dialog.show();
+                    targetRight =adapter.checks.get(position);
+                    positionRight =position;
+                    adapter.checks.remove(position);
                     adapter.notifyItemRemoved(position);
                     break;
             }

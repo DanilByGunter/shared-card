@@ -1,12 +1,14 @@
 package com.project.shared_card.activity.main_screen.check.tabs.current;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -52,6 +54,8 @@ public class CurrentListFragment extends Fragment {
     ItemTouchHelper itemTouchHelper;
     AdapterForSpinner adapterForSpinner;
     DialogAddProductToHistory dialog;
+    Product productRight;
+    int positionRight;
 
     public CurrentListFragment() {
     }
@@ -84,6 +88,13 @@ public class CurrentListFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(list);
         buttonSort.setOnClickListener(this::clickOnOpenSort);
         dialog.product.setSelected(true);
+        dialog.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                productAdapter.checks.add(positionRight,productRight);
+                productAdapter.notifyDataSetChanged();
+            }
+        });
         dialog.ready.setOnClickListener(this::clickOnDialogReady);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -209,6 +220,9 @@ public class CurrentListFragment extends Fragment {
                     dialog.productEntity = productAdapter.checks.get(position).getEntity();
                     dialog.product.setText(productAdapter.checks.get(position).getName());
                     dialog.dialog.show();
+                    productRight =productAdapter.checks.get(position);
+                    positionRight =position;
+                    productAdapter.checks.remove(position);
                     productAdapter.notifyItemRemoved(position);
                     break;
             }

@@ -7,6 +7,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +31,8 @@ import java.util.List;
 
 
 public class StoryFragment extends Fragment {
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
+    public MutableLiveData<Boolean> liveData = new MutableLiveData<>();
     SharedPreferences settings;
     Button buttonSort;
     EditText searchBar;
@@ -112,6 +116,7 @@ public class StoryFragment extends Fragment {
             public void onChanged(List<History> histories) {
                 adapter = new Adapter(getContext(),histories);
                 recyclerView.setAdapter(adapter);
+                liveData.postValue(true);
             }
         });
     }
