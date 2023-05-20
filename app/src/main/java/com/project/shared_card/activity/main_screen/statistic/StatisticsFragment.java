@@ -66,6 +66,7 @@ public class StatisticsFragment extends Fragment {
 
 
         if (id_group.equals("-1")){
+            textTitle.setText("Статистика расходов");
             textFirstPie.setText("Траты по категориям");
             db.stats().getCategoriesCount(7L, id_user).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
                 @Override
