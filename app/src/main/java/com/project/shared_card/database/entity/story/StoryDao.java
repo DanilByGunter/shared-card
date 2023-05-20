@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface StoryDao {
     @Query("select product, currency,category, shop, buyer,date_first,date_last,price,count,metric from (" +
-            "select product_name as product,currency.name as currency,category_product.name as category, shop_product.name as shop, user_name.name as buyer,date_first,date_last,price,product_count as count,metric.name as metric   from product " +
+            "select product_name as product,currency.name as currency,category_product.name as category, shop_product.name as shop, user_name.name as buyer,date_first,date_last,price,product_count as count,metric.name as metric from product " +
             "inner join currency on currency_id = currency.id " +
             "inner join category_product on category_id = category_product.id " +
             "inner join user_name on user_name_buyer_id = user_name.id " +
