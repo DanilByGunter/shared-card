@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -8,10 +8,33 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="light_green_1">#5CC598</color>
+    <color name="pie_1">#5cc598</color>
+    <color name="pie_2">#62b274</color>
+    <color name="pie_3">#77b75f</color>
+    <color name="pie_4">#9ac55c</color>
+    <color name="pie_5">#bcc55c</color>
+    <color name="pie_6">#c5b75c</color>
+    <color name="pie_7">#c58d5c</color>
+    <color name="pie_8">#c56b5c</color>
+    <color name="pie_9">#c55c6d</color>
+    <color name="pie_10">#c55c88</color>
+    <color name="pie_11">#c55cc3</color>
+    <color name="pie_12">#a35cc5</color>
+    <color name="pie_13">#835cc5</color>
+    <color name="pie_14">#615cc5</color>
+    <color name="pie_15">#5c7ec5</color>
+    <color name="pie_16">#5cb9c5</color>
+    <color name="light_green_3">#7CDFB5</color>
     <color name="dark_green">#004238</color>
     <color name="dark_green_translucent">#80004238</color>
     <color name="green">#295E44</color>
     <color name="light_green_2">#91CEA1</color>
     <color name="light_green_2_translucent">#8091CEA1</color>
+    <color name="cold_green_gray">#809593</color>
+    <color name="pink_red">#b02e5c</color>
+    <color name="sky_blue">#5b62ad</color>
+    <color name="lavander">#c3c6e2</color>
+    <color name="pink">#ba4992</color>
+    <color name="light_yellow">#F3E58C</color>
     <color name="green_blue">#004040</color>
 </resources>

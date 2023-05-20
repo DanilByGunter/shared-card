@@ -26,4 +26,5 @@
     <string name="dialog_text_hint_currency">Цена</string>
     <string name="add_product">Добавить</string>
     <string name="bought">Куплено</string>
+    <string name="myPeriod">Период</string>
 </resources>

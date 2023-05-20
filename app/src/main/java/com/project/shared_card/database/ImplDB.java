@@ -14,6 +14,7 @@ import com.project.shared_card.database.entity.group.repository.ImplGroupReposit
 import com.project.shared_card.database.entity.metrics.repository.ImplMetricsRepository;
 import com.project.shared_card.database.entity.shop.product.repository.ImplShopProductRepository;
 import com.project.shared_card.database.entity.shop.target.repository.ImplShopTargetRepository;
+import com.project.shared_card.database.entity.statistic.repository.ImplStatsRepository;
 import com.project.shared_card.database.entity.story.repository.ImplStoryRepository;
 import com.project.shared_card.database.entity.user_name.repository.ImplUserNameRepository;
 
@@ -59,6 +60,9 @@ public class ImplDB {
     }
     public ImplCategoriesTargetRepository category_target(){
         return new ImplCategoriesTargetRepository(db.getCategoriesTargetDao());
+    }
+    public ImplStatsRepository stats() {
+        return new ImplStatsRepository(db.getStatsDao());
     }
     public ImplCurrencyRepository currency(){
         return  new ImplCurrencyRepository(db.getCurrencyDao());

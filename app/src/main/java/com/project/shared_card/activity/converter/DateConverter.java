@@ -15,6 +15,10 @@ public class DateConverter {
         ZonedDateTime zdt = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault());
         return zdt.toInstant().toEpochMilli();
     }
+    public static long FromNowDiffDateToLong(Long days){
+        ZonedDateTime zdt = ZonedDateTime.of(LocalDateTime.now().minusDays(days), ZoneId.systemDefault());
+        return zdt.toInstant().toEpochMilli();
+    }
     public static LocalDateTime FromLongDateToLocalDateTime(long date){
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(date),
                         TimeZone.getDefault().toZoneId());
