@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData;
 import com.project.shared_card.database.entity.group_name.AllGroups;
 import com.project.shared_card.database.entity.group_name.GroupNameDao;
 import com.project.shared_card.database.entity.group_name.GroupNameEntity;
-import com.project.shared_card.model.SignUp;
 
 import java.util.List;
 
@@ -16,12 +15,22 @@ public class ImplGroupNameRepository implements GroupNameRepository {
     }
 
     @Override
-    public void createGroups(SignUp group) {
-        GroupNameEntity entity = GroupNameEntity.fromSignUpOfUser(group);
+    public void createGroup(GroupNameEntity group) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                groupNameDao.createGroup(entity);
+                groupNameDao.createGroup(group);
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void createGroups(List<GroupNameEntity> groupNames) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                groupNameDao.createGroups(groupNames);
             }
         });
         thread.start();

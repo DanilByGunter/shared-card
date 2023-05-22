@@ -72,6 +72,7 @@ public class TargetListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init(view);
         swipe.setOnRefreshListener(this::getCheck);
+        swipe.setColorSchemeResources(R.color.dark_green);
         list.setAdapter(adapter);
         buttonSort.setOnClickListener(this::clickOnOpenSort);
         db.target().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {

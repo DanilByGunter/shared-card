@@ -15,14 +15,14 @@ public interface StatsDao {
     @Query("select category as name, count(category) as count from (" +
             "select category_product.name as category, date_last from product " +
             "inner join category_product on category_id = category_product.id " +
-            "where status ==2  and user_name_buyer_id = :id_user " +
+            "where status ==2  and user_name_buyer_id = :id_user and group_name_id = :id_group " +
             " union " +
             "select category_target.name as category, date_last from target " +
             "inner join category_target on category_id = category_target.id " +
-            "where status ==2 and user_name_buyer_id = :id_user) " +
+            "where status ==2 and user_name_buyer_id = :id_user and group_name_id = :id_group) " +
             "where date_last > :days " +
             "group by category ")
-    LiveData<List<Stats>> getCategoriesCount(Long days, Long id_user);
+    LiveData<List<Stats>> getCategoriesCount(Long days, Long id_user, Long id_group);
 
     @Query("select category as name, count(category) as count from (" +
             "select category_product.name as category, date_last from product " +

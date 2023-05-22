@@ -14,12 +14,14 @@ import java.util.List;
 public interface UserNameDao {
     @Insert
     void createUser(UserNameEntity user);
+    @Insert
+    void createUsers(List<UserNameEntity> users);
     @Query("select * from user_name")
    LiveData<List<UserNameEntity>> findAll();
-    @Update
-    void update(UserNameEntity entity);
     @Query("select * from user_name where id =-1")
     LiveData<UserNameEntity> getMe();
+    @Update
+    void update(UserNameEntity entity);
     @Delete
     void delete(UserNameEntity entity);
 

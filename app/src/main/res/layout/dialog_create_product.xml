@@ -80,7 +80,7 @@
     </LinearLayout>
     <Button
         android:id="@+id/dialog_btn_add"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/light_green_2"
         android:layout_margin="5dp"

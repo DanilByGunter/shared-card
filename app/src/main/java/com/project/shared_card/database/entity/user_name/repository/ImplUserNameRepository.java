@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 
 import com.project.shared_card.database.entity.user_name.UserNameDao;
 import com.project.shared_card.database.entity.user_name.UserNameEntity;
-import com.project.shared_card.model.SignUp;
 
 import java.util.List;
 
@@ -16,13 +15,24 @@ public class ImplUserNameRepository implements UserNameRepository {
         this.userNameDao = userNameDao;
     }
 
+
     @Override
-    public void createUser(SignUp user) {
-        UserNameEntity entity = UserNameEntity.fromSignUpOfUser(user);
+    public void createUser(UserNameEntity user) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                userNameDao.createUser(entity);
+                userNameDao.createUser(user);
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void createUsers(List<UserNameEntity> user) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                userNameDao.createUsers(user);
             }
         });
         thread.start();

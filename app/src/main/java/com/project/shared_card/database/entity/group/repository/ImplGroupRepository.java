@@ -14,7 +14,7 @@ public class ImplGroupRepository implements GroupRepository{
         this.groupDao = groupDao;
     }
     @Override
-    public void createRepository(GroupEntity entity) {
+    public void createGroup(GroupEntity entity) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

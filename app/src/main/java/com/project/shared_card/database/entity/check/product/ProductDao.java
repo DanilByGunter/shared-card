@@ -13,14 +13,14 @@ import java.util.List;
 public interface ProductDao {
     @Query("select * from product where group_name_id = :id and status != 2 order by status")
     LiveData<List<FullProduct>> getAllForCheck(long id);
-    @Query("select * from product where group_name_id = :id and status = 2 order by status")
+    @Query("select * from product where group_name_id = :id and status = 2")
     LiveData<List<FullProduct>> getAllForHistory(long id);
+    @Query("select * from product where id = :id")
+    LiveData<ProductEntity> get(long id);
     @Insert
     void add(ProductEntity product);
     @Update
     void update(ProductEntity product);
-    @Query("select * from product where id = :id")
-    LiveData<ProductEntity> get(long id);
     @Delete
     void delete(ProductEntity product);
 }

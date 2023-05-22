@@ -4,7 +4,6 @@ package com.project.shared_card.database.entity.user_name;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.project.shared_card.model.SignUp;
 
 @Entity(tableName = "user_name")
 public class UserNameEntity {
@@ -12,10 +11,7 @@ public class UserNameEntity {
     private long id;
     private String name;
 
-    public static UserNameEntity fromSignUpOfUser(SignUp user) {
-        UserNameEntity entity = new UserNameEntity(user.getId(), user.getName());
-        return entity;
-    }
+
     public UserNameEntity(long id, String name) {
         this.id = id;
         this.name = name;

@@ -23,10 +23,11 @@ import com.project.shared_card.database.entity.categories.product.CategoriesProd
 import com.project.shared_card.database.entity.categories.target.CategoriesTargetEntity;
 import com.project.shared_card.database.entity.currency.CurrencyEntity;
 import com.project.shared_card.database.entity.group.GroupEntity;
+import com.project.shared_card.database.entity.group_name.GroupNameEntity;
 import com.project.shared_card.database.entity.metrics.MetricsEntity;
 import com.project.shared_card.database.entity.shop.product.ShopProductEntity;
 import com.project.shared_card.database.entity.shop.target.ShopTargetEntity;
-import com.project.shared_card.model.SignUp;
+import com.project.shared_card.database.entity.user_name.UserNameEntity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -91,12 +92,9 @@ public class RegistrationActivity extends AppCompatActivity {
         prefEditor.putString(getString(R.string.key_for_me_name), editText.getText().toString()).apply();
         prefEditor.putString(getString(R.string.key_for_select_group_id), String.valueOf(idUser)).apply();
 
-        SignUp user = new SignUp(idUser, editText.getText().toString());
-        SignUp group = new SignUp(idUser, editText.getText().toString());
-
-        db.user_name().createUser(user);
-        db.group_name().createGroups(group);
-        db.group().createRepository(new GroupEntity(idUser, idUser, true));
+        db.user_name().createUser(new UserNameEntity(idUser, editText.getText().toString()));
+        db.group_name().createGroup(new GroupNameEntity(idUser, editText.getText().toString()));
+        db.group().createGroup(new GroupEntity(idUser, idUser, true));
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

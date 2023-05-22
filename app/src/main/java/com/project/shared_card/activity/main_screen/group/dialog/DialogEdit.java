@@ -1,4 +1,4 @@
-package com.project.shared_card.activity.main_screen.group;
+package com.project.shared_card.activity.main_screen.group.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,10 +13,10 @@ import com.project.shared_card.R;
 
 public class DialogEdit {
     Context context;
-    Dialog dialog;
-    EditText name;
-    ImageView image;
-    Button ready;
+    public Dialog dialog;
+    public EditText name;
+    public ImageView image;
+    public Button ready;
     ActivityResultLauncher<String> getContent;
     public DialogEdit(Context context, ActivityResultLauncher<String> getContent) {
         dialog = new Dialog(context);

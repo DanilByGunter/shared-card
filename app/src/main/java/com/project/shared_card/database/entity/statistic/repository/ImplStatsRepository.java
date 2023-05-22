@@ -17,8 +17,8 @@ public class ImplStatsRepository implements StatsRepository {
 
 
     @Override
-    public LiveData<List<Stats>> getCategoriesCount(Long days, Long id_user) {
-        return dao.getCategoriesCount(days, id_user);
+    public LiveData<List<Stats>> getCategoriesCount(Long days, Long id_user, Long id_group) {
+        return dao.getCategoriesCount(days, id_user, id_group);
     }
 
     @Override

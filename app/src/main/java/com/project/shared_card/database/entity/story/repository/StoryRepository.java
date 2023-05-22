@@ -7,5 +7,5 @@ import com.project.shared_card.database.entity.story.model.History;
 import java.util.List;
 
 public interface StoryRepository {
-    LiveData<List<History>> getAll();
+    LiveData<List<History>> getAll(Long id_group);
 }

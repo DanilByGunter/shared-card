@@ -13,11 +13,13 @@ import java.util.List;
 public interface GroupNameDao {
     @Insert
     void createGroup(GroupNameEntity group);
+    @Insert
+    void createGroups(List<GroupNameEntity> groups);
     @Query("SELECT * FROM group_name")
     LiveData<List<AllGroups>> getALLGroup();
 
-    @Update
-    void update(GroupNameEntity entity);
     @Query("select * from group_name where id=:id")
     LiveData<GroupNameEntity> getGroupById(Long id);
+    @Update
+    void update(GroupNameEntity entity);
 }

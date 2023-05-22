@@ -77,6 +77,7 @@ public class CurrentListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init(view);
         swipe.setOnRefreshListener(this::getCheck);
+        swipe.setColorSchemeResources(R.color.dark_green);
         db.product().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
             @Override
             public void onChanged(List<FullProduct> fullProducts) {

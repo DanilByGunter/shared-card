@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+
 import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.statistic.graphics.MyLineView;
 import com.project.shared_card.activity.main_screen.statistic.graphics.MyPieHelper;
@@ -29,12 +30,13 @@ import java.util.List;
 import im.dacer.androidcharts.LineView;
 
 
+
 public class StatisticsFragment extends Fragment {
     ArrayList<String> dates;
     Spinner spinner;
     AdapterForSpinner adapter;
     ImplDB db;
-    String id_group;
+    Long id_group;
     Long id_user;
     TextView textTitle;
     TextView textFirstPie;
@@ -68,7 +70,7 @@ public class StatisticsFragment extends Fragment {
         if (id_group.equals("-1")){
             textTitle.setText("Статистика расходов");
             textFirstPie.setText("Траты по категориям");
-            db.stats().getCategoriesCount(7L, id_user).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
+            db.stats().getCategoriesCount(7L, id_user,id_group).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
                 @Override
                 public void onChanged(List<Stats> stats) {
                     for (Stats stat: stats) {
@@ -164,7 +166,7 @@ public class StatisticsFragment extends Fragment {
         adapter = new AdapterForSpinner(getContext(), dates);
 
         settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
-        id_group = settings.getString(getString(R.string.key_for_select_group_id),"XD");
+        id_group = Long.valueOf(settings.getString(getString(R.string.key_for_select_group_id),"XD"));
         id_user = Long.valueOf(getString(R.string.me_id));
         db = new ImplDB(getContext());
 

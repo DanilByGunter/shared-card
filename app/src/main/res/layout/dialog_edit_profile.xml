@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
+    android:theme="@style/for_dialog"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:id="@+id/layout_user_group"
@@ -55,11 +56,10 @@
 
     <Button
         android:id="@+id/dialog_ready"
-        style="@style/TextViewDark"
-        android:layout_width="wrap_content"
+        style="@style/TextViewLight"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/edit_text_your_group_name"
+        android:layout_margin="5dp"
         android:text="@string/ready"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

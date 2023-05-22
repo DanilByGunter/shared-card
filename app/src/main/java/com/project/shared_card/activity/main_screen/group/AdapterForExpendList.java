@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
+import com.project.shared_card.activity.main_screen.group.dialog.DialogEdit;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group_name.AllGroups;
 
@@ -34,7 +35,6 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     ImageView groupImage;
     ImageView userImage;
     Button groupEdit;
-    //ActivityResultLauncher<String> getContent;
     View mainToolBar;
     String GROUP_PATH;
     String USER_PATH;
@@ -122,10 +122,18 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     }
 
     private void clickOnBtnReady(View v){
-        if(!dialog.name.getText().toString().equals("") && dialog.image.getDrawable().getCurrent()!=null){
+        if(!dialog.name.getText().toString().equals("")){
             ImplDB db = new ImplDB(context);
             db.group_name().updateForId(GROUP_ID, dialog.name.getText().toString());
-            byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
+
+            byte[] picture;
+            if (dialog.image.getDrawable()==null){
+                dialog.image.setImageDrawable(context.getDrawable(R.drawable.defaul_avatar));
+                picture = DbBitmapUtility.getBytes(((BitmapDrawable) context.getDrawable(R.drawable.defaul_avatar)).getBitmap());
+            }
+            else {
+                picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
+            }
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {

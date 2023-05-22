@@ -111,7 +111,7 @@ public class StoryFragment extends Fragment {
         buttonSort = view.findViewById(R.id.button_sort);
         popupMenu = new PopupMenu(getContext(),buttonSort);
         db = new ImplDB(getContext());
-        db.story().getAll().observe(getViewLifecycleOwner(), new Observer<List<com.project.shared_card.database.entity.story.model.History>>() {
+        db.story().getAll(groupId).observe(getViewLifecycleOwner(), new Observer<List<com.project.shared_card.database.entity.story.model.History>>() {
             @Override
             public void onChanged(List<History> histories) {
                 adapter = new Adapter(getContext(),histories);
