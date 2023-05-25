@@ -1,6 +1,6 @@
 package com.project.shared_card.retrofit.api;
 
-import com.project.shared_card.retrofit.model.TheAllGroup;
+import com.project.shared_card.retrofit.model.TheGroupId;
 import com.project.shared_card.retrofit.model.dto.UsersGroup;
 
 import java.util.List;
@@ -16,8 +16,8 @@ public interface GroupIdApi {
     Call<List<UsersGroup>> getAllUsers(@Path("id") Long id);
 
     @POST("/group/save_user/{id}")
-    Call<TheAllGroup> saveUser(@Path("id") Long id);
+    Call<TheGroupId> saveUser(@Path("id") Long id);
 
     @PUT("/group/delete_user/{id}")
-    Call<TheAllGroup> deleteUser(@Path("id") Long id);
+    Call<TheGroupId> deleteUser(@Path("id") Long id);
 }

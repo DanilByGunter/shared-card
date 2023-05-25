@@ -35,4 +35,8 @@ public class ImplStatsRepository implements StatsRepository {
     public LiveData<List<Price>> getSpending(Long days, Long id_group) {
         return dao.getSpending(days, id_group);
     }
+    @Override
+    public LiveData<List<Price>> getSpending(Long days) {
+        return dao.getSpending(days);
+    }
 }

@@ -48,7 +48,7 @@ public interface StatsDao {
             "group by shop ")
     LiveData<List<Stats>> getShopsCount(Long days, Long id_group);
 
-    @Query("select price, date_last from (" +
+    @Query("select price, date_last as date from (" +
             "select price, date_last from product " +
             "where status ==2  and group_name_id = :id_group " +
             " union " +
@@ -57,4 +57,14 @@ public interface StatsDao {
             "where date_last > :days " +
             "order By date_last")
     LiveData<List<Price>> getSpending(Long days, Long id_group);
+
+    @Query("select price, date_last as date from (" +
+            "select price, date_last from product " +
+            "where status ==2 " +
+            " union " +
+            "select price, date_last from target " +
+            "where status ==2) " +
+            "where date_last > :days " +
+            "order By date_last")
+    LiveData<List<Price>> getSpending(Long days);
 }

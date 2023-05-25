@@ -16,15 +16,29 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import com.project.shared_card.R;
+import com.project.shared_card.activity.converter.DateConverter;
+import com.project.shared_card.activity.converter.StatsConverter;
 import com.project.shared_card.activity.main_screen.statistic.graphics.MyLineView;
 import com.project.shared_card.activity.main_screen.statistic.graphics.MyPieHelper;
 import com.project.shared_card.activity.main_screen.statistic.graphics.MyPieView;
 import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.statistic.model.Price;
 import com.project.shared_card.database.entity.statistic.model.Stats;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import im.dacer.androidcharts.LineView;
 
@@ -65,61 +79,247 @@ public class StatisticsFragment extends Fragment {
         spinner.setAdapter(adapter);
 
 
+        Long days;
+        textTitle.setText("Статистика расходов");
         if (id_group.equals("-1")){
-            textTitle.setText("Статистика расходов");
             textFirstPie.setText("Траты по категориям");
-            db.stats().getCategoriesCount(7L, id_user).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
-                @Override
-                public void onChanged(List<Stats> stats) {
-                    for (Stats stat: stats) {
-                        System.out.println(stat.getName() + " " + stat.getCount());
-                    }
-                }
-            });
             textSecondPie.setText("Траты по магазинам");
-            db.stats().getShopsCount(7L, id_user).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
-                @Override
-                public void onChanged(List<Stats> stats) {
-                    for (Stats stat: stats) {
-                        System.out.println(stat.getName() + " " + stat.getCount());
-                    }
-                }
-            });
+            switch (spinner.getSelectedItemPosition()){
+                case 0:
+                    days = 7L;
+                case 1:
+                    days = 30L;
+                case 2:
+                    days = 91L;
+                case 3:
+                    days = 365L;
+                case 4:
+                    days = 999L;
+                default:
+                    days = 7L;
+            }
+            linearData(days);
+            shopsPie(days);
+            soloCategoriesPie(days);
         } else{
             textFirstPie.setText("Личные траты по категориям");
             textSecondPie.setText("Общие траты по категориям");
+            switch (spinner.getSelectedItemPosition()){
+                case 0:
+                    days = 7L;
+                case 1:
+                    days = 30L;
+                case 2:
+                    days = 91L;
+                case 3:
+                    days = 365L;
+                case 4:
+                    days = 999L;
+                default:
+                    days = 7L;
+            }
+            linearData(days, Long.valueOf(id_group));
+            soloCategoriesPie(days);
+            generalCategoriesPie(days);
         }
-
-
-        ArrayList<String> names = new ArrayList<String>();
-        names.add("first");
-        names.add("second");
-        names.add("third");
-        names.add("forth");
-        names.add("fifth");
-        names.add("sixth");
-        names.add("seventh");
-        names.add("eight");
-        names.add("ninth");
-        names.add("tenth");
-
-        ArrayList<Integer> data = new ArrayList<Integer>();
-        data.add(40);
-        data.add(20);
-        data.add(10);
-        data.add(50);
-        data.add(30);
-        data.add(80);
-        data.add(70);
-        data.add(60);
-        data.add(90);
-        data.add(100);
-
-        createLinear(names,data, view);
-        createPie(view, R.id.firstPie, data);
-        createPie(view, R.id.secondPie, data);
     }
 
+    private void shopsPie(Long days){
+        Map<String, Integer> names_data = new HashMap<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Integer> data = new ArrayList<>();
+        db.stats().getShopsCount(days, id_user).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
+            @Override
+            public void onChanged(List<Stats> stats) {
+                for (Stats stat: stats) {
+                    names_data.put(stat.getName(), stat.getCount());
+                }
+                Map<String, Integer> sorted_names_data = StatsConverter.sortedDict(names_data);
+                if (sorted_names_data.size() <= 16){
+                    for (Map.Entry<String, Integer> value : sorted_names_data.entrySet()) {
+                        names.add(value.getKey());
+                        data.add(value.getValue());
+                    }
+                } else {
+                    int counter = 0;
+                    int summarize = 0;
+                    for (Map.Entry<String, Integer> value : sorted_names_data.entrySet()) {
+                        if (counter < 16){
+                            names.add(value.getKey());
+                            data.add(value.getValue());
+                            counter++;
+                        } else {
+                            summarize = summarize + value.getValue();
+                        }
+                    }
+                    names.add("Другие");
+                    data.add(summarize);
+                }
+                createPie(getView(), R.id.secondPie, data, names);
+            }
+        });
+    }
+    private void soloCategoriesPie(Long days){
+        Map<String, Integer> names_data = new HashMap<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Integer> data = new ArrayList<>();
+        db.stats().getCategoriesCount(days, id_user).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
+            @Override
+            public void onChanged(List<Stats> stats) {
+                for (Stats stat: stats) {
+                    names_data.put(stat.getName(), stat.getCount());
+                }
+                Map<String, Integer> sorted_names_data = StatsConverter.sortedDict(names_data);
+                if (sorted_names_data.size() <= 16){
+                    for (Map.Entry<String, Integer> value : sorted_names_data.entrySet()) {
+                        names.add(value.getKey());
+                        data.add(value.getValue());
+                    }
+                } else {
+                    int counter = 0;
+                    int summarize = 0;
+                    for (Map.Entry<String, Integer> value : sorted_names_data.entrySet()) {
+                        if (counter < 16){
+                            names.add(value.getKey());
+                            data.add(value.getValue());
+                            counter++;
+                        } else {
+                            summarize = summarize + value.getValue();
+                        }
+                    }
+                    names.add("Другие");
+                    data.add(summarize);
+                }
+                createPie(getView(), R.id.firstPie, data, names);
+            }
+        });
+    }
+    private void generalCategoriesPie(Long days){
+        Map<String, Integer> names_data = new HashMap<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Integer> data = new ArrayList<>();
+        db.stats().getGeneralCategoriesCount(days, Long.valueOf(id_group)).observe(getViewLifecycleOwner(), new Observer<List<Stats>>() {
+            @Override
+            public void onChanged(List<Stats> stats) {
+                for (Stats stat: stats) {
+                    names_data.put(stat.getName(), stat.getCount());
+                }
+                Map<String, Integer> sorted_names_data = StatsConverter.sortedDict(names_data);
+                if (sorted_names_data.size() <= 16){
+                    for (Map.Entry<String, Integer> value : sorted_names_data.entrySet()) {
+                        names.add(value.getKey());
+                        data.add(value.getValue());
+                    }
+                } else {
+                    int counter = 0;
+                    int summarize = 0;
+                    for (Map.Entry<String, Integer> value : sorted_names_data.entrySet()) {
+                        if (counter < 16){
+                            names.add(value.getKey());
+                            data.add(value.getValue());
+                            counter++;
+                        } else {
+                            summarize = summarize + value.getValue();
+                        }
+                    }
+                    names.add("Другие");
+                    data.add(summarize);
+                }
+                createPie(getView(), R.id.secondPie, data, names);
+            }
+        });
+    }
+    private void linearData(Long days){
+        Map<String, Integer> date_value = new HashMap<>();
+        ArrayList<String> dates = new ArrayList<>();
+        ArrayList<Integer> data = new ArrayList<>();
+
+        db.stats().getSpending(days).observe(getViewLifecycleOwner(), new Observer<List<Price>>() {
+            @Override
+            public void onChanged(List<Price> prices) {
+                for (Price price: prices) {
+                    LocalDate date = DateConverter.FromLongDateToLocalDateTime(price.getDate()).toLocalDate();
+                    String str_date = String.valueOf(date);
+                    if (date_value.get(str_date) == null){
+                        date_value.put(str_date, 0);
+                    }
+                    date_value.computeIfPresent(str_date, (k, v) -> v + price.getPrice());
+                }
+
+                if (date_value.size() > 7){
+                    int step = date_value.size()/7;
+                    int tmp = (int) date_value.values().toArray()[0];
+                    for (int i = 1; i != date_value.size(); i++){
+                        if (i % step != 0){
+                            int valueForIKey = (int) date_value.values().toArray()[i];
+                            tmp = tmp + valueForIKey;
+                        } else if (i == date_value.size()) {
+                            data.add(tmp);
+                            dates.add((String) date_value.keySet().toArray()[i]);
+                        } else {
+                            data.add(tmp);
+                            dates.add((String) date_value.keySet().toArray()[i]);
+                            tmp = (int) date_value.values().toArray()[i];
+                        }
+                    }
+                } else {
+                    for (Map.Entry<String, Integer> value : date_value.entrySet()) {
+                        data.add(value.getValue());
+                        dates.add(value.getKey());
+                    }
+                }
+                Collections.reverse(data);
+                Collections.reverse(dates);
+
+
+
+                createLinear(dates, data, getView());
+            }
+        });
+    }
+    private void linearData(Long days, Long id){
+        Map<String, Integer> date_value = new HashMap<>();
+        ArrayList<String> dates = new ArrayList<>();
+        ArrayList<Integer> data = new ArrayList<>();
+
+        db.stats().getSpending(days, id).observe(getViewLifecycleOwner(), new Observer<List<Price>>() {
+            @Override
+            public void onChanged(List<Price> prices) {
+
+                for (Price price: prices) {
+                    LocalDate date = DateConverter.FromLongDateToLocalDateTime(price.getDate()).toLocalDate();
+                    String str_date = String.valueOf(date);
+                    if (date_value.get(str_date) == null){
+                        date_value.put(str_date, 0);
+                    }
+                    date_value.computeIfPresent(str_date, (k, v) -> v + price.getPrice());
+                }
+                if (date_value.size() > 8){
+                    int step = date_value.size()/7;
+                    int tmp = 0;
+                    for (int i = 0; i != date_value.size(); i++){
+                        if (i % step != 0){
+                            int valueForIKey = (int) date_value.values().toArray()[i];
+                            tmp = tmp + valueForIKey;
+                        } else if (i == step) {
+                            data.add(tmp);
+                            dates.add((String) date_value.keySet().toArray()[i]);
+                        } else {
+                            data.add(tmp);
+                            dates.add((String) date_value.keySet().toArray()[i]);
+                            tmp = 0;
+                        }
+                    }
+                } else {
+                    for (Map.Entry<String, Integer> value : date_value.entrySet()) {
+                        data.add(value.getValue());
+                        dates.add(value.getKey());
+                    }
+                }
+                createLinear(dates, data, getView());
+            }
+        });
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -137,25 +337,13 @@ public class StatisticsFragment extends Fragment {
         lineView.setDataList(dataLists);
     }
 
-    private void createPie(View view, int id, ArrayList<Integer> data){
+    private void createPie(View view, int id, ArrayList<Integer> data, ArrayList<String> names){
         MyPieView pieView = (MyPieView) view.findViewById(id);
-        ArrayList<MyPieHelper> pieHelperArrayList = percentageConvert(data);
+        ArrayList<MyPieHelper> pieHelperArrayList = StatsConverter.percentageConvert(data);
 
         pieView.setDate(pieHelperArrayList);
-        pieView.selectedPie(2);
+        pieView.addNames(names);
         pieView.showPercentLabel(true);
-    }
-
-    private ArrayList<MyPieHelper> percentageConvert(ArrayList<Integer> data){
-        double summa = 0.0;
-        for (Integer value: data) {
-            summa += value;}
-
-        ArrayList<MyPieHelper> pieHelperArrayList = new ArrayList<MyPieHelper>();
-        for (Integer value: data) {
-            double per = value / summa * 100;
-            pieHelperArrayList.add(new MyPieHelper((int)Math.round(per)));}
-        return pieHelperArrayList;
     }
 
     private void init(View view){

@@ -1,12 +1,17 @@
 package com.project.shared_card.activity.main_screen.statistic.graphics;
 
 import static androidx.core.content.ContextCompat.getColor;
+import static androidx.core.content.ContextCompat.getDrawable;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,19 +35,25 @@ public class MyPieView extends View {
             getColor(getContext(), R.color.pie_16)
     };
     private Paint cirPaint;
-    private Paint whiteLinePaint;
     private Point pieCenterPoint;
+    private Paint popupTextPaint = new Paint();
     private Paint textPaint;
     private RectF cirRect;
     private RectF cirSelectedRect;
     private int mViewWidth;
     private int mViewHeight;
     private int margin;
+    private Context contextView;
     private int pieRadius;
     private MyPieView.OnPieClickListener onPieClickListener;
     private ArrayList<MyPieHelper> pieHelperList;
     private int selectedIndex = NO_SELECTED_INDEX;
+    private ArrayList<String> namesLabel;
     private boolean showPercentLabel = true;
+    private final int bottomTriangleHeight = 12;
+    private final int popupTopPadding = MyUtils.dip2px(getContext(), 2);
+    private final int popupBottomMargin = MyUtils.dip2px(getContext(), 5);
+    private int popupBottomPadding = MyUtils.dip2px(getContext(), 2);
     private Runnable animator = new Runnable() {
         @Override public void run() {
             boolean needNewFrame = false;
@@ -79,6 +90,7 @@ public class MyPieView extends View {
         pieCenterPoint = new Point();
         cirRect = new RectF();
         cirSelectedRect = new RectF();
+        contextView = context;
     }
 
     public void showPercentLabel(boolean show) {
@@ -152,7 +164,13 @@ public class MyPieView extends View {
 
             drawLineBesideCir(canvas, pieHelper.getStartDegree(), selected);
             drawLineBesideCir(canvas, pieHelper.getEndDegree(), selected);
+
             index++;
+        }
+        if (selectedIndex != -1){
+            System.out.println(canvas.getHeight()/4);
+            System.out.println(canvas.getWidth());
+            drawPopup(canvas, new Point(canvas.getWidth()/2, canvas.getHeight()/2+50));
         }
     }
 
@@ -194,8 +212,13 @@ public class MyPieView extends View {
         canvas.drawText(pieHelper.getTitle(), x, y, textPaint);
     }
 
+    public void addNames(ArrayList<String> names){
+        namesLabel = names;
+    }
+
     @Override public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
+
             int clickedIndex = findPointAt((int) event.getX(), (int) event.getY());
             if (clickedIndex == selectedIndex) {
                 selectedIndex = NO_SELECTED_INDEX;
@@ -266,6 +289,34 @@ public class MyPieView extends View {
                 break;
         }
         return measurement;
+    }
+    private void drawPopup(Canvas canvas, Point point) {
+        popupTextPaint.setAntiAlias(true);
+        popupTextPaint.setColor(getColor(getContext(), R.color.dark_green));
+        popupTextPaint.setTextSize(MyUtils.sp2px(getContext(), 13));
+        popupTextPaint.setStrokeWidth(5);
+        popupTextPaint.setTextAlign(Paint.Align.CENTER);
+
+        String numStr = String.valueOf(namesLabel.get(selectedIndex));
+        boolean singularNum = (numStr.length() == 1);
+        int sidePadding = MyUtils.dip2px(getContext(), singularNum ? 8 : 5);
+        int x = point.x;
+        int y = point.y - MyUtils.dip2px(getContext(), 10);
+        Rect popupTextRect = new Rect();
+        popupTextPaint.getTextBounds(numStr, 0, numStr.length(), popupTextRect);
+        Rect r = new Rect(x - popupTextRect.width() / 2 - sidePadding, y
+                - popupTextRect.height()
+                - bottomTriangleHeight
+                - popupTopPadding * 2
+                - popupBottomMargin, x + popupTextRect.width() / 2 + sidePadding,
+                y + popupTopPadding - popupBottomMargin + popupBottomPadding);
+
+        Drawable popup =
+                (Drawable) getDrawable(getContext(), R.drawable.long_popup);
+        popup.setColorFilter(new PorterDuffColorFilter(DEFAULT_COLOR_LIST[selectedIndex], PorterDuff.Mode.MULTIPLY));
+        popup.setBounds(r);
+        popup.draw(canvas);
+        canvas.drawText(numStr, x, y - bottomTriangleHeight - popupBottomMargin, popupTextPaint);
     }
 
     public interface OnPieClickListener {
