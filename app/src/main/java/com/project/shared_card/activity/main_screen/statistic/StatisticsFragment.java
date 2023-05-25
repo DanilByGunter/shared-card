@@ -141,6 +141,12 @@ public class StatisticsFragment extends Fragment {
 
     private void createPie(View view, int id, ArrayList<Integer> data){
         MyPieView pieView = (MyPieView) view.findViewById(id);
+        pieView.setOnPieClickListener(new MyPieView.OnPieClickListener() {
+            @Override
+            public void onPieClick(int index) {
+
+            }
+        });
         ArrayList<MyPieHelper> pieHelperArrayList = percentageConvert(data);
 
         pieView.setDate(pieHelperArrayList);

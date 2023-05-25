@@ -1,6 +1,8 @@
 package com.project.shared_card.retrofit.api;
 
 import com.project.shared_card.retrofit.model.TheAllGroup;
+import com.project.shared_card.retrofit.model.TheGroupId;
+import com.project.shared_card.retrofit.model.dto.TheAllGroupWithUserId;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,5 +25,5 @@ public interface TheAllGroupApi {
     Call<TheAllGroup> updateGroupPhoto(@Body TheAllGroup theAllGroup);
 
     @POST("/groups/save")
-    Call<Long> save(@Body TheAllGroup theAllGroup);
+    Call<Long> save(@Body TheAllGroupWithUserId theAllGroup);
 }

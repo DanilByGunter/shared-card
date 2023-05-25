@@ -28,7 +28,7 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     private SharedPreferences settings;
     private SharedPreferences.Editor prefEditor;
     DialogEdit dialog;
-    private List<AllGroups> groups;
+    public List<AllGroups> groups;
     TextView userName;
     TextView groupName;
     TextView groupId;

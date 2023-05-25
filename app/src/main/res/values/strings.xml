@@ -28,4 +28,5 @@
     <string name="bought">Куплено</string>
     <string name="myPeriod">Период</string>
     <string name="join">присоединиться</string>
+    <string name="create_group">создать группу</string>
 </resources>

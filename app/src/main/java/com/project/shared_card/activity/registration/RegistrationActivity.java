@@ -3,6 +3,7 @@ package com.project.shared_card.activity.registration;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.ColorSpace;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.widget.ImageView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
+import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.MainActivity;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.categories.product.CategoriesProductEntity;
@@ -27,6 +30,7 @@ import com.project.shared_card.database.entity.group_name.GroupNameEntity;
 import com.project.shared_card.database.entity.metrics.MetricsEntity;
 import com.project.shared_card.database.entity.shop.product.ShopProductEntity;
 import com.project.shared_card.database.entity.shop.target.ShopTargetEntity;
+import com.project.shared_card.database.entity.story.model.History;
 import com.project.shared_card.database.entity.user_name.UserNameEntity;
 
 import java.io.File;
@@ -78,7 +82,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
-                    createDirectory(picture);
+                    ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,true);
+                    ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,false);
                 }
             });
             thread.start();
@@ -91,7 +96,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private void createUser(long idUser) {
         prefEditor.putString(getString(R.string.key_for_me_name), editText.getText().toString()).apply();
         prefEditor.putString(getString(R.string.key_for_select_group_id), String.valueOf(idUser)).apply();
-
         db.user_name().createUser(new UserNameEntity(idUser, editText.getText().toString()));
         db.group_name().createGroup(new GroupNameEntity(idUser, editText.getText().toString()));
         db.group().createGroup(new GroupEntity(idUser, idUser, true));
@@ -108,29 +112,13 @@ public class RegistrationActivity extends AppCompatActivity {
             InputStream inputStream = getContentResolver().openInputStream(result);
             byte[] picture = new byte[inputStream.available()];
             inputStream.read(picture);
-            //picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable().getCurrent()).getBitmap());
-            createDirectory(picture);
+            ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,true);
+            ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void createDirectory(byte[] picture) {
-        FileOutputStream fosUser;
-        FileOutputStream fosGroup;
-        File fileUser = new File(getFilesDir() + "/user");
-        File fileGroup = new File(getFilesDir() + "/group");
-        fileUser.mkdir();
-        fileGroup.mkdir();
-        try {
-            fosUser = new FileOutputStream(getFilesDir() + "/user/-1");
-            fosGroup = new FileOutputStream(getFilesDir() + "/group" + "/-1");
-            fosUser.write(picture);
-            fosGroup.write(picture);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void createCategoryMetricShop() {
         List<MetricsEntity> metrics = Arrays.asList(

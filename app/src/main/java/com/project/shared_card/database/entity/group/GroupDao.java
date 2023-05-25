@@ -11,6 +11,8 @@ import java.util.List;
 public interface GroupDao {
     @Insert
     void createGroup(GroupEntity entity);
+    @Insert
+    void createGroups(List<GroupEntity> entity);
 
     @Query("SELECT * FROM `group`")
     LiveData<List<GroupEntity>>  getAllGroup();
