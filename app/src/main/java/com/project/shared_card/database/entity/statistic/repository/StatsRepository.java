@@ -12,5 +12,5 @@ public interface StatsRepository {
     LiveData<List<Stats>> getGeneralCategoriesCount(Long days, Long id_group);
     LiveData<List<Stats>> getShopsCount(Long days, Long id_group);
     LiveData<List<Price>> getSpending(Long days, Long id_group);
-
+    LiveData<List<Price>> getSpending(Long days);
 }
