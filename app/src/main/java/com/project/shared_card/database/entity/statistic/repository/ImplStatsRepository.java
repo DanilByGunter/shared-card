@@ -15,20 +15,9 @@ public class ImplStatsRepository implements StatsRepository {
         this.dao = dao;
     }
 
-
-    @Override
-    public LiveData<List<Stats>> getCategoriesCount(Long days, Long id_user, Long id_group) {
-        return dao.getCategoriesCount(days, id_user, id_group);
-    }
-
     @Override
     public LiveData<List<Stats>> getGeneralCategoriesCount(Long days, Long id_group) {
         return dao.getGeneralCategoriesCount(days, id_group);
-    }
-
-    @Override
-    public LiveData<List<Stats>> getShopsCount(Long days, Long id_group) {
-        return dao.getShopsCount(days, id_group);
     }
 
     @Override
@@ -38,5 +27,15 @@ public class ImplStatsRepository implements StatsRepository {
     @Override
     public LiveData<List<Price>> getSpending(Long days) {
         return dao.getSpending(days);
+    }
+
+    @Override
+    public LiveData<List<Stats>> getCategoriesStats(Long days, Long id_user, Long id_group) {
+        return dao.getCategoriesStats(days, id_user, id_group);
+    }
+
+    @Override
+    public LiveData<List<Stats>> getShopStats(Long days, Long id_group) {
+        return dao.getShopStats(days, id_group);
     }
 }

@@ -9,6 +9,14 @@ public class TheAllGroupWithUser {
     private TheAllGroup all_group;
     private List<UsersGroup> users;
 
+    public TheAllGroupWithUser() {
+    }
+
+    public TheAllGroupWithUser(TheAllGroup all_group, List<UsersGroup> users) {
+        this.all_group = all_group;
+        this.users = users;
+    }
+
     public TheAllGroup getAllGroup() {
         return all_group;
     }

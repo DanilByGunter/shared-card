@@ -18,6 +18,9 @@ public interface GroupIdApi {
     @POST("/group/get_all")
     Call<TheAllGroupWithUser> getAllUsers(@Body UserWithGroup user);
 
+    @POST("/group/get_all_info")
+    Call<TheAllGroupWithUser> getAllUsersInGroup(@Body UserWithGroup user);
+
     @POST("/group/save_user/{id}")
     Call<TheAllGroup> saveUser(@Path("id") Long id);
 

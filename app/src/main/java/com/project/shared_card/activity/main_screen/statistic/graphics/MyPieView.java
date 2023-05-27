@@ -168,8 +168,6 @@ public class MyPieView extends View {
             index++;
         }
         if (selectedIndex != -1){
-            System.out.println(canvas.getHeight()/4);
-            System.out.println(canvas.getWidth());
             drawPopup(canvas, new Point(canvas.getWidth()/2, canvas.getHeight()/2+50));
         }
     }

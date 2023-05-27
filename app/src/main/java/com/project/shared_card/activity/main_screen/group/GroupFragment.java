@@ -291,7 +291,7 @@ public class GroupFragment extends Fragment {
 
     private void addUserInGroup(UserWithGroup userWithGroup) {
         GroupIdApi groupIdApi = server.getRetrofit().create(GroupIdApi.class);
-        groupIdApi.getAllUsers(userWithGroup).enqueue(new Callback<TheAllGroupWithUser>() {
+        groupIdApi.getAllUsersInGroup(userWithGroup).enqueue(new Callback<TheAllGroupWithUser>() {
             @Override
             public void onResponse(Call<TheAllGroupWithUser> call, Response<TheAllGroupWithUser> response) {
                 TheAllGroupWithUser allgroup = response.body();
@@ -314,6 +314,7 @@ public class GroupFragment extends Fragment {
 
             @Override
             public void onFailure(Call<TheAllGroupWithUser> call, Throwable t) {
+                System.out.println(call);
                 Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
                 toast.show();
             }

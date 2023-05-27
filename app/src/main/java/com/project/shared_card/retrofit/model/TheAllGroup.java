@@ -6,6 +6,16 @@ public class TheAllGroup {
     private long id;
     private String name;
     private byte[] photo;
+
+    public TheAllGroup() {
+    }
+
+    public TheAllGroup(long id, String name, byte[] photo) {
+        this.id = id;
+        this.name = name;
+        this.photo = photo;
+    }
+
     public long getId() {
         return id;}
 
