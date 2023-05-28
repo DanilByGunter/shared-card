@@ -3,6 +3,7 @@ package com.project.shared_card.activity.converter;
 import com.project.shared_card.activity.main_screen.statistic.graphics.MyPieHelper;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -35,13 +36,14 @@ public class StatsConverter {
     }
     public static Map<LocalDate, Integer> sortedDate(Map<LocalDate, Integer> data){
         Map<LocalDate, Integer> sortedMap = data.entrySet().stream()
-                .sorted(Comparator.comparingInt(e -> -e.getValue()))
+                .sorted(Comparator.comparingInt(e -> (int) -e.getKey().getLong(ChronoField.DAY_OF_YEAR)))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (a, b) -> { throw new AssertionError(); },
                         LinkedHashMap::new
                 ));
+
         return sortedMap;
     }
 }

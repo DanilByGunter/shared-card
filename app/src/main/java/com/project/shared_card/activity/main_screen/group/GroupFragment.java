@@ -42,7 +42,7 @@ import com.project.shared_card.retrofit.api.UserApi;
 import com.project.shared_card.retrofit.model.TheAllGroup;
 import com.project.shared_card.retrofit.model.TheGroupId;
 import com.project.shared_card.retrofit.model.User;
-import com.project.shared_card.retrofit.model.dto.TheAllGroupWithUser;
+import com.project.shared_card.retrofit.model.dto.TheAllGroupWithUsers;
 import com.project.shared_card.retrofit.model.dto.TheAllGroupWithUserId;
 import com.project.shared_card.retrofit.model.dto.UserWithGroup;
 import com.project.shared_card.retrofit.model.dto.UsersGroup;
@@ -291,10 +291,10 @@ public class GroupFragment extends Fragment {
 
     private void addUserInGroup(UserWithGroup userWithGroup) {
         GroupIdApi groupIdApi = server.getRetrofit().create(GroupIdApi.class);
-        groupIdApi.getAllUsersInGroup(userWithGroup).enqueue(new Callback<TheAllGroupWithUser>() {
+        groupIdApi.getAllUsersInGroup(userWithGroup).enqueue(new Callback<TheAllGroupWithUsers>() {
             @Override
-            public void onResponse(Call<TheAllGroupWithUser> call, Response<TheAllGroupWithUser> response) {
-                TheAllGroupWithUser allgroup = response.body();
+            public void onResponse(Call<TheAllGroupWithUsers> call, Response<TheAllGroupWithUsers> response) {
+                TheAllGroupWithUsers allgroup = response.body();
                 if(allgroup==null){
                     Toast toast = Toast.makeText(getContext(),"Группы не сущесвует",Toast.LENGTH_SHORT);
                     toast.show();
@@ -313,7 +313,7 @@ public class GroupFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<TheAllGroupWithUser> call, Throwable t) {
+            public void onFailure(Call<TheAllGroupWithUsers> call, Throwable t) {
                 System.out.println(call);
                 Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
                 toast.show();

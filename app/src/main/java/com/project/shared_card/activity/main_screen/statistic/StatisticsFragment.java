@@ -32,6 +32,8 @@ import com.project.shared_card.database.entity.statistic.model.Stats;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -281,6 +283,7 @@ public class StatisticsFragment extends Fragment {
                     data_dict.computeIfPresent(date, (k, v) -> v + price.getPrice());
                 }
                 Map<LocalDate, Integer> date_value = StatsConverter.sortedDate(data_dict);
+
                 if (date_value.size() == 0){
                     textTitle.setText("Будущая статистика по тратам");
                 }  else if (date_value.size() > 7){
@@ -305,6 +308,8 @@ public class StatisticsFragment extends Fragment {
                         data.add(value.getValue());
                         dates.add(String.valueOf(value.getKey()));
                     }
+                    Collections.reverse(data);
+                    Collections.reverse(dates);
                     createLinear(dates, data, getView());
                 }
             }

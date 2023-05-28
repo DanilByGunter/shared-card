@@ -20,7 +20,7 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="Theme.Main.SplashTheme" parent="Theme.Main">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowBackground">@drawable/splash_screen2</item>
     </style>
     <style name="Theme.Main.Registrations" parennt="Theme.Main">
         <item name="android:windowTranslucentStatus">true</item>

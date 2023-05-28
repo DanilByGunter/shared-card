@@ -2,17 +2,16 @@ package com.project.shared_card.retrofit.model.dto;
 
 import com.project.shared_card.retrofit.model.TheAllGroup;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class TheAllGroupWithUser {
+public class TheAllGroupWithUsers {
     private TheAllGroup all_group;
     private List<UsersGroup> users;
 
-    public TheAllGroupWithUser() {
+    public TheAllGroupWithUsers() {
     }
 
-    public TheAllGroupWithUser(TheAllGroup all_group, List<UsersGroup> users) {
+    public TheAllGroupWithUsers(TheAllGroup all_group, List<UsersGroup> users) {
         this.all_group = all_group;
         this.users = users;
     }

@@ -1,9 +1,17 @@
 package com.project.shared_card.retrofit.model.dto;
 
+
+
+import java.util.Arrays;
+
 public class UsersGroup {
+
     private Long id;
+
     private String name;
+
     private byte[] photo;
+
     private int status;
 
     public UsersGroup() {}
@@ -38,4 +46,14 @@ public class UsersGroup {
 
     public void setStatus(int status) {
         this.status = status;}
+
+    @Override
+    public String toString() {
+        return "UsersGroup{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", photo=" + Arrays.toString(photo) +
+                ", status=" + status +
+                '}';
+    }
 }
