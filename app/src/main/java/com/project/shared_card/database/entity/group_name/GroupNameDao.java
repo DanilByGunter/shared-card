@@ -15,7 +15,7 @@ public interface GroupNameDao {
     void createGroup(GroupNameEntity group);
     @Insert
     void createGroups(List<GroupNameEntity> groups);
-    @Query("SELECT * FROM group_name")
+    @Query("SELECT * FROM group_name where id>0")
     LiveData<List<AllGroups>> getALLGroup();
 
     @Query("select * from group_name where id=:id")

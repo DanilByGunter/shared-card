@@ -38,6 +38,7 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     View mainToolBar;
     String GROUP_PATH;
     String USER_PATH;
+    String myId;
     long GROUP_ID;
     int groupPosition;
     int childPosition;
@@ -171,7 +172,6 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         groupId = v.findViewById(R.id.group_head_id);
         groupImage = v.findViewById(R.id.group_head_image);
         groupEdit = v.findViewById(R.id.group_edit);
-
         GROUP_ID = groups.get(groupPosition).groupName.getId();
         GROUP_PATH = context.getFilesDir() + "/group/" +GROUP_ID;
     }
@@ -192,8 +192,13 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     void initUser(View v, int childPosition){
         userName = v.findViewById(R.id.group_user_name);
         userImage = v.findViewById(R.id.group_user_image);
+        myId = settings.getString(context.getString(R.string.key_for_me_id_server),"-1");
+        Long userId = groups.get(groupPosition).groupEntities.get(childPosition).userName.getId();
+        if(myId.equals(String.valueOf(userId))) {
+            userId = -1l;
+        }
+        USER_PATH = context.getFilesDir() + "/user/" + userId;
 
-        USER_PATH = context.getFilesDir() + "/user/" + groups.get(groupPosition).groupEntities.get(childPosition).userName.getId();
 
         this.childPosition = childPosition;
     }

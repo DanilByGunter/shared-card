@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     int heightStartForButton;
     int heightEndForNavigation;
     Boolean First = true;
+    ImplDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView.setSelectedItemId(R.id.menu_check);
         navigationView.setOnItemSelectedListener(this::onNavigationItemSelected);
-//        navigationView.setSelectedItemId(R.id.menu_check);
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        ImplDB db = new ImplDB(this);
         db.group_name().getGroupById(idGroup).observe(this, new Observer<GroupNameEntity>() {
             @Override
             public void onChanged(GroupNameEntity entity) {
@@ -85,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 imageGroup.setImageURI(Uri.parse(groupPath));
             }
         });
-
 
     }
 
@@ -98,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         groupFragment = new GroupFragment(findViewById(R.id.toolbar));
         navigationView = findViewById(R.id.bottom_navigation);
         heightEndForNavigation = 0;//-navigationView.getHeight();
+        db = new ImplDB(this);
     }
 
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -1,15 +1,28 @@
 package com.project.shared_card.retrofit.model.dto;
 
+import com.project.shared_card.retrofit.model.TheGroupId;
+
 public class UserWithGroup {
     private long id_group;
     private String name_group;
-    private long id_user;
+    private TheGroupId user;
 
-    public UserWithGroup(long idGroup, String nameGroup, long idUser) {
+    public UserWithGroup(long idGroup, String nameGroup, TheGroupId user) {
         this.id_group = idGroup;
         this.name_group = nameGroup;
-        this.id_user = idUser;
+        this.user = user;
 
+    }
+
+    public UserWithGroup() {
+    }
+
+    public TheGroupId getUser() {
+        return user;
+    }
+
+    public void setUser(TheGroupId user) {
+        this.user = user;
     }
 
     public String getName_group() {
@@ -28,11 +41,4 @@ public class UserWithGroup {
         this.id_group = id_group;
     }
 
-    public long getId_user() {
-        return id_user;
-    }
-
-    public void setId_user(long id_user) {
-        this.id_user = id_user;
-    }
 }

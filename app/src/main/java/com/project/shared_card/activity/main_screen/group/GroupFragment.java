@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.view.LayoutInflater;
@@ -25,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.shared_card.R;
-import com.project.shared_card.activity.converter.DateConverter;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.group.dialog.DialogEdit;
@@ -42,16 +42,11 @@ import com.project.shared_card.retrofit.api.UserApi;
 import com.project.shared_card.retrofit.model.TheAllGroup;
 import com.project.shared_card.retrofit.model.TheGroupId;
 import com.project.shared_card.retrofit.model.User;
-import com.project.shared_card.retrofit.model.dto.TheAllGroupWithUsers;
-import com.project.shared_card.retrofit.model.dto.TheAllGroupWithUserId;
 import com.project.shared_card.retrofit.model.dto.UserWithGroup;
 import com.project.shared_card.retrofit.model.dto.UsersGroup;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,6 +69,7 @@ public class GroupFragment extends Fragment {
     Button editProfile;
     Button groupJoin;
     Button groupCreate;
+    String id_user;
     String USER_PATH;
     String GROUP_USER_PATH;
     String GROUP_CREATE_PATH;
@@ -81,7 +77,10 @@ public class GroupFragment extends Fragment {
     AdapterForExpendList.updateExpandableListView updateExpandableListView;
     ActivityResultLauncher<String> getContentForEdit;
     ActivityResultLauncher<String> getContentForCreate;
+    long idCreateGroup;
     RetrofitService server;
+    MutableLiveData<Boolean> liveDataForCreateGroup = new MutableLiveData<>();
+    MutableLiveData<Boolean> liveDataForJoinGroup = new MutableLiveData<>();
     public GroupFragment() {
     }
 
@@ -241,17 +240,24 @@ public class GroupFragment extends Fragment {
             String name = dialogGroupJoin.name.getText().toString().split("#")[1];
 
             boolean flag = true;
-            for(AllGroups allGroups:adapter.groups)
-                if(allGroups.groupName.getId() ==id_group)
-                    flag=false;
+//            for(AllGroups allGroups:adapter.groups)
+//                if(allGroups.groupName.getId() ==id_group)
+//                    flag=false;
 
             if(flag){
-                String id_user = settings.getString(getString(R.string.key_for_me_id_server),"no_id");
-                if(id_user.equals("no_id")){
-                    getMeIdForServer(id_group,name,null,null,true);
+                id_user = settings.getString(getString(R.string.key_for_me_id_server),"no_id");
+                if(id_user.equals("no_id")) {
+                    getMeIdForServer(false);
+                    liveDataForJoinGroup.observe(this, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(Boolean aBoolean) {
+                            if(aBoolean)
+                                addUserInGroup(id_group, name);
+                        }
+                    });
                 }
-                else{
-                    addUserInGroup(new UserWithGroup(id_group, name, Long.parseLong(id_user)));
+                else {
+                    addUserInGroup(id_group, name);
                 }
             }
             else{
@@ -262,7 +268,7 @@ public class GroupFragment extends Fragment {
         }
     }
 
-    void getMeIdForServer(long id_group, String name,String nameMyGroup, byte[] photoMyGroup, boolean Flag){
+    void getMeIdForServer(Boolean flag){
         String name_user =settings.getString(getString(R.string.key_for_me_name),"no_id");
 
         String user_path = getContext().getFilesDir() + "/user/" + getString(R.string.me_id);
@@ -273,11 +279,12 @@ public class GroupFragment extends Fragment {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
                 prefEditor.putString(getString(R.string.key_for_me_id_server), response.body().toString()).apply();
-                if(Flag) {
-                    addUserInGroup(new UserWithGroup(id_group, name, response.body()));
-                }
+                String userName = settings.getString(getString(R.string.key_for_me_name), "no_name");
+                db.user_name().createUser(new UserNameEntity(response.body(),userName));
+                if(flag)
+                    liveDataForCreateGroup.postValue(true);
                 else{
-                    createGroup(nameMyGroup,photoMyGroup);
+                    liveDataForJoinGroup.postValue(true);
                 }
             }
 
@@ -289,69 +296,85 @@ public class GroupFragment extends Fragment {
         });
     }
 
-    private void addUserInGroup(UserWithGroup userWithGroup) {
+    private void addUserInGroup(long idGroup,String nameGroup) {
         GroupIdApi groupIdApi = server.getRetrofit().create(GroupIdApi.class);
-        groupIdApi.getAllUsersInGroup(userWithGroup).enqueue(new Callback<TheAllGroupWithUsers>() {
+        UserWithGroup userWithGroup = new UserWithGroup(idGroup,nameGroup,new TheGroupId(Long.parseLong(id_user),0));
+        groupIdApi.saveUser(userWithGroup).enqueue(new Callback<Boolean>() {
             @Override
-            public void onResponse(Call<TheAllGroupWithUsers> call, Response<TheAllGroupWithUsers> response) {
-                TheAllGroupWithUsers allgroup = response.body();
-                if(allgroup==null){
-                    Toast toast = Toast.makeText(getContext(),"Группы не сущесвует",Toast.LENGTH_SHORT);
-                    toast.show();
-                    return;
-                }
-                GroupNameEntity groupName = ModelConverter.FromServerGroupToEntity(allgroup.getAllGroup(), String.valueOf(getContext().getFilesDir()));
-                List<UserNameEntity> users = ModelConverter.FromServerUserToEntity(allgroup.getUsers(), String.valueOf(getContext().getFilesDir()));
-                List<Integer> statuses = allgroup.getUsers().stream().map(UsersGroup::getStatus).collect(Collectors.toList());
-                db.user_name().createUsers(users);
-                db.group_name().createGroup(groupName);
-                db.group().createGroupFromList(groupName,users,statuses);
-                updateAdapter();
-
-                dialogGroupJoin.name.setText("");
-                dialogGroupJoin.dialog.dismiss();
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    if(response.body()){
+                        getGroup(idGroup);
+                    }
+                    else{
+                        Toast toast = Toast.makeText(getContext(),"группы не существует",Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
             }
 
             @Override
-            public void onFailure(Call<TheAllGroupWithUsers> call, Throwable t) {
-                System.out.println(call);
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+    }
+
+    void getGroup(long idGroup){
+        TheAllGroupApi theAllGroupApi = server.getRetrofit().create(TheAllGroupApi.class);
+        theAllGroupApi.getGroupById(idGroup).enqueue(new Callback<TheAllGroup>() {
+            @Override
+            public void onResponse(Call<TheAllGroup> call, Response<TheAllGroup> response) {
+                GroupNameEntity entity = ModelConverter.FromServerGroupToEntity(response.body(), String.valueOf(getContext().getFilesDir()));
+                db.group_name().createGroup(entity);
+            }
+
+            @Override
+            public void onFailure(Call<TheAllGroup> call, Throwable t) {
                 Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
 
+        GroupIdApi groupIdApi = server.getRetrofit().create(GroupIdApi.class);
+        groupIdApi.getAllUsers(idGroup).enqueue(new Callback<List<UsersGroup>>() {
+            @Override
+            public void onResponse(Call<List<UsersGroup>> call, Response<List<UsersGroup>> response) {
+                List<UsersGroup> usersGroups = response.body();
+                List<UserNameEntity> users = ModelConverter.FromServerUserToEntity(usersGroups, String.valueOf(getContext().getFilesDir()));
+                List<Integer> statuses = usersGroups.stream().map(UsersGroup::getStatus).collect(Collectors.toList());
+                db.user_name().createUsers(users);
+                db.group().createGroupFromList(idGroup,users,statuses);
+            }
+
+            @Override
+            public void onFailure(Call<List<UsersGroup>> call, Throwable t) {
+                Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        dialogGroupJoin.name.setText("");
+        dialogGroupJoin.dialog.dismiss();
     }
+
     private void createGroup(String name,byte[] photo){
         TheAllGroupApi theAllGroupApi =server.getRetrofit().create(TheAllGroupApi.class);
+        GroupIdApi groupIdApi = server.getRetrofit().create(GroupIdApi.class);
         TheAllGroup group = new TheAllGroup();
-        TheGroupId user = new TheGroupId();
-        user.setId(Long.parseLong(settings.getString(getString(R.string.key_for_me_id_server),"no_id")));
-        user.setStatus(1);
         group.setName(name);
         group.setPhoto(photo);
-        TheAllGroupWithUserId groupWithUser = new TheAllGroupWithUserId();
-        groupWithUser.setAllGroup(group);
-        groupWithUser.setGroupId(user);
-        theAllGroupApi.save(groupWithUser).enqueue(new Callback<Long>() {
+        theAllGroupApi.save(group).enqueue(new Callback<Long>() {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
-                long idGroup = response.body();
-
-                db.group_name().createGroup(new GroupNameEntity(idGroup,dialogCreateGroup.name.getText().toString()));
-                db.group().createGroup(new GroupEntity(Long.parseLong(getString(R.string.me_id)), idGroup, true));
-
-                byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialogCreateGroup.image.getDrawable().getCurrent()).getBitmap());
+                idCreateGroup = response.body();
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        ModelConverter.savePhoto(String.valueOf(getContext().getFilesDir()),picture,idGroup,false);
+                        ModelConverter.savePhoto(String.valueOf(getContext().getFilesDir()),photo,idCreateGroup,false);
                     }
                 });
                 thread.start();
-                updateAdapter();
-                dialogCreateGroup.image.setImageDrawable(null);
-                dialogCreateGroup.name.setText("");
-                dialogCreateGroup.dialog.dismiss();
+                db.group_name().createGroup(new GroupNameEntity(idCreateGroup,name));
+                saveUser(name);
             }
 
             @Override
@@ -360,8 +383,37 @@ public class GroupFragment extends Fragment {
                 toast.show();
             }
         });
+        dialogCreateGroup.image.setImageDrawable(null);
+        dialogCreateGroup.name.setText("");
+        dialogCreateGroup.dialog.dismiss();
     }
+    private void saveUser(String name){
+        GroupIdApi groupIdApi = server.getRetrofit().create(GroupIdApi.class);
+        UserWithGroup user = new UserWithGroup();
+        user.setId_group(idCreateGroup);
+        user.setName_group(name);
+        Long myId = Long.parseLong(settings.getString(getString(R.string.key_for_me_id_server),"no_id"));
+        user.setUser(new TheGroupId(myId,1));
 
+        groupIdApi.saveUser(user).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if(!response.body()){
+                    Toast toast = Toast.makeText(getContext(),"ошибка создания группы",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
+                    db.group().createGroup(new GroupEntity(myId, idCreateGroup, true));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+    }
     private void clickOnButtonCreateGroup(View v){
         if(!dialogCreateGroup.name.getText().toString().equals("")){
             byte[] photo;
@@ -374,17 +426,23 @@ public class GroupFragment extends Fragment {
 
             String myIdForServer = settings.getString(getString(R.string.key_for_me_id_server),"no_id");
             if(myIdForServer.equals("no_id")){
-                getMeIdForServer(0,null,dialogCreateGroup.name.getText().toString(),photo,false);
+                getMeIdForServer(true);
+                liveDataForCreateGroup.observe(this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        if(aBoolean)
+                            createGroup(dialogCreateGroup.name.getText().toString(),photo);
+                    }
+                });
             }
             else {
-                createGroup(dialogCreateGroup.name.getText().toString(),photo);
+                createGroup(dialogCreateGroup.name.getText().toString(), photo);
             }
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_group, container, false);
     }
 }

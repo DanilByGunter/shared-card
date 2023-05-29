@@ -11,7 +11,8 @@ import java.util.List;
 public interface GroupRepository {
 
     void createGroup(GroupEntity entity);
-    void createGroupFromList(GroupNameEntity groupName, List<UserNameEntity> users,List<Integer> statuses);
+
+    void createGroupFromList(Long idGroup, List<UserNameEntity> users, List<Integer> statuses);
 
     LiveData<List<GroupEntity>> getAllGroup();
 }

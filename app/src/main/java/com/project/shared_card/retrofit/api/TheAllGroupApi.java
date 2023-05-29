@@ -25,5 +25,5 @@ public interface TheAllGroupApi {
     Call<TheAllGroup> updateGroupPhoto(@Body TheAllGroup theAllGroup);
 
     @POST("/groups/save")
-    Call<Long> save(@Body TheAllGroupWithUserId theAllGroup);
+    Call<Long> save(@Body TheAllGroup theAllGroup);
 }
