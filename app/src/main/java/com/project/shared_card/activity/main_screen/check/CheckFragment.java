@@ -40,13 +40,14 @@ public class CheckFragment extends Fragment {
 
     public ViewPager2 viewPager;
     DialogAddProduct dialogAddProduct;
-    FloatingActionButton buttonAddProduct;
+    public FloatingActionButton buttonAddProduct;
     ImplDB db;
     TabLayout tabLayout;
     FragmentStateAdapter adapter;
     SharedPreferences settings;
     int heightStartForNavigation;
     int heightStartForButton;
+    boolean flagAnimation=true;
 
 
     public CheckFragment() {
@@ -116,7 +117,7 @@ public class CheckFragment extends Fragment {
                 public void onChanged(List<FullTarget> fullTargets) {
                     TargetAdapter targetAdapter= (TargetAdapter) recyclerView.getAdapter();
                     targetAdapter.update(ModelConverter.FromTargetEntityToTargetModel(fullTargets));
-                    settingForAnimationOfCheck();
+
                 }
             });
         }
@@ -184,8 +185,7 @@ public class CheckFragment extends Fragment {
         adapter = new AdapterForPage(getActivity());
 
         db = new ImplDB(getContext());
-        heightStartForNavigation = (int) getActivity().findViewById(R.id.bottom_navigation).getY();
-        heightStartForButton = (int) buttonAddProduct.getY();
+
     }
 
 
@@ -199,6 +199,7 @@ public class CheckFragment extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 changeCategory(position);
+                settingForAnimationOfCheck();
             }
         });
         viewPager.setAdapter(adapter);
@@ -208,7 +209,6 @@ public class CheckFragment extends Fragment {
             @Override
             public void onChanged(List<String> strings) {
                 dialogAddProduct.metric.setAdapter(new AdapterForSpinner(getContext(), strings));
-
             }
         });
 
@@ -220,7 +220,8 @@ public class CheckFragment extends Fragment {
         return view;
     }
 
-    void settingForAnimationOfCheck(){
+    public void settingForAnimationOfCheck(){
+
         RecyclerView recyclerView = (RecyclerView) viewPager.getChildAt(0);
         View viewProduct = recyclerView.getChildAt(0);
         View viewTarget = recyclerView.getChildAt(1);
@@ -230,6 +231,11 @@ public class CheckFragment extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if(flagAnimation){
+                    heightStartForNavigation = (int) getActivity().findViewById(R.id.bottom_navigation).getY();
+                    heightStartForButton = (int) buttonAddProduct.getY();
+                    flagAnimation =false;
+                }
                 if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
                     Animation.animationDownOfNavigationView(getActivity().findViewById(R.id.bottom_navigation));
                     Animation.animationDownOfButton(buttonAddProduct);

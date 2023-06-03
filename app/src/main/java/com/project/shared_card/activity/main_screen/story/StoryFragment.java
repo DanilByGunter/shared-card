@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.main_screen.Animation;
 import com.project.shared_card.activity.main_screen.PopupMenu;
@@ -86,6 +87,7 @@ public class StoryFragment extends Fragment {
             @Override
             public void onChanged(List<History> histories) {
                 recyclerView.setAdapter(new Adapter(getContext(),histories));
+                settingForAnimationOfStory();
             }
         });
     }

@@ -5,11 +5,12 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class Animation {
-    public static void animationUpOfNavigationView(NavigationView navigationView,int heightStartForNavigation){
+    public static void animationUpOfNavigationView(BottomNavigationView navigationView,int heightStartForNavigation){
         ValueAnimator animatorForNavigationView = ValueAnimator.ofInt((int) navigationView.getY(), heightStartForNavigation);
         animatorForNavigationView.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -22,8 +23,8 @@ public class Animation {
         animatorForNavigationView.setDuration(500);
         animatorForNavigationView.start();
     }
-    public static void animationDownOfNavigationView(NavigationView navigationView){
-        ValueAnimator animatorForNavigationView = ValueAnimator.ofInt((int) navigationView.getY(),2200);
+    public static void animationDownOfNavigationView(BottomNavigationView navigationView){
+        ValueAnimator animatorForNavigationView = ValueAnimator.ofInt((int) navigationView.getY(),2300);
         animatorForNavigationView.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(@NonNull ValueAnimator animation) {

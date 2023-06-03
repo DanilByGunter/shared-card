@@ -26,6 +26,7 @@ import android.widget.EditText;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
 import com.project.shared_card.activity.converter.ModelConverter;
+import com.project.shared_card.activity.main_screen.check.CheckFragment;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProductToHistory;
 import com.project.shared_card.activity.main_screen.check.tabs.target.model.Target;
