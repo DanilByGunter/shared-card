@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.activity.main_screen.group.dialog.DialogEdit;
@@ -35,9 +38,7 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     ImageView groupImage;
     ImageView userImage;
     Button groupEdit;
-    View mainToolBar;
-    String GROUP_PATH;
-    String USER_PATH;
+    FragmentActivity activity;
     String myId;
     long GROUP_ID;
     int groupPosition;
@@ -47,10 +48,10 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
     }
     updateExpandableListView expandableListView;
 
-    public AdapterForExpendList(Context context, List<AllGroups> groups, DialogEdit dialog, View mainToolBar, updateExpandableListView updateExpandableListView) {
+    public AdapterForExpendList(Context context, List<AllGroups> groups, DialogEdit dialog, FragmentActivity activity, updateExpandableListView updateExpandableListView) {
         this.context = context;
         this.groups = groups;
-        this.mainToolBar = mainToolBar;
+        this.activity = activity;
         this.dialog = dialog;
         this.expandableListView= updateExpandableListView;
     }
@@ -107,7 +108,7 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
 
         groupId.setText(groups.get(groupPosition).groupName.getId() + "#" + groups.get(groupPosition).groupName.getName());
         groupName.setText(groups.get(groupPosition).groupName.getName());
-        groupImage.setImageURI(Uri.parse(GROUP_PATH));
+        groupImage.setImageBitmap(DbBitmapUtility.getImage(groups.get(groupPosition).groupName.getPhoto()));
 
         groupEdit.setOnClickListener(this::clickOnBtnGroupEdit);
         dialog.ready.setOnClickListener(this::clickOnBtnReady);
@@ -118,15 +119,13 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
 
     private void clickOnBtnGroupEdit(View v){
         dialog.name.setText(groups.get(groupPosition).groupName.getName());
-        dialog.image.setImageURI(Uri.parse(GROUP_PATH));
+        dialog.image.setImageBitmap(DbBitmapUtility.getImage(groups.get(groupPosition).groupName.getPhoto()));
         dialog.dialog.show();
     }
 
     private void clickOnBtnReady(View v){
         if(!dialog.name.getText().toString().equals("")){
             ImplDB db = new ImplDB(context);
-            db.group_name().updateForId(GROUP_ID, dialog.name.getText().toString());
-
             byte[] picture;
             if (dialog.image.getDrawable()==null){
                 dialog.image.setImageDrawable(context.getDrawable(R.drawable.defaul_avatar));
@@ -135,27 +134,16 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
             else {
                 picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialog.image.getDrawable().getCurrent()).getBitmap());
             }
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    FileOutputStream fos;
-                    try {
-                        fos = new FileOutputStream(GROUP_PATH);
-                        fos.write(picture);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-            thread.start();
+            db.group_name().updateForId(GROUP_ID, dialog.name.getText().toString(),picture);
+
             expandableListView.update(String.valueOf(dialog.name.getText()),dialog.image.getDrawable());
             groups.get(groupPosition).groupName.setName(dialog.name.getText().toString());
 
             String selectedGroupId= settings.getString(context.getString(R.string.key_for_select_group_id), "XD");
 
             if (selectedGroupId.equals(String.valueOf(GROUP_ID))){
-                TextView name = mainToolBar.findViewById(R.id.main_name_group);
-                ImageView image = mainToolBar.findViewById(R.id.main_image_group);
+                TextView name = activity.findViewById(R.id.main_name_group);
+                ImageView image = activity.findViewById(R.id.main_image_group);
                 name.setText(dialog.name.getText());
                 image.setImageDrawable(dialog.image.getDrawable());
             }
@@ -173,7 +161,6 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         groupImage = v.findViewById(R.id.group_head_image);
         groupEdit = v.findViewById(R.id.group_edit);
         GROUP_ID = groups.get(groupPosition).groupName.getId();
-        GROUP_PATH = context.getFilesDir() + "/group/" +GROUP_ID;
     }
 
     @Override
@@ -184,7 +171,7 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         initUser(convertView,childPosition);
 
         userName.setText(groups.get(groupPosition).groupEntities.get(childPosition).userName.getName());
-        userImage.setImageURI(Uri.parse(USER_PATH));
+        userImage.setImageBitmap(DbBitmapUtility.getImage(groups.get(groupPosition).groupEntities.get(childPosition).userName.getPhoto()));
 
         return convertView;
     }
@@ -197,7 +184,6 @@ public class AdapterForExpendList  extends BaseExpandableListAdapter {
         if(myId.equals(String.valueOf(userId))) {
             userId = -1l;
         }
-        USER_PATH = context.getFilesDir() + "/user/" + userId;
 
 
         this.childPosition = childPosition;

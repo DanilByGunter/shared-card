@@ -44,8 +44,8 @@ public class ImplUserNameRepository implements UserNameRepository {
     }
 
     @Override
-    public void updateMe(String name) {
-        UserNameEntity me = new UserNameEntity(-1,name);
+    public void updateMe(String name,byte[] photo) {
+        UserNameEntity me = new UserNameEntity(-1,name,photo);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

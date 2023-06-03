@@ -105,7 +105,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = inflater.inflate(R.layout.cell_product_story, parent, false);
         return new ViewHolder(view);
     }

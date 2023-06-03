@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.project.shared_card.R;
+import com.project.shared_card.activity.main_screen.Animation;
 import com.project.shared_card.activity.main_screen.PopupMenu;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.story.model.History;
@@ -31,8 +33,7 @@ import java.util.List;
 
 
 public class StoryFragment extends Fragment {
-    public RecyclerView recyclerView;
-    public MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+    RecyclerView recyclerView;
     SharedPreferences settings;
     Button buttonSort;
     EditText searchBar;
@@ -40,45 +41,14 @@ public class StoryFragment extends Fragment {
     ImplDB db;
     long groupId;
     PopupMenu popupMenu;
+    int heightStartForNavigation;
+
     public StoryFragment() {
     }
 
-    public static StoryFragment newInstance() {
-        StoryFragment fragment = new StoryFragment();
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        init(view);
-        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
 
-        buttonSort.setOnClickListener(this::clickOnButtonSort);
-        searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                adapter.getFilter().filter(s);
-            }
-        });
-    }
 
     void clickOnButtonSort(View v){
         popupMenu.openPopupMenu();
@@ -87,16 +57,16 @@ public class StoryFragment extends Fragment {
     public boolean clickOnPopupMenu(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.by_product:
-                adapter.sorted(1);
+                ((Adapter) recyclerView.getAdapter()).sorted(1);
                 return true;
             case R.id.by_date:
-                adapter.sorted(2);
+                ((Adapter) recyclerView.getAdapter()).sorted(2);
                 return true;
             case R.id.by_category:
-                adapter.sorted(3);
+                ((Adapter) recyclerView.getAdapter()).sorted(3);
                 return true;
             case R.id.by_user:
-                adapter.sorted(4);
+                ((Adapter) recyclerView.getAdapter()).sorted(4);
                 return true;
             default:
                 return false;
@@ -110,13 +80,12 @@ public class StoryFragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_story);
         buttonSort = view.findViewById(R.id.button_sort);
         popupMenu = new PopupMenu(getContext(),buttonSort);
+        heightStartForNavigation = (int) getActivity().findViewById(R.id.bottom_navigation).getY();
         db = new ImplDB(getContext());
         db.story().getAll(groupId).observe(getViewLifecycleOwner(), new Observer<List<com.project.shared_card.database.entity.story.model.History>>() {
             @Override
             public void onChanged(List<History> histories) {
-                adapter = new Adapter(getContext(),histories);
-                recyclerView.setAdapter(adapter);
-                liveData.postValue(true);
+                recyclerView.setAdapter(new Adapter(getContext(),histories));
             }
         });
     }
@@ -124,6 +93,49 @@ public class StoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_story, container, false);
+        View view = inflater.inflate(R.layout.fragment_story, container, false);
+        init(view);
+        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
+        buttonSort.setOnClickListener(this::clickOnButtonSort);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(recyclerView.getAdapter()!=null)
+                    ((Adapter) recyclerView.getAdapter()).getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        //settingForAnimationOfStory();
+        return view;
+    }
+
+    void settingForAnimationOfStory(){
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1) ) {
+                    Animation.animationDownOfNavigationView(getActivity().findViewById(R.id.bottom_navigation));
+                }
+                if(!recyclerView.canScrollVertically(1) && !recyclerView.canScrollVertically(-1) ){
+                    Animation.animationUpOfNavigationView(getActivity().findViewById(R.id.bottom_navigation),heightStartForNavigation);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy<0){
+                    Animation.animationUpOfNavigationView(getActivity().findViewById(R.id.bottom_navigation),heightStartForNavigation);
+                }
+            }
+        });
     }
 }

@@ -55,6 +55,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GroupFragment extends Fragment {
+    private static final String PHOTO="PHOTO";
+    private static final String NAME="NAME";
     DialogEdit dialogUser;
     DialogEdit dialogGroup;
     DialogEdit dialogCreateGroup;
@@ -62,7 +64,6 @@ public class GroupFragment extends Fragment {
     ExpandableListView expandableListView;
     private SharedPreferences.Editor prefEditor;
     private SharedPreferences settings;
-    View mainToolBar;
     ImageView imageMe;
     AdapterForExpendList adapter;
     TextView textNameMe;
@@ -70,9 +71,6 @@ public class GroupFragment extends Fragment {
     Button groupJoin;
     Button groupCreate;
     String id_user;
-    String USER_PATH;
-    String GROUP_USER_PATH;
-    String GROUP_CREATE_PATH;
     ImplDB db;
     AdapterForExpendList.updateExpandableListView updateExpandableListView;
     ActivityResultLauncher<String> getContentForEdit;
@@ -81,30 +79,39 @@ public class GroupFragment extends Fragment {
     RetrofitService server;
     MutableLiveData<Boolean> liveDataForCreateGroup = new MutableLiveData<>();
     MutableLiveData<Boolean> liveDataForJoinGroup = new MutableLiveData<>();
+    byte[] getPhoto;
+    String getName;
     public GroupFragment() {
     }
 
-    public GroupFragment(View viewById) {
-        mainToolBar = viewById;
-    }
-
-    public static GroupFragment newInstance() {
-        GroupFragment fragment = new GroupFragment();
-        return fragment;
-    }
+//    public static GroupFragment newInstance(String name, byte[] photo) {
+//        Bundle args = new Bundle();
+//        args.putByteArray(PHOTO,photo);
+//        args.putString(NAME, name);
+//        GroupFragment fragment = new GroupFragment();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if (getArguments() != null) {
+//            getPhoto = getArguments().getByteArray(PHOTO);
+//            getName = getArguments().getString(NAME);
+//        }
     }
-
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_group, container, false);
         init(view);
-
-        textNameMe.setText(settings.getString(getString(R.string.key_for_me_name),"no_name"));
-        imageMe.setImageURI(Uri.parse(USER_PATH));
+        db.user_name().getMe().observe(getViewLifecycleOwner(), new Observer<UserNameEntity>() {
+            @Override
+            public void onChanged(UserNameEntity entity) {
+                textNameMe.setText(entity.getName());
+                imageMe.setImageBitmap(DbBitmapUtility.getImage(entity.getPhoto()));
+            }
+        });
 
         groupJoin.setOnClickListener(this::clickOnJoinGroup);
         groupCreate.setOnClickListener(this::clickOnCreateGroup);
@@ -114,12 +121,22 @@ public class GroupFragment extends Fragment {
         dialogCreateGroup.ready.setOnClickListener(this::clickOnButtonCreateGroup);
         updateAdapter();
 
+        return view;
     }
+
+
+    public static GroupFragment newInstance() {
+        GroupFragment fragment = new GroupFragment();
+        return fragment;
+    }
+
+
+
     void updateAdapter(){
         db.group_name().getAllGroups().observe((LifecycleOwner) getContext(), new Observer<List<AllGroups>>() {
             @Override
             public void onChanged(List<AllGroups> allGroups) {
-                adapter = new AdapterForExpendList(getContext(),allGroups,dialogGroup,mainToolBar,updateExpandableListView);
+                adapter = new AdapterForExpendList(getContext(),allGroups,dialogGroup,getActivity(),updateExpandableListView);
                 expandableListView.setAdapter(adapter);
             }
         });
@@ -138,8 +155,8 @@ public class GroupFragment extends Fragment {
         groupJoin = view.findViewById(R.id.group_join);
         groupCreate = view.findViewById(R.id.group_create);
 
-        USER_PATH = getContext().getFilesDir() + "/user/"  + getString(R.string.me_id);
-        GROUP_USER_PATH = getContext().getFilesDir() + "/group/" +getString(R.string.me_id);
+//        USER_PATH = getContext().getFilesDir() + "/user/"  + getString(R.string.me_id);
+//        GROUP_USER_PATH = getContext().getFilesDir() + "/group/" +getString(R.string.me_id);
 
         getContentForEdit = registerForActivityResult(new ActivityResultContracts.GetContent(), this::onActivityResultForEdit);
         getContentForCreate = registerForActivityResult(new ActivityResultContracts.GetContent(), this::onActivityResultForCreate);
@@ -158,36 +175,38 @@ public class GroupFragment extends Fragment {
             }
         };
     }
-
     private void onActivityResultForEdit(Uri result) {
         dialogUser.image.setImageURI(result);
         dialogGroup.image.setImageURI(result);
     }
+
     private void onActivityResultForCreate(Uri result) {
         dialogCreateGroup.image.setImageURI(result);
     }
-
     private void clickOnJoinGroup(View v){
         dialogGroupJoin.dialog.show();
     }
+
     private void clickOnCreateGroup(View v){
         dialogCreateGroup.name.setHint(R.string.enter_your_group);
         dialogCreateGroup.ready.setText(R.string.create_group);
         dialogCreateGroup.dialog.show();
     }
 
-
     private void clickOnEditProfile(View v){
-        dialogUser.name.setText(settings.getString(getString(R.string.key_for_me_name),"XD"));
-        dialogUser.image.setImageURI(Uri.parse(USER_PATH));
+        db.user_name().getMe().observe(this, new Observer<UserNameEntity>() {
+            @Override
+            public void onChanged(UserNameEntity entity) {
+                dialogUser.name.setText(entity.getName());
+                dialogUser.image.setImageBitmap(DbBitmapUtility.getImage(entity.getPhoto()));
+
+            }
+        });
         dialogUser.dialog.show();
     }
+
     private void clickOnSaveDialogEdit(View v){
         if(!dialogUser.name.getText().toString().equals("")){
-            prefEditor.putString(getString(R.string.key_for_me_name), dialogUser.name.getText().toString()).apply();
-
-            db.user_name().updateMe(dialogUser.name.getText().toString());
-            db.group_name().updateMe(dialogUser.name.getText().toString());
 
             byte[] picture;
             if (dialogUser.image.getDrawable()==null){
@@ -197,27 +216,12 @@ public class GroupFragment extends Fragment {
             else {
                 picture = DbBitmapUtility.getBytes(((BitmapDrawable) dialogUser.image.getDrawable().getCurrent()).getBitmap());
             }
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    FileOutputStream fos;
-                    try {
-                        fos = new FileOutputStream(USER_PATH);
-                        fos.write(picture);
-                        fos = new FileOutputStream(GROUP_USER_PATH);
-                        fos.write(picture);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-            thread.start();
-            imageMe.setImageDrawable(dialogUser.image.getDrawable());
-            textNameMe.setText(dialogUser.name.getText());
+            db.user_name().updateMe(dialogUser.name.getText().toString(),picture);
+            db.group_name().updateMe(dialogUser.name.getText().toString(),picture);
 
             if (settings.getString(getString(R.string.key_for_select_group_id),"XD").equals(getString(R.string.me_id))){
-                TextView name = mainToolBar.findViewById(R.id.main_name_group);
-                ImageView image = mainToolBar.findViewById(R.id.main_image_group);
+                TextView name = getActivity().findViewById(R.id.main_name_group);
+                ImageView image = getActivity().findViewById(R.id.main_image_group);
                 name.setText(dialogUser.name.getText());
                 image.setImageDrawable(dialogUser.image.getDrawable());
             }
@@ -269,31 +273,36 @@ public class GroupFragment extends Fragment {
     }
 
     void getMeIdForServer(Boolean flag){
-        String name_user =settings.getString(getString(R.string.key_for_me_name),"no_id");
-
-        String user_path = getContext().getFilesDir() + "/user/" + getString(R.string.me_id);
-        byte[] photo = ModelConverter.getPhoto(getContext(),user_path);
-
-        UserApi userApi = server.getRetrofit().create(UserApi.class);
-        userApi.addUser(new User(name_user,photo)).enqueue(new Callback<Long>() {
+//        String name_user =settings.getString(getString(R.string.key_for_me_name),"no_id");
+//
+//        String user_path = getContext().getFilesDir() + "/user/" + getString(R.string.me_id);
+//        byte[] photo = ModelConverter.getPhoto(getContext(),user_path);
+        db.user_name().getMe().observe(this, new Observer<UserNameEntity>() {
             @Override
-            public void onResponse(Call<Long> call, Response<Long> response) {
-                prefEditor.putString(getString(R.string.key_for_me_id_server), response.body().toString()).apply();
-                String userName = settings.getString(getString(R.string.key_for_me_name), "no_name");
-                db.user_name().createUser(new UserNameEntity(response.body(),userName));
-                if(flag)
-                    liveDataForCreateGroup.postValue(true);
-                else{
-                    liveDataForJoinGroup.postValue(true);
-                }
-            }
+            public void onChanged(UserNameEntity entity) {
+                UserApi userApi = server.getRetrofit().create(UserApi.class);
+                userApi.addUser(new User(entity.getName(),entity.getPhoto())).enqueue(new Callback<Long>() {
+                    @Override
+                    public void onResponse(Call<Long> call, Response<Long> response) {
+//                        prefEditor.putString(getString(R.string.key_for_me_id_server), response.body().toString()).apply();
+//                        String userName = settings.getString(getString(R.string.key_for_me_name), "no_name");
+                        db.user_name().createUser(new UserNameEntity(response.body(),entity.getName(),entity.getPhoto()));
+                        if(flag)
+                            liveDataForCreateGroup.postValue(true);
+                        else{
+                            liveDataForJoinGroup.postValue(true);
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<Long> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
-                toast.show();
+                    @Override
+                    public void onFailure(Call<Long> call, Throwable t) {
+                        Toast toast = Toast.makeText(getContext(),"Нет доступа к серверу",Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }
         });
+
     }
 
     private void addUserInGroup(long idGroup,String nameGroup) {
@@ -355,10 +364,8 @@ public class GroupFragment extends Fragment {
         dialogGroupJoin.name.setText("");
         dialogGroupJoin.dialog.dismiss();
     }
-
     private void createGroup(String name,byte[] photo){
         TheAllGroupApi theAllGroupApi =server.getRetrofit().create(TheAllGroupApi.class);
-        GroupIdApi groupIdApi = server.getRetrofit().create(GroupIdApi.class);
         TheAllGroup group = new TheAllGroup();
         group.setName(name);
         group.setPhoto(photo);
@@ -366,14 +373,7 @@ public class GroupFragment extends Fragment {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
                 idCreateGroup = response.body();
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ModelConverter.savePhoto(String.valueOf(getContext().getFilesDir()),photo,idCreateGroup,false);
-                    }
-                });
-                thread.start();
-                db.group_name().createGroup(new GroupNameEntity(idCreateGroup,name));
+                db.group_name().createGroup(new GroupNameEntity(idCreateGroup,name,photo));
                 saveUser(name);
             }
 
@@ -414,6 +414,7 @@ public class GroupFragment extends Fragment {
             }
         });
     }
+
     private void clickOnButtonCreateGroup(View v){
         if(!dialogCreateGroup.name.getText().toString().equals("")){
             byte[] photo;
@@ -439,10 +440,5 @@ public class GroupFragment extends Fragment {
                 createGroup(dialogCreateGroup.name.getText().toString(), photo);
             }
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_group, container, false);
     }
 }

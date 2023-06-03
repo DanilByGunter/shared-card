@@ -19,9 +19,9 @@ public class AdapterForPage extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                return CurrentListFragment.newInstance();
+                return new CurrentListFragment();
             case 1:
-                return TargetListFragment.newInstance();
+                return new TargetListFragment();
         }
         return null;
     }

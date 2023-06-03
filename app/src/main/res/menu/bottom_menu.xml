@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_group"
+        android:id="@+id/groupFragment"
         android:icon="@drawable/icon_group"
         android:title="" />
     <item
-        android:id="@+id/menu_check"
+        android:id="@+id/checkFragment"
         android:icon="@drawable/icon_check"
         android:title="" />
     <item
-        android:id="@+id/menu_statistic"
+        android:id="@+id/statisticsFragment"
         android:icon="@drawable/icon_statistic"
         android:title="" />
     <item
-        android:id="@+id/manu_story"
+        android:id="@+id/storyFragment"
         android:icon="@drawable/icon_story"
         android:title="" />
 </menu>

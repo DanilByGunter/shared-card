@@ -39,11 +39,15 @@ android {
 dependencies {
     def room_version = "2.5.1"
     def lifecycle_version = "2.6.1"
+    def nav_version = "2.5.3"
 
+    // Java language implementation
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-    implementation 'androidx.fragment:fragment:1.5.6'
+    implementation 'androidx.fragment:fragment:1.5.7'
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
     implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

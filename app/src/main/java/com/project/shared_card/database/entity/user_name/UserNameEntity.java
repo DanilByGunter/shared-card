@@ -11,10 +11,19 @@ public class UserNameEntity {
     private long id;
     private String name;
 
-
-    public UserNameEntity(long id, String name) {
+    private byte[] photo;
+    public UserNameEntity(long id, String name,byte[] photo) {
         this.id = id;
         this.name = name;
+        this.photo = photo;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     public long getId() {

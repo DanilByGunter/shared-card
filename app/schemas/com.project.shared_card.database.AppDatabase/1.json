@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7020131092389dba3213abbd5a679122",
+    "identityHash": "f1779e7b46776680bed3397e65204b81",
     "entities": [
       {
         "tableName": "category_product",
@@ -301,7 +301,7 @@
       },
       {
         "tableName": "group_name",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `photo` BLOB, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -313,6 +313,12 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "photo",
+            "columnName": "photo",
+            "affinity": "BLOB",
             "notNull": false
           }
         ],
@@ -353,7 +359,7 @@
       },
       {
         "tableName": "user_name",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `photo` BLOB, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -365,6 +371,12 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "photo",
+            "columnName": "photo",
+            "affinity": "BLOB",
             "notNull": false
           }
         ],
@@ -433,7 +445,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7020131092389dba3213abbd5a679122')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f1779e7b46776680bed3397e65204b81')"
     ]
   }
 }

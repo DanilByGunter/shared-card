@@ -42,8 +42,8 @@ public class ImplGroupNameRepository implements GroupNameRepository {
     }
 
     @Override
-    public void updateMe(String name) {
-        GroupNameEntity me = new GroupNameEntity(-1,name);
+    public void updateMe(String name,byte[] photo) {
+        GroupNameEntity me = new GroupNameEntity(-1,name,photo);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -54,8 +54,8 @@ public class ImplGroupNameRepository implements GroupNameRepository {
     }
 
     @Override
-    public void updateForId(long id,String name) {
-        GroupNameEntity entity = new GroupNameEntity(id,name);
+    public void updateForId(long id,String name,byte[] photo) {
+        GroupNameEntity entity = new GroupNameEntity(id,name,photo);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

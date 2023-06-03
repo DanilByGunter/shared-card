@@ -25,28 +25,12 @@ import java.util.stream.Collectors;
 
 public class ModelConverter {
     public static GroupNameEntity FromServerGroupToEntity(TheAllGroup allGroup, String getFilesDir) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                savePhoto(getFilesDir, allGroup.getPhoto(), allGroup.getId(),false);
-            }
-        });
-        thread.start();
-        return new GroupNameEntity(allGroup.getId(), allGroup.getName());
+        return new GroupNameEntity(allGroup.getId(), allGroup.getName(),allGroup.getPhoto());
     }
     public static List<UserNameEntity> FromServerUserToEntity(List<UsersGroup> usersGroups, String getFilesDir){
         List<UserNameEntity> users = new ArrayList<>();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(int i=0;i<usersGroups.size();i++){
-                    savePhoto(getFilesDir,usersGroups.get(i).getPhoto(),usersGroups.get(i).getId(),true);
-                }
-            }
-        });
-        thread.start();
         for(UsersGroup usersGroup: usersGroups){
-            users.add(new UserNameEntity(usersGroup.getId(),usersGroup.getName()));
+            users.add(new UserNameEntity(usersGroup.getId(),usersGroup.getName(),usersGroup.getPhoto()));
         }
         return users;
     }

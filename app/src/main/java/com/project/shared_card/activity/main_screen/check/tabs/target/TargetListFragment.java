@@ -53,6 +53,7 @@ public class TargetListFragment extends Fragment {
     AdapterForSpinner adapterForSpinner;
     Target targetRight;
     int positionRight;
+
     public TargetListFragment() {
 
     }
@@ -67,50 +68,7 @@ public class TargetListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        init(view);
-        swipe.setOnRefreshListener(this::getCheck);
-        swipe.setColorSchemeResources(R.color.dark_green);
-        list.setAdapter(adapter);
-        buttonSort.setOnClickListener(this::clickOnOpenSort);
-        db.target().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
-            @Override
-            public void onChanged(List<FullTarget> fullTargets) {
-                List<Target> targets = ModelConverter.FromTargetEntityToTargetModel(fullTargets);
-                adapter = new TargetAdapter(getContext(),targets);
-                list.setAdapter(adapter);
-            }
-        });
-        itemTouchHelper.attachToRecyclerView(list);
-        dialog.product.setSelected(true);
-        dialog.ready.setOnClickListener(this::clickOnDialogReady);
-        dialog.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                adapter.checks.add(positionRight, targetRight);
-                adapter.notifyDataSetChanged();
-            }
-        });
-        searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
-    }
 
     public boolean clickOnPopupMenu(MenuItem item) {
         switch (item.getItemId()) {
@@ -149,17 +107,19 @@ public class TargetListFragment extends Fragment {
         dialog.price.setText("");
         dialog.dialog.dismiss();
     }
-        void clickOnOpenSort(View v){
+
+    void clickOnOpenSort(View v) {
         popupMenu.openPopupMenu();
     }
-    void init(View v){
+
+    void init(View v) {
         settings = getContext().getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
-        idGroup = settings.getString(getString(R.string.key_for_select_group_id),"no_id");
+        idGroup = settings.getString(getString(R.string.key_for_select_group_id), "no_id");
         searchBar = v.findViewById(R.id.input_line);
         list = v.findViewById(R.id.list_target);
         buttonSort = v.findViewById(R.id.button_sort);
         swipe = v.findViewById(R.id.swipe_target);
-        popupMenu = new PopupMenu(getContext(),buttonSort);
+        popupMenu = new PopupMenu(getContext(), buttonSort);
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
         db = new ImplDB(getContext());
         dialog = new DialogAddProductToHistory(getContext());
@@ -178,21 +138,64 @@ public class TargetListFragment extends Fragment {
             }
         });
     }
-    void getCheck(){
+
+    void getCheck() {
         db.target().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
             @Override
             public void onChanged(List<FullTarget> fullTargets) {
-                adapter.update( ModelConverter.FromTargetEntityToTargetModel(fullTargets));
+                adapter.update(ModelConverter.FromTargetEntityToTargetModel(fullTargets));
                 swipe.setRefreshing(false);
             }
         });
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_target_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_target_list, container, false);
+        init(view);
+        swipe.setOnRefreshListener(this::getCheck);
+        swipe.setColorSchemeResources(R.color.dark_green);
+        buttonSort.setOnClickListener(this::clickOnOpenSort);
+        db.target().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullTarget>>() {
+            @Override
+            public void onChanged(List<FullTarget> fullTargets) {
+                List<Target> targets = ModelConverter.FromTargetEntityToTargetModel(fullTargets);
+                adapter = new TargetAdapter(getContext(), targets);
+                list.setAdapter(adapter);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(list);
+        dialog.product.setSelected(true);
+        dialog.ready.setOnClickListener(this::clickOnDialogReady);
+        dialog.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                adapter.checks.add(positionRight, targetRight);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ((TargetAdapter) list.getAdapter()).getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
+        return view;
     }
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -201,7 +204,7 @@ public class TargetListFragment extends Fragment {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getBindingAdapterPosition();
-            switch(direction){
+            switch (direction) {
                 case ItemTouchHelper.LEFT:
                     db.target().delete(adapter.checks.get(position).getEntity());
                     adapter.notifyItemRemoved(position);
@@ -210,8 +213,8 @@ public class TargetListFragment extends Fragment {
                     dialog.targetEntity = adapter.checks.get(position).getEntity();
                     dialog.product.setText(adapter.checks.get(position).getName());
                     dialog.dialog.show();
-                    targetRight =adapter.checks.get(position);
-                    positionRight =position;
+                    targetRight = adapter.checks.get(position);
+                    positionRight = position;
                     adapter.checks.remove(position);
                     adapter.notifyItemRemoved(position);
                     break;

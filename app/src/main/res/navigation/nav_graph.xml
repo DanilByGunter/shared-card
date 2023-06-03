@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/checkFragment">
+
+    <fragment
+        android:id="@+id/checkFragment"
+        android:name="com.project.shared_card.activity.main_screen.check.CheckFragment"
+        android:label="fragment_check"
+        tools:layout="@layout/fragment_check" />
+    <fragment
+        android:id="@+id/groupFragment"
+        android:name="com.project.shared_card.activity.main_screen.group.GroupFragment"
+        android:label="fragment_group"
+        tools:layout="@layout/fragment_group" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.project.shared_card.activity.main_screen.statistic.StatisticsFragment"
+        android:label="StatisticsFragment" />
+    <fragment
+        android:id="@+id/storyFragment"
+        android:name="com.project.shared_card.activity.main_screen.story.StoryFragment"
+        android:label="fragment_story"
+        tools:layout="@layout/fragment_story" />
+</navigation>

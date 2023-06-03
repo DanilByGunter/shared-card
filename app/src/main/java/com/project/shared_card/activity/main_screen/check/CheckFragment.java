@@ -21,6 +21,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DateConverter;
+import com.project.shared_card.activity.main_screen.Animation;
+import com.project.shared_card.activity.main_screen.MainActivity;
 import com.project.shared_card.activity.main_screen.check.dialog.AdapterForSpinner;
 import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProduct;
 import com.project.shared_card.activity.main_screen.check.tabs.current.ProductAdapter;
@@ -38,11 +40,13 @@ public class CheckFragment extends Fragment {
 
     public ViewPager2 viewPager;
     DialogAddProduct dialogAddProduct;
-    public FloatingActionButton buttonAddProduct;
+    FloatingActionButton buttonAddProduct;
     ImplDB db;
     TabLayout tabLayout;
     FragmentStateAdapter adapter;
     SharedPreferences settings;
+    int heightStartForNavigation;
+    int heightStartForButton;
 
 
     public CheckFragment() {
@@ -56,34 +60,6 @@ public class CheckFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        init(view);
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                changeCategory(position);
-            }
-        });
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(2);
-
-        db.metric().getAll().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                dialogAddProduct.metric.setAdapter(new AdapterForSpinner(getContext(), strings));
-            }
-        });
-
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, this::onConfigureTab);
-        tabLayoutMediator.attach();
-        buttonAddProduct.setOnClickListener(this::clickOnAddProduct);
-        dialogAddProduct.ready.setOnClickListener(this::clickOnReadyToCreateProduct);
     }
 
     void clickOnReadyToCreateProduct(View v) {
@@ -140,6 +116,7 @@ public class CheckFragment extends Fragment {
                 public void onChanged(List<FullTarget> fullTargets) {
                     TargetAdapter targetAdapter= (TargetAdapter) recyclerView.getAdapter();
                     targetAdapter.update(ModelConverter.FromTargetEntityToTargetModel(fullTargets));
+                    settingForAnimationOfCheck();
                 }
             });
         }
@@ -207,12 +184,72 @@ public class CheckFragment extends Fragment {
         adapter = new AdapterForPage(getActivity());
 
         db = new ImplDB(getContext());
+        heightStartForNavigation = (int) getActivity().findViewById(R.id.bottom_navigation).getY();
+        heightStartForButton = (int) buttonAddProduct.getY();
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_check, container, false);
+        View view = inflater.inflate(R.layout.fragment_check, container, false);
+        init(view);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                changeCategory(position);
+            }
+        });
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
+
+        db.metric().getAll().observe((LifecycleOwner) getContext(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                dialogAddProduct.metric.setAdapter(new AdapterForSpinner(getContext(), strings));
+
+            }
+        });
+
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, this::onConfigureTab);
+        tabLayoutMediator.attach();
+        buttonAddProduct.setOnClickListener(this::clickOnAddProduct);
+        dialogAddProduct.ready.setOnClickListener(this::clickOnReadyToCreateProduct);
+
+        return view;
+    }
+
+    void settingForAnimationOfCheck(){
+        RecyclerView recyclerView = (RecyclerView) viewPager.getChildAt(0);
+        View viewProduct = recyclerView.getChildAt(0);
+        View viewTarget = recyclerView.getChildAt(1);
+        RecyclerView listProduct = viewProduct.findViewById(R.id.list_product);
+        RecyclerView listTarget = viewTarget.findViewById(R.id.list_target);
+        RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
+                    Animation.animationDownOfNavigationView(getActivity().findViewById(R.id.bottom_navigation));
+                    Animation.animationDownOfButton(buttonAddProduct);
+                }
+                if(!recyclerView.canScrollVertically(1) && !recyclerView.canScrollVertically(-1) ){
+                    Animation.animationUpOfNavigationView(getActivity().findViewById(R.id.bottom_navigation),heightStartForNavigation);
+                    Animation.animationUpOfButton(buttonAddProduct,heightStartForButton);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy<0){
+                    Animation.animationUpOfNavigationView(getActivity().findViewById(R.id.bottom_navigation),heightStartForNavigation);
+                    Animation.animationUpOfButton(buttonAddProduct,heightStartForButton);
+                }
+            }
+        };
+        listProduct.addOnScrollListener(scrollListener);
+        listTarget.addOnScrollListener(scrollListener);
     }
 }

@@ -10,7 +10,9 @@ public interface UserNameRepository {
     void createUser(UserNameEntity user);
     void createUsers(List<UserNameEntity> user);
     LiveData<List<UserNameEntity>> allUsers();
-    void updateMe(String name);
+
+    void updateMe(String name, byte[] photo);
+
     LiveData<UserNameEntity> getMe();
 
     void delete(UserNameEntity entity);

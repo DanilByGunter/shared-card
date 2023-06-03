@@ -72,49 +72,6 @@ public class CurrentListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        init(view);
-        swipe.setOnRefreshListener(this::getCheck);
-        swipe.setColorSchemeResources(R.color.dark_green);
-        db.product().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
-            @Override
-            public void onChanged(List<FullProduct> fullProducts) {
-                List<Product> products = ModelConverter.FromProductEntityToProductModel(fullProducts);
-                productAdapter = new ProductAdapter(getContext(), products);
-                list.setAdapter(productAdapter);
-            }
-        });
-        itemTouchHelper.attachToRecyclerView(list);
-        buttonSort.setOnClickListener(this::clickOnOpenSort);
-        dialog.product.setSelected(true);
-        dialog.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                productAdapter.checks.add(positionRight,productRight);
-                productAdapter.notifyDataSetChanged();
-            }
-        });
-        dialog.ready.setOnClickListener(this::clickOnDialogReady);
-        searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Filter filter = productAdapter.getFilter();
-                productAdapter.getFilter().filter(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
-    }
     public boolean clickOnPopupMenu(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.by_product:
@@ -200,7 +157,46 @@ public class CurrentListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_current_list, container, false);
+        View view =inflater.inflate(R.layout.fragment_current_list, container, false);
+                init(view);
+        swipe.setOnRefreshListener(this::getCheck);
+        swipe.setColorSchemeResources(R.color.dark_green);
+        db.product().getAllForCheck(Long.valueOf(idGroup)).observe(getViewLifecycleOwner(), new Observer<List<FullProduct>>() {
+            @Override
+            public void onChanged(List<FullProduct> fullProducts) {
+                List<Product> products = ModelConverter.FromProductEntityToProductModel(fullProducts);
+                productAdapter = new ProductAdapter(getContext(), products);
+                list.setAdapter(productAdapter);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(list);
+        buttonSort.setOnClickListener(this::clickOnOpenSort);
+        dialog.product.setSelected(true);
+        dialog.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                productAdapter.checks.add(positionRight,productRight);
+                productAdapter.notifyDataSetChanged();
+            }
+        });
+        dialog.ready.setOnClickListener(this::clickOnDialogReady);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                productAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
+        return view;
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {

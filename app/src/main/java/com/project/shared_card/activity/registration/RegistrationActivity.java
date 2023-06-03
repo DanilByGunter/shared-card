@@ -76,28 +76,23 @@ public class RegistrationActivity extends AppCompatActivity {
     public void clickOnButton(View v) {
         if (editText.getText().toString().equals(""))
             return;
-
+        byte[] picture;
         if (image.getDrawable() == null) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    byte[] picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
-                    ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,true);
-                    ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,false);
-                }
-            });
-            thread.start();
+            picture = DbBitmapUtility.getBytes(((BitmapDrawable) getDrawable(R.drawable.defaul_avatar).getCurrent()).getBitmap());
+        }
+        else{
+            picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable().getCurrent()).getBitmap());
         }
         createCategoryMetricShop();
         long idUser = Long.parseLong(getString(R.string.me_id));
-        createUser(idUser);
+        createUser(idUser,picture);
     }
 
-    private void createUser(long idUser) {
+    private void createUser(long idUser,byte[] picture) {
         prefEditor.putString(getString(R.string.key_for_me_name), editText.getText().toString()).apply();
         prefEditor.putString(getString(R.string.key_for_select_group_id), String.valueOf(idUser)).apply();
-        db.user_name().createUser(new UserNameEntity(idUser, editText.getText().toString()));
-        db.group_name().createGroup(new GroupNameEntity(idUser, editText.getText().toString()));
+        db.user_name().createUser(new UserNameEntity(idUser, editText.getText().toString(), picture));
+        db.group_name().createGroup(new GroupNameEntity(idUser, editText.getText().toString(),picture));
         db.group().createGroup(new GroupEntity(idUser, idUser, true));
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -107,16 +102,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void onActivityResult(Uri result) {
-        try {
-            image.setImageURI(result);
-            InputStream inputStream = getContentResolver().openInputStream(result);
-            byte[] picture = new byte[inputStream.available()];
-            inputStream.read(picture);
-            ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,true);
-            ModelConverter.savePhoto(String.valueOf(getFilesDir()),picture,-1,false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        image.setImageURI(result);
     }
 
 
@@ -202,7 +188,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 new CategoriesProductEntity("Хлебобулочные изделия"),
                 new CategoriesProductEntity("Яичные продукты"),
                 new CategoriesProductEntity("Другое")
-                );
+        );
         List<CategoriesTargetEntity> categoriesTarget = Arrays.asList(
                 new CategoriesTargetEntity("Быт"),
                 new CategoriesTargetEntity("Дом"),
