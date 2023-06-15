@@ -11,8 +11,10 @@ import java.util.List;
 
 @Dao
 public interface ProductDao {
-    @Query("select * from product where group_name_id = :id and status != 2 order by status")
+    @Query("select * from product where group_name_id = :id and status != 2 order by status,date_first desc ")
     LiveData<List<FullProduct>> getAllForCheck(long id);
+    @Query("select * from product where group_name_id = :id and status != 2 and product_name like :query order by status,product_name asc  ")
+    LiveData<List<FullProduct>> getAllForCheckQuery(long id,String query);
     @Query("select * from product where group_name_id = :id and status = 2")
     LiveData<List<FullProduct>> getAllForHistory(long id);
     @Query("select * from product where id = :id")

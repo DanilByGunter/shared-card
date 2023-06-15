@@ -1,196 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="65dp"
-    android:clipToPadding="false"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <data>
+        <variable
+            name="history"
+            type="com.project.shared_card.database.entity.story.model.History" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cell_product_left_part"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/cell_product_left_part"
-        android:elevation="2dp"
-        android:layout_marginVertical="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="2dp"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintRight_toLeftOf="@id/cell_product_right_part"
-        app:layout_constraintLeft_toLeftOf="parent">
-        <TextView
-            style="@style/TextViewLight"
-            android:id="@+id/text_product"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:layout_marginLeft="10dp"
-            android:textSize="18sp"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:clipToPadding="false">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cell_product_left_part"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/cell_product_left_part"
+            android:elevation="2dp"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintLeft_toLeftOf="parent"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cell_product_right_part"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="2dp"
-        android:clipToPadding="false"
-        android:elevation="2dp"
-        app:layout_constraintHorizontal_weight="4"
-        app:layout_constraintLeft_toRightOf="@id/cell_product_left_part"
-        app:layout_constraintRight_toRightOf="parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_left_part"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="2dp"
-            android:elevation="2dp"
-            android:background="@color/dark_green"
-            app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_left_part"
-            app:layout_constraintRight_toLeftOf="@id/cell_product_right_top_center_part"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintRight_toLeftOf="@id/cell_product_right_part">
 
             <TextView
-                android:id="@+id/shop"
+                android:id="@+id/text_product"
                 style="@style/TextViewLight"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:gravity="center"
-                android:textSize="12sp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_top_center_part"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginHorizontal="2dp"
-            android:elevation="2dp"
-            android:background="@color/dark_green"
-            app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_center_part"
-            app:layout_constraintRight_toLeftOf="@id/cell_product_right_top_right_part"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/cell_product_right_left_part">
-
-            <TextView
-                android:id="@+id/category"
-                style="@style/TextViewLight"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:ellipsize="marquee"
                 android:gravity="center"
                 android:singleLine="true"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:textSize="18sp"
+                android:text="@{history.product}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_bottom_left_part"
-            android:background="@color/dark_green"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="5dp"
-            android:elevation="2dp"
-            app:layout_constraintRight_toLeftOf="@id/cell_product_right_bottom_center_part"
-            app:layout_constraintTop_toBottomOf="@id/cell_product_right_left_part"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
-            <TextView
-                style="@style/TextViewLight"
-                android:id="@+id/price"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:textSize="12sp"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_bottom_center_part"
+            android:id="@+id/cell_product_right_part"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginHorizontal="2dp"
-            android:layout_marginBottom="5dp"
-            android:elevation="2dp"
-            android:background="@color/dark_green"
-            app:layout_constraintRight_toLeftOf="@id/cell_product_right_bottom_right_part"
-            app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_center_part"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/cell_product_right_bottom_left_part">
-            <TextView
-                style="@style/TextViewLight"
-                android:id="@+id/metric"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:textSize="12sp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_top_right_part"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="2dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:clipToPadding="false"
             android:elevation="2dp"
-            android:background="@drawable/cell_product_right_top_part"
-            app:layout_constraintLeft_toRightOf="@id/cell_product_right_top_center_part"
-            app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_right_part"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_weight="4"
+            app:layout_constraintLeft_toRightOf="@id/cell_product_left_part"
             app:layout_constraintRight_toRightOf="parent">
 
-            <TextView
-                android:id="@+id/buyer"
-                style="@style/TextViewLight"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_bottom_right_part"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="2dp"
-            android:elevation="2dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/cell_product_right_bottom_part"
-            app:layout_constraintLeft_toRightOf="@id/cell_product_right_bottom_center_part"
-            app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_right_part"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            <TextView
-                style="@style/TextViewLight"
-                android:id="@+id/date_of_buy"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:layout_marginRight="5dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_left_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/dark_green"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_left_part"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cell_product_right_top_center_part"
+                app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/shop"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@{history.shop}"
+                    android:textSize="12sp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_top_center_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/dark_green"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_center_part"
+                app:layout_constraintLeft_toRightOf="@id/cell_product_right_left_part"
+                app:layout_constraintRight_toLeftOf="@id/cell_product_right_top_right_part"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/category"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:text="@{history.category}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_bottom_left_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/dark_green"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cell_product_right_bottom_center_part"
+                app:layout_constraintTop_toBottomOf="@id/cell_product_right_left_part">
+
+                <TextView
+                    android:id="@+id/price"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@{history.price + ' ' + history.currency}"
+                    android:textSize="12sp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_bottom_center_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/dark_green"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cell_product_right_bottom_left_part"
+                app:layout_constraintRight_toLeftOf="@id/cell_product_right_bottom_right_part"
+                app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_center_part">
+
+                <TextView
+                    android:id="@+id/metric"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@{history.price + ' ' + history.currency}"
+                    android:textSize="12sp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_top_right_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/cell_product_right_top_part"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_right_part"
+                app:layout_constraintLeft_toRightOf="@id/cell_product_right_top_center_part"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/buyer"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:text="@{history.buyer}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_bottom_right_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/cell_product_right_bottom_part"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cell_product_right_bottom_center_part"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_right_part">
+
+                <TextView
+                    android:id="@+id/date_of_buy"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:text="@{history.dataLastString}"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

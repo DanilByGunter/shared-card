@@ -1,162 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="65dp"
-    android:clipToPadding="false"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="cell"
+            type="com.project.shared_card.activity.main_screen.check.tabs.model.Cell" />
+    </data>
+    
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cell_product_left_part"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/cell_product_left_part"
-        android:elevation="2dp"
-        android:layout_marginVertical="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="2dp"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintRight_toLeftOf="@id/cell_product_right_part"
-        app:layout_constraintLeft_toLeftOf="parent">
-        <CheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="20dp"
-            android:button="@null"
-            android:background="@drawable/checkbox"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
-        <TextView
-            style="@style/TextViewLight"
-            android:id="@+id/text_product"
-            android:layout_marginLeft="10dp"
-            android:textSize="18sp"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/checkbox"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:clipToPadding="false">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cell_product_right_part"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="2dp"
-        android:clipToPadding="false"
-        android:elevation="2dp"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintLeft_toRightOf="@id/cell_product_left_part"
-        app:layout_constraintRight_toRightOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_top_left_part"
+            android:id="@+id/cell_product_left_part"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/cell_product_left_part"
             android:elevation="2dp"
-            android:background="@color/dark_green"
-            app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_left_part"
-            app:layout_constraintRight_toLeftOf="@id/cell_product_right_top_right_part"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
-            <TextView
-                style="@style/TextViewLight"
-                android:id="@+id/text_category"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="12sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_bottom_left_part"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="5dp"
-            android:elevation="2dp"
-            android:background="@color/dark_green"
-            app:layout_constraintRight_toLeftOf="@id/cell_product_right_bottom_right_part"
-            app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_left_part"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
-            <TextView
-                style="@style/TextViewLight"
-                android:id="@+id/text_user"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="12sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/cell_product_right_part">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_top_right_part"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:elevation="2dp"
-            android:background="@drawable/cell_product_right_top_part"
-            app:layout_constraintLeft_toRightOf="@id/cell_product_right_top_left_part"
-            app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_right_part"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            <TextView
-                style="@style/TextViewLight"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:id="@+id/text_count_or_sell"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="12sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cell_product_right_bottom_right_part"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="2dp"
-            android:elevation="2dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/cell_product_right_bottom_part"
-            app:layout_constraintLeft_toRightOf="@id/cell_product_right_bottom_left_part"
-            app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_right_part"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-            <TextView
-                android:id="@+id/text_date"
-                style="@style/TextViewLight"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:singleLine="true"
-                android:ellipsize="marquee"
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/checkbox"
+                android:button="@null"
+                app:status="@{cell.status}"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_product"
+                style="@style/TextViewLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:text="@{cell.name}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/checkbox"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cell_product_right_part"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:clipToPadding="false"
+            android:elevation="2dp"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@id/cell_product_left_part"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_top_left_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/dark_green"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_left_part"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cell_product_right_top_right_part"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/text_category"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:text="@{cell.category}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_bottom_left_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/dark_green"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cell_product_right_bottom_right_part"
+                app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_left_part">
+
+                <TextView
+                    android:id="@+id/text_user"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:text="@{cell.nameCreator}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_top_right_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/cell_product_right_top_part"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toTopOf="@id/cell_product_right_bottom_right_part"
+                app:layout_constraintLeft_toRightOf="@id/cell_product_right_top_left_part"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/text_count_or_sell"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:text='@{cell.countOrPrice + " " + cell.metricOrCurrency}'
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cell_product_right_bottom_right_part"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/cell_product_right_bottom_part"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cell_product_right_bottom_left_part"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cell_product_right_top_right_part">
+
+                <TextView
+                    android:id="@+id/text_date"
+                    style="@style/TextViewLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:text="@{cell.dateString}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

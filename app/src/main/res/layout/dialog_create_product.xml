@@ -1,92 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/dialog_background"
-    android:theme="@style/for_dialog"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<TextView
-    android:id="@+id/dialog_text_add_product"
-    style="@style/TextViewLight"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:textSize="20sp"
-    android:text="@string/dialog_add_product"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"/>
-    <EditText
-        style="@style/for_dialog"
-        android:layout_margin="5dp"
-        android:background="@drawable/dialog_edit_text_underline"
-        android:padding="5dp"
-        android:id="@+id/dialog_edit_text_product"
-        android:inputType="text"
-        android:textSize="18sp"
-        android:layout_width="240dp"
+
+    <data>
+        <variable
+            name="callback"
+            type="com.project.shared_card.activity.main_screen.check.callback.ButtonClickCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/dialog_text_hint_porduct"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_text_add_product"/>
-    <Spinner
-        style="@style/TextViewLight"
-        android:id="@+id/dialog_text_category"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="5dp"
-        android:background="@drawable/dialog_edit_text_underline_for_spinner"
-        android:popupBackground="@color/light_green_2"
-        android:dropDownVerticalOffset="35dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_edit_text_product"/>
-    <LinearLayout
-        android:id="@+id/dialog_linear"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="5dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_text_category">
+        android:background="@drawable/dialog_background"
+        android:theme="@style/for_dialog">
+
+        <TextView
+            android:id="@+id/dialog_text_add_product"
+            style="@style/TextViewLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/dialog_add_product"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:id="@+id/dialog_edit_text_product"
             style="@style/for_dialog"
-            android:id="@+id/dialog_count_of_product"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:background="@drawable/dialog_edit_text_underline"
-            android:hint="@string/dialog_text_hint_count"
-            android:inputType="number"
-            android:padding="5dp" />
+            android:hint="@string/dialog_text_hint_porduct"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_text_add_product" />
 
         <Spinner
+            android:id="@+id/dialog_text_category"
             style="@style/TextViewLight"
-            android:id="@+id/dialog_metric"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:background="@drawable/dialog_edit_text_underline_for_spinner"
-            android:layout_weight="1"
             android:dropDownVerticalOffset="35dp"
+            android:padding="5dp"
             android:popupBackground="@color/light_green_2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_edit_text_product" />
 
-    </LinearLayout>
-    <Button
-        android:id="@+id/dialog_btn_add"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/light_green_2"
-        android:layout_margin="5dp"
-        android:text="@string/add_product"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_linear"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/dialog_linear"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_text_category">
+
+            <EditText
+                android:id="@+id/dialog_count_of_product"
+                style="@style/for_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_edit_text_underline"
+                android:hint="@string/dialog_text_hint_count"
+                android:inputType="number"
+                android:padding="5dp" />
+
+            <Spinner
+                android:id="@+id/dialog_metric"
+                style="@style/TextViewLight"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_edit_text_underline_for_spinner"
+                android:dropDownVerticalOffset="35dp"
+                android:popupBackground="@color/light_green_2" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/dialog_btn_add"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:onClick="@{() -> callback.onClick()}"
+            android:text="@string/add_product"
+            android:textColor="@color/light_green_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_linear" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

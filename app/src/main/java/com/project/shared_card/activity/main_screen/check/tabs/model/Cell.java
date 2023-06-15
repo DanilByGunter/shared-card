@@ -1,36 +1,25 @@
-package com.project.shared_card.activity.main_screen.check.tabs.target.model;
-
-import com.project.shared_card.database.entity.check.target.TargetEntity;
+package com.project.shared_card.activity.main_screen.check.tabs.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Target {
+public class Cell {
     String name;
     String category;
-    int price;
+    int countOrPrice;
     LocalDateTime date;
     String nameCreator;
-    String currency;
+    String metricOrCurrency;
     int status;
-    TargetEntity entity;
 
-    public Target(String name, String category, int price, LocalDateTime date, String nameCreator, String currency, int status, TargetEntity entity) {
+    public Cell(String name, String category, int countOrPrice, LocalDateTime date, String nameCreator, String metricOrCurrency, int status) {
         this.name = name;
         this.category = category;
-        this.price = price;
+        this.countOrPrice = countOrPrice;
         this.date = date;
         this.nameCreator = nameCreator;
-        this.currency = currency;
+        this.metricOrCurrency = metricOrCurrency;
         this.status = status;
-        this.entity =entity;
-    }
-
-    public TargetEntity getEntity() {
-        return entity;
-    }
-
-    public void setEntity(TargetEntity entity) {
-        this.entity = entity;
     }
 
     public String getName() {
@@ -49,16 +38,19 @@ public class Target {
         this.category = category;
     }
 
-    public int getPrice() {
-        return price;
+    public int getCountOrPrice() {
+        return countOrPrice;
     }
 
-    public void setPrice(int sell) {
-        this.price = price;
+    public void setCountOrPrice(int countOrPrice) {
+        this.countOrPrice = countOrPrice;
     }
 
     public LocalDateTime getDate() {
         return date;
+    }
+    public String getDateString() {
+        return date.format(DateTimeFormatter.ofPattern("dd.MM HH:mm"));
     }
 
     public void setDate(LocalDateTime date) {
@@ -73,12 +65,12 @@ public class Target {
         this.nameCreator = nameCreator;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getMetricOrCurrency() {
+        return metricOrCurrency;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setMetricOrCurrency(String metricOrCurrency) {
+        this.metricOrCurrency = metricOrCurrency;
     }
 
     public int getStatus() {

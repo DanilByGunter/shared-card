@@ -25,9 +25,11 @@ import android.widget.EditText;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.shared_card.R;
+import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.Animation;
 import com.project.shared_card.activity.main_screen.PopupMenu;
 import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.entity.check.product.FullProduct;
 import com.project.shared_card.database.entity.story.model.History;
 
 import java.util.List;
@@ -38,19 +40,14 @@ public class StoryFragment extends Fragment {
     SharedPreferences settings;
     Button buttonSort;
     EditText searchBar;
-    Adapter adapter;
     ImplDB db;
     long groupId;
     PopupMenu popupMenu;
+    Adapter adapter;
     int heightStartForNavigation;
 
     public StoryFragment() {
     }
-
-
-
-
-
     void clickOnButtonSort(View v){
         popupMenu.openPopupMenu();
     }
@@ -79,24 +76,29 @@ public class StoryFragment extends Fragment {
         groupId = Long.parseLong(settings.getString(getString(R.string.key_for_select_group_id),"no_id"));
         searchBar = view.findViewById(R.id.input_line);
         recyclerView = view.findViewById(R.id.list_story);
+        adapter = new Adapter(getContext());
         buttonSort = view.findViewById(R.id.button_sort);
         popupMenu = new PopupMenu(getContext(),buttonSort);
         heightStartForNavigation = (int) getActivity().findViewById(R.id.bottom_navigation).getY();
         db = new ImplDB(getContext());
-        db.story().getAll(groupId).observe(getViewLifecycleOwner(), new Observer<List<com.project.shared_card.database.entity.story.model.History>>() {
+        db.story().getAll(groupId).observe(getViewLifecycleOwner(), new Observer<List<History>>() {
             @Override
             public void onChanged(List<History> histories) {
-                recyclerView.setAdapter(new Adapter(getContext(),histories));
+                adapter.setHistories(histories);
                 settingForAnimationOfStory();
             }
         });
+
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_story, container, false);
         init(view);
+        recyclerView.setAdapter(adapter);
         popupMenu.popupMenu.setOnMenuItemClickListener(this::clickOnPopupMenu);
         buttonSort.setOnClickListener(this::clickOnButtonSort);
         searchBar.addTextChangedListener(new TextWatcher() {
@@ -114,10 +116,8 @@ public class StoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        //settingForAnimationOfStory();
         return view;
     }
-
     void settingForAnimationOfStory(){
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

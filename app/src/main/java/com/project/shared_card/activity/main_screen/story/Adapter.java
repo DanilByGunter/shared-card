@@ -2,23 +2,22 @@ package com.project.shared_card.activity.main_screen.story;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.shared_card.R;
 import com.project.shared_card.database.entity.story.model.History;
+import com.project.shared_card.databinding.CellProductStoryBinding;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements Filterable {
@@ -31,10 +30,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     private boolean SORTED_DATE = true;
 
 
-    public Adapter(Context context,List<History> histories) {
+    public Adapter(Context context) {
         this.inflater = LayoutInflater.from(context);
-        this.histories = histories;
-        historiesFilter = histories;
     }
     public void sorted(int mode){
         switch (mode){
@@ -105,39 +102,62 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.cell_product_story, parent, false);
-        return new ViewHolder(view);
+        CellProductStoryBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.cell_product_story,
+                        parent, false);
+        return new ViewHolder(binding);
+    }
+
+    public void setHistories(List<History> histories_) {
+        if(histories==null) {
+            this.histories = histories_;
+            historiesFilter = histories_;
+            notifyItemRangeInserted(0, histories.size());
+        }
+        else {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return histories.size();
+                }
+
+                @Override
+                public int getNewListSize() {
+                    return histories_.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    return histories.get(oldItemPosition).getDataLast().equals(histories_.get(newItemPosition).getDataLast());
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    return histories.get(oldItemPosition).getDataLast().equals(histories_.get(newItemPosition).getDataLast());
+                }
+            });
+            this.histories = histories_;
+            historiesFilter = histories_;
+            result.dispatchUpdatesTo(this);
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        History history = histories.get(position);
-        holder.productName.setText(history.getProduct());
-        holder.productName.setSelected(true);
-        if(history.getCount()==null && history.getMetric() == null){
-            holder.metric.setText("");
-        }
-        else {
-            holder.metric.setText(history.getCount() + " " + history.getMetric());
-        }
-        holder.metric.setSelected(true);
-        holder.buyer.setText(history.getBuyer());
-        holder.buyer.setSelected(true);
-        holder.category.setText(history.getCategory());
-        holder.category.setSelected(true);
-        LocalDateTime dateLast = history.getDataLast();
-        String dateLastString = dateLast.getMonthValue()+":"+dateLast.getDayOfMonth()+" "+ dateLast.getHour()+":"+dateLast.getMinute();
-        holder.datelast.setText(dateLastString);
-        holder.datelast.setSelected(true);
-        holder.shop.setText(history.getShop());
-        holder.shop.setSelected(true);
-        holder.price.setText(String.valueOf(history.getPrice())+ " " + history.getCurrency());
-        holder.price.setSelected(true);
+        holder.bindin.setHistory(histories.get(position));
+        holder.bindin.textProduct.setSelected(true);
+        holder.bindin.metric.setSelected(true);
+        holder.bindin.buyer.setSelected(true);
+        holder.bindin.category.setSelected(true);
+        holder.bindin.dateOfBuy.setSelected(true);
+        holder.bindin.shop.setSelected(true);
+        holder.bindin.price.setSelected(true);
+        holder.bindin.executePendingBindings();
     }
 
     @Override
     public int getItemCount() {
-        return histories.size();
+        return histories==null ? 0 : histories.size();
     }
 
     @Override
@@ -174,16 +194,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productName,price,metric,category,shop,buyer,datelast;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            productName = itemView.findViewById(R.id.text_product);
-            price = itemView.findViewById(R.id.price);
-            category = itemView.findViewById(R.id.category);
-            shop = itemView.findViewById(R.id.shop);
-            metric = itemView.findViewById(R.id.metric);
-            buyer = itemView.findViewById(R.id.buyer);
-            datelast = itemView.findViewById(R.id.date_of_buy);
+        final CellProductStoryBinding bindin;
+        public ViewHolder(@NonNull CellProductStoryBinding binding) {
+            super(binding.getRoot());
+            this.bindin = binding;
         }
     }
 }

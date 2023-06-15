@@ -1,6 +1,10 @@
 package com.project.shared_card.database.entity.check.product;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -16,7 +20,7 @@ import androidx.room.PrimaryKey;
 //        parentColumns = {"user_name_id","group_name_id"},childColumns = {"user_name_creator_id", "group_name_id"}),
 //        }
 @Entity(tableName = "product")
-public class ProductEntity {
+public class ProductEntity implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo(name = "group_name_id")
@@ -169,5 +173,15 @@ public class ProductEntity {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+
     }
 }

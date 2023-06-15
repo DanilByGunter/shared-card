@@ -1,11 +1,15 @@
 package com.project.shared_card.database.entity.check.target;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "target")
-public class TargetEntity {
+public class TargetEntity implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo(name = "group_name_id")
@@ -137,5 +141,15 @@ public class TargetEntity {
 
     public void setShopId(long shopId) {
         this.shopId = shopId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+
     }
 }

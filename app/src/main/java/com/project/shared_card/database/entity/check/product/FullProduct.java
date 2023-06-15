@@ -39,5 +39,71 @@ public class FullProduct {
     public UserNameEntity buyer;
 
 
+    public ProductEntity getProduct() {
+        return product;
+    }
+    public Long getDateLast() {
+        return product.getDateLast();
+    }
+    public String getProductName() {
+        return product.getProductName();
+    }
 
+    public void setProduct(ProductEntity product) {
+        this.product = product;
+    }
+
+    public MetricsEntity getMetric() {
+        return metric;
+    }
+
+    public void setMetric(MetricsEntity metric) {
+        this.metric = metric;
+    }
+
+    public CategoriesProductEntity getCategory() {
+        return category;
+    }
+    public String getCategoryName() {
+        return category.getName();
+    }
+
+    public void setCategory(CategoriesProductEntity category) {
+        this.category = category;
+    }
+
+    public CurrencyEntity getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyEntity currency) {
+        this.currency = currency;
+    }
+
+    public ShopProductEntity getShop() {
+        return shop;
+    }
+
+    public void setShop(ShopProductEntity shop) {
+        this.shop = shop;
+    }
+
+    public UserNameEntity getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserNameEntity creator) {
+        this.creator = creator;
+    }
+
+    public UserNameEntity getBuyer() {
+        return buyer;
+    }
+    public String getBuyerName() {
+        return buyer.getName();
+    }
+
+    public void setBuyer(UserNameEntity buyer) {
+        this.buyer = buyer;
+    }
 }

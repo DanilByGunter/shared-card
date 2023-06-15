@@ -32,4 +32,51 @@ public class FullTarget {
             entityColumn = "id")
     public UserNameEntity buyer;
 
+    public TargetEntity getTarget() {
+        return target;
+    }
+
+    public void setTarget(TargetEntity target) {
+        this.target = target;
+    }
+
+    public CurrencyEntity getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyEntity currency) {
+        this.currency = currency;
+    }
+
+    public CategoriesTargetEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoriesTargetEntity category) {
+        this.category = category;
+    }
+
+    public ShopTargetEntity getShop() {
+        return shop;
+    }
+
+    public void setShop(ShopTargetEntity shop) {
+        this.shop = shop;
+    }
+
+    public UserNameEntity getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserNameEntity creator) {
+        this.creator = creator;
+    }
+
+    public UserNameEntity getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(UserNameEntity buyer) {
+        this.buyer = buyer;
+    }
 }

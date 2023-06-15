@@ -5,7 +5,9 @@ plugins {
 android {
     namespace 'com.project.shared_card'
     compileSdk 33
-
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.project.shared_card"
         minSdk 26
@@ -38,7 +40,6 @@ android {
 
 dependencies {
     def room_version = "2.5.1"
-    def lifecycle_version = "2.6.1"
     def nav_version = "2.5.3"
 
     // Java language implementation

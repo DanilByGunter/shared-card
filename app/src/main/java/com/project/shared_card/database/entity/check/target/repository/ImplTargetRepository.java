@@ -34,6 +34,11 @@ public class ImplTargetRepository implements TargetRepository{
     }
 
     @Override
+    public LiveData<List<FullTarget>> getAllForCheckQuery(Long groupId, String query) {
+        return targetDao.getAllForCheckQuery(groupId,query);
+    }
+
+    @Override
     public LiveData<List<FullTarget>> getAllForHistory(Long groupId) {
         return targetDao.getAllForHistory(groupId);
     }

@@ -1,77 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="250dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/dialog_background"
-    android:theme="@style/for_dialog"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/dialog_product"
-        style="@style/TextViewLight"
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.project.shared_card.activity.main_screen.check.callback.ButtonClickCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_margin="5dp"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-    <EditText
-
-        android:id="@+id/dialog_edit_price"
-        style="@style/for_dialog"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/dialog_edit_text_underline"
-        android:hint="@string/dialog_text_hint_currency"
-        android:inputType="number"
-        android:padding="5dp"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_shop"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/dialog_currency" />
+        android:background="@drawable/dialog_background"
+        android:theme="@style/for_dialog">
 
-    <Spinner
-        android:id="@+id/dialog_currency"
-        style="@style/TextViewLight"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="1"
-        android:background="@drawable/dialog_edit_text_underline_for_spinner"
-        android:dropDownVerticalOffset="35dp"
-        android:popupBackground="@color/light_green_2"
-        app:layout_constraintLeft_toRightOf="@id/dialog_edit_price"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_shop" />
+        <TextView
+            android:id="@+id/dialog_product"
+            style="@style/TextViewLight"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        style="@style/TextViewLight"
-        android:id="@+id/dialog_shop"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="5dp"
-        android:background="@drawable/dialog_edit_text_underline_for_spinner"
-        android:popupBackground="@color/light_green_2"
-        android:dropDownVerticalOffset="35dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_product"/>
+        <EditText
 
-    <Button
-        android:id="@+id/dialog_btn_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/light_green_2"
-        android:layout_margin="5dp"
-        android:text="@string/bought"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_edit_price"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:id="@+id/dialog_edit_price"
+            style="@style/for_dialog"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/dialog_edit_text_underline"
+            android:hint="@string/dialog_text_hint_currency"
+            android:inputType="number"
+            android:padding="5dp"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/dialog_currency"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_shop" />
+
+        <Spinner
+            android:id="@+id/dialog_currency"
+            style="@style/TextViewLight"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_edit_text_underline_for_spinner"
+            android:dropDownVerticalOffset="35dp"
+            android:popupBackground="@color/light_green_2"
+            app:layout_constraintLeft_toRightOf="@id/dialog_edit_price"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_shop" />
+
+        <Spinner
+            android:id="@+id/dialog_shop"
+            style="@style/TextViewLight"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/dialog_edit_text_underline_for_spinner"
+            android:dropDownVerticalOffset="35dp"
+            android:padding="5dp"
+            android:popupBackground="@color/light_green_2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_product" />
+
+        <Button
+            android:id="@+id/dialog_btn_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:onClick="@{() -> callback.onClick()}"
+            android:text="@string/bought"
+            android:textColor="@color/light_green_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_price" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

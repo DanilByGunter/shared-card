@@ -1,51 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.main_screen.check.CheckFragment">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/check_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/dark_green"
-            app:tabTextAppearance="@style/tab_text"
-            app:tabMode="fixed"
-            app:tabIndicator="@null"
-            app:tabBackground="@drawable/tab_selector"
-            app:tabRippleColor="@color/transparent"
-            app:layout_constraintBottom_toTopOf="@id/check_pager"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent"
+        tools:context=".activity.main_screen.check.CheckFragment">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/check_pager"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/check_tab" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="@style/TextViewLight"
-            android:id="@+id/add_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginBottom="90dp"
-            app:elevation="2dp"
-            android:src="@drawable/icon_add"
-            android:text="Добавить"
-            android:backgroundTint="@color/dark_green"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent">
 
-</FrameLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/check_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/dark_green"
+                app:layout_constraintBottom_toTopOf="@id/check_pager"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabIndicator="@null"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/tab_text" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/check_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/check_tab" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_fab"
+                style="@style/TextViewLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="90dp"
+                android:backgroundTint="@color/dark_green"
+                android:text="Добавить"
+                android:textAlignment="center"
+                app:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/icon_add"
+                app:tint="@color/light_green_2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

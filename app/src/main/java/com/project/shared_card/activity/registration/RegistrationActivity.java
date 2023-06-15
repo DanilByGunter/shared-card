@@ -83,7 +83,6 @@ public class RegistrationActivity extends AppCompatActivity {
         else{
             picture = DbBitmapUtility.getBytes(((BitmapDrawable) image.getDrawable().getCurrent()).getBitmap());
         }
-        createCategoryMetricShop();
         long idUser = Long.parseLong(getString(R.string.me_id));
         createUser(idUser,picture);
     }
@@ -106,112 +105,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
-    private void createCategoryMetricShop() {
-        List<MetricsEntity> metrics = Arrays.asList(
-                new MetricsEntity("шт"),
-                new MetricsEntity("кг"),
-                new MetricsEntity("г"),
-                new MetricsEntity("л"),
-                new MetricsEntity("мл"));
-        List<CurrencyEntity> currencies = Arrays.asList(
-                new CurrencyEntity("₽"),
-                new CurrencyEntity("$"),
-                new CurrencyEntity("€"),
-                new CurrencyEntity("₤"),
-                new CurrencyEntity("₴"),
-                new CurrencyEntity("₸"));
-        List<ShopProductEntity> shopProduct = Arrays.asList(
-                new ShopProductEntity("Аптека"),
-                new ShopProductEntity("Азбука вкуса"),
-                new ShopProductEntity("Ашан"),
-                new ShopProductEntity("Бристоль"),
-                new ShopProductEntity("Виктория"),
-                new ShopProductEntity("Вкусвилл"),
-                new ShopProductEntity("Красное и белое"),
-                new ShopProductEntity("Лента"),
-                new ShopProductEntity("Магнит"),
-                new ShopProductEntity("Окей"),
-                new ShopProductEntity("Перекрёсток"),
-                new ShopProductEntity("Пятерочка"),
-                new ShopProductEntity("Продуктовый"),
-                new ShopProductEntity("Рынок"),
-                new ShopProductEntity("Самокат"),
-                new ShopProductEntity("Спортпит"),
-                new ShopProductEntity("Фикспрайс"),
-                new ShopProductEntity("Другое")
-        );
-        List<ShopTargetEntity> shopTarget = Arrays.asList(
-                new ShopTargetEntity("Автотовары"),
-                new ShopTargetEntity("Автоцентр"),
-                new ShopTargetEntity("Гипермаркет"),
-                new ShopTargetEntity("Детские товары"),
-                new ShopTargetEntity("Зоомагазин"),
-                new ShopTargetEntity("Интернет-магазин"),
-                new ShopTargetEntity("Книжный магазин"),
-                new ShopTargetEntity("Магазин канцтоваров"),
-                new ShopTargetEntity("Магазин одежды"),
-                new ShopTargetEntity("Мебельный"),
-                new ShopTargetEntity("Музыкальный магазин"),
-                new ShopTargetEntity("Онлайн площадка"),
-                new ShopTargetEntity("Продовольственный"),
-                new ShopTargetEntity("Рынок"),
-                new ShopTargetEntity("Сексшоп"),
-                new ShopTargetEntity("Спецмагазин"),
-                new ShopTargetEntity("Строительные товары"),
-                new ShopTargetEntity("Супермаркет"),
-                new ShopTargetEntity("Художественный магазин"),
-                new ShopTargetEntity("Цветочный магазин"),
-                new ShopTargetEntity("Церковный магазин"),
-                new ShopTargetEntity("Хобби-гипермаркет"),
-                new ShopTargetEntity("Электротовары"));
-        List<CategoriesProductEntity> categoriesProduct = Arrays.asList(
-                new CategoriesProductEntity("Алкоголь"),
-                new CategoriesProductEntity("Бытовые товары"),
-                new CategoriesProductEntity("Готовая еда"),
-                new CategoriesProductEntity("Грибы"),
-                new CategoriesProductEntity("Зелень"),
-                new CategoriesProductEntity("Крупы"),
-                new CategoriesProductEntity("Лекарство"),
-                new CategoriesProductEntity("Масло"),
-                new CategoriesProductEntity("Молочные продукты"),
-                new CategoriesProductEntity("Морепродукты"),
-                new CategoriesProductEntity("Мясо"),
-                new CategoriesProductEntity("Напитки"),
-                new CategoriesProductEntity("Овощи"),
-                new CategoriesProductEntity("Орехи"),
-                new CategoriesProductEntity("Полуфабрикаты"),
-                new CategoriesProductEntity("Рыба"),
-                new CategoriesProductEntity("Сладости"),
-                new CategoriesProductEntity("Снеки"),
-                new CategoriesProductEntity("Фрукты"),
-                new CategoriesProductEntity("Химия"),
-                new CategoriesProductEntity("Хлебобулочные изделия"),
-                new CategoriesProductEntity("Яичные продукты"),
-                new CategoriesProductEntity("Другое")
-        );
-        List<CategoriesTargetEntity> categoriesTarget = Arrays.asList(
-                new CategoriesTargetEntity("Быт"),
-                new CategoriesTargetEntity("Дом"),
-                new CategoriesTargetEntity("Досуг"),
-                new CategoriesTargetEntity("Здоровье"),
-                new CategoriesTargetEntity("Мебель"),
-                new CategoriesTargetEntity("Одежда"),
-                new CategoriesTargetEntity("Подарок"),
-                new CategoriesTargetEntity("Продукты"),
-                new CategoriesTargetEntity("Путешествие"),
-                new CategoriesTargetEntity("Спорт"),
-                new CategoriesTargetEntity("Транспорт"),
-                new CategoriesTargetEntity("Творчество"),
-                new CategoriesTargetEntity("Электроника"),
-                new CategoriesTargetEntity("Другое"));
 
-        db.metric().addMetrics(metrics);
-        db.shop_product().add(shopProduct);
-        db.shop_target().add(shopTarget);
-        db.currency().add(currencies);
-        db.category_target().add(categoriesTarget);
-        db.category_product().add(categoriesProduct);
-    }
 }
 
 

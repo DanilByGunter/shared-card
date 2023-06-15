@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import com.project.shared_card.activity.converter.DateConverter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class History {
     String currency;
@@ -83,6 +84,12 @@ public class History {
 
     public LocalDateTime getDataLast() {
         return DateConverter.FromLongDateToLocalDateTime(dataLast);
+    }
+
+    public String getDataLastString() {
+        LocalDateTime localDateTime =DateConverter.FromLongDateToLocalDateTime(dataLast);
+        String date = localDateTime.format(DateTimeFormatter.ofPattern("dd.MM HH:mm"));
+        return date;
     }
 
     public void setDataLast(long dataLast) {

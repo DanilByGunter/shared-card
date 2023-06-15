@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.activity.main_screen.check.CheckFragment;
@@ -65,42 +66,6 @@ public class MainActivity extends AppCompatActivity {
         idGroup = Long.valueOf(settings.getString(getString(R.string.key_for_select_group_id), "XD"));
         navigationView = findViewById(R.id.bottom_navigation);
         db = new ImplDB(this);
-    }
-
-    public void settingForAnimationOfCheck(){
-        List<Fragment> fragments =getSupportFragmentManager().getFragments();
-        CheckFragment check = (CheckFragment) getSupportFragmentManager().getFragments();
-        FloatingActionButton buttonAddProduct = check.buttonAddProduct;
-        RecyclerView recyclerView = (RecyclerView) check.viewPager.getChildAt(0);
-        View viewProduct = recyclerView.getChildAt(0);
-        View viewTarget = recyclerView.getChildAt(1);
-        RecyclerView listProduct = viewProduct.findViewById(R.id.list_product);
-        RecyclerView listTarget = viewTarget.findViewById(R.id.list_target);
-        RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1) && recyclerView.canScrollVertically(-1)) {
-                    Animation.animationDownOfNavigationView(navigationView);
-                    Animation.animationDownOfButton(buttonAddProduct);
-                }
-                if(!recyclerView.canScrollVertically(1) && !recyclerView.canScrollVertically(-1) ){
-                    Animation.animationUpOfNavigationView(navigationView,500);
-                    Animation.animationUpOfButton(buttonAddProduct,500);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dy<0){
-                    Animation.animationUpOfNavigationView(navigationView,500);
-                    Animation.animationUpOfButton(buttonAddProduct,500);
-                }
-            }
-        };
-        listProduct.addOnScrollListener(scrollListener);
-        listTarget.addOnScrollListener(scrollListener);
     }
 
 }
