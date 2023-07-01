@@ -116,6 +116,7 @@ public class StoryFragment extends Fragment {
     void getHistory(){
         viewModel.getHistory().observe(getViewLifecycleOwner(), histories -> {
             adapter.setHistories(histories);
+            settingForAnimationOfStory();
         });
     }
     void settingForAnimationOfStory(){
