@@ -56,6 +56,17 @@ public class ImplUserNameRepository implements UserNameRepository {
     }
 
     @Override
+    public void update(UserNameEntity entity) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                userNameDao.update(entity);
+            }
+        });
+        thread.start();
+    }
+
+    @Override
     public LiveData<UserNameEntity> getMe() {
         return userNameDao.getMe();
     }

@@ -3,6 +3,7 @@ package com.project.shared_card.activity.main_screen;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
@@ -23,49 +26,38 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.project.shared_card.R;
+import com.project.shared_card.activity.BasicApp;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
 import com.project.shared_card.activity.main_screen.check.CheckFragment;
 import com.project.shared_card.database.ImplDB;
 import com.project.shared_card.database.entity.group_name.GroupNameEntity;
+import com.project.shared_card.databinding.ActivityMainBinding;
 
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences settings;
-    BottomNavigationView navigationView;
-    TextView nameGroup;
-    ImageView imageGroup;
-    Long idGroup;
     NavController navController;
-    ImplDB db;
-
+    ActivityMainBinding binding;
+    MainActivityViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        init();
-        NavigationUI.setupWithNavController(navigationView,navController);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        db.group_name().getGroupById(idGroup).observe(this, new Observer<GroupNameEntity>() {
-            @Override
-            public void onChanged(GroupNameEntity entity) {
-                nameGroup.setText(entity.getName());
-                imageGroup.setImageBitmap(DbBitmapUtility.getImage(entity.getPhoto()));
-            }
-        });
+        navController =((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container)).getNavController();
+        NavigationUI.setupWithNavController(binding.bottomNavigation,navController);
 
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        getGroup();
     }
 
-
-    void init(){
-        navController =((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container)).getNavController();
-        settings = getSharedPreferences(getString(R.string.key_for_shared_preference), Context.MODE_PRIVATE);
-        nameGroup = findViewById(R.id.main_name_group);
-        imageGroup = findViewById(R.id.main_image_group);
-        idGroup = Long.valueOf(settings.getString(getString(R.string.key_for_select_group_id), "XD"));
-        navigationView = findViewById(R.id.bottom_navigation);
-        db = new ImplDB(this);
+    void getGroup(){
+        viewModel.getGroup().observe(this, groupName -> {
+            binding.mainImageGroup.setImageBitmap(DbBitmapUtility.getImage(groupName.getPhoto()));
+            binding.mainNameGroup.setText(groupName.getName());
+        });
     }
 
 }

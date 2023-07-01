@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
-        android:id="@+id/group_user_card_view"
-        app:cardCornerRadius="10000dp"
-        app:cardElevation="1000dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <ImageView
-            android:id="@+id/group_user_image"
-            android:layout_width="match_parent"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/group_user_card_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            app:cardCornerRadius="10000dp"
+            app:cardElevation="1000dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/group_user_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/group_user_name"
+            style="@style/TextViewLight"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
-    </androidx.cardview.widget.CardView>
-    <TextView
-        style="@style/TextViewLight"
-        android:id="@+id/group_user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@id/group_user_card_view"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_margin="10dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/group_user_card_view"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

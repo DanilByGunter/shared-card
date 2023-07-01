@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.main_screen.group.GroupFragment">
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
        <include
+           android:id="@+id/my_profile"
            layout="@layout/user"/>
         <View
             android:layout_width="match_parent"
@@ -26,3 +25,4 @@
     </LinearLayout>
 
 </FrameLayout>
+</layout>

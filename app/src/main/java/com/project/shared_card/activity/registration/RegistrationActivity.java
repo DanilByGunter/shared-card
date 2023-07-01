@@ -3,7 +3,6 @@ package com.project.shared_card.activity.registration;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.ColorSpace;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,13 +14,12 @@ import android.widget.ImageView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 
 import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.DbBitmapUtility;
-import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.MainActivity;
 import com.project.shared_card.database.ImplDB;
+import com.project.shared_card.database.data.MyData;
 import com.project.shared_card.database.entity.categories.product.CategoriesProductEntity;
 import com.project.shared_card.database.entity.categories.target.CategoriesTargetEntity;
 import com.project.shared_card.database.entity.currency.CurrencyEntity;
@@ -30,14 +28,8 @@ import com.project.shared_card.database.entity.group_name.GroupNameEntity;
 import com.project.shared_card.database.entity.metrics.MetricsEntity;
 import com.project.shared_card.database.entity.shop.product.ShopProductEntity;
 import com.project.shared_card.database.entity.shop.target.ShopTargetEntity;
-import com.project.shared_card.database.entity.story.model.History;
 import com.project.shared_card.database.entity.user_name.UserNameEntity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -85,6 +77,22 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         long idUser = Long.parseLong(getString(R.string.me_id));
         createUser(idUser,picture);
+        insert();
+    }
+
+    private void insert() {
+        List<CategoriesProductEntity> categoriesProduct = MyData.getCategoryProduct();
+        List<CategoriesTargetEntity> categoriesTarget = MyData.getCategoryTarget();
+        List<CurrencyEntity> currency = MyData.getCurrency();
+        List<MetricsEntity> metric = MyData.getMetric();
+        List<ShopProductEntity> shopProduct = MyData.getShopProduct();
+        List<ShopTargetEntity> shopTarget = MyData.getShopTarget();
+        db.category_product().add(categoriesProduct);
+        db.category_target().add(categoriesTarget);
+        db.currency().add(currency);
+        db.metric().addMetrics(metric);
+        db.shop_product().add(shopProduct);
+        db.shop_target().add(shopTarget);
     }
 
     private void createUser(long idUser,byte[] picture) {

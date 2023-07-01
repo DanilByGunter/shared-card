@@ -1,56 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
-        android:id="@+id/group_head_card_view"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="2dp"
-        android:layout_margin="5dp"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <ImageView
-            android:id="@+id/group_head_image"
-            android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </androidx.cardview.widget.CardView>
-    <TextView
-        style="@style/TextViewLight"
-        android:id="@+id/group_head_name"
-        android:layout_width="wrap_content"
-        android:textSize="24sp"
-        android:layout_marginLeft="5dp"
+<layout>
+    <data>
+        <variable
+            name="allGroups"
+            type="com.project.shared_card.database.entity.group_name.AllGroups" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/group_head_card_view"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:descendantFocusability="blocksDescendants">
 
-    <TextView
-        style="@style/TextViewLightTranslucent"
-        android:text="ID:"
-        android:textSize="10sp"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/group_head_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/group_head_card_view"
-        app:layout_constraintTop_toBottomOf="@id/group_head_name"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-    <Button
-        android:id="@+id/group_edit"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/selector_icon_group_edit"
-        app:layout_constraintLeft_toRightOf="@id/group_head_name"
-        app:layout_constraintTop_toTopOf="@id/group_head_name"
-        app:layout_constraintBottom_toBottomOf="@id/group_head_name"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/group_head_card_view"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/group_head_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/group_head_name"
+            style="@style/TextViewLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="24sp"
+            android:text="@{allGroups.groupName.name}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/group_head_card_view"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/group_head_id"
+            style="@style/TextViewLightTranslucent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="10sp"
+            android:text='@{"ID: " + allGroups.groupName.id + "#" + allGroups.groupName.name}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/group_head_card_view"
+            app:layout_constraintTop_toBottomOf="@id/group_head_name" />
+
+        <Button
+            android:id="@+id/group_edit"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_icon_group_edit"
+            app:layout_constraintBottom_toBottomOf="@id/group_head_name"
+            app:layout_constraintLeft_toRightOf="@id/group_head_name"
+            app:layout_constraintTop_toTopOf="@id/group_head_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

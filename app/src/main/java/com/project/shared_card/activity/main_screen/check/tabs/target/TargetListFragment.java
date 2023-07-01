@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,13 +22,10 @@ import com.project.shared_card.R;
 import com.project.shared_card.activity.converter.ModelConverter;
 import com.project.shared_card.activity.main_screen.PopupMenu;
 import com.project.shared_card.activity.main_screen.check.callback.AdapterCallback;
-import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProductToHistory;
 import com.project.shared_card.activity.main_screen.check.callback.ButtonClickCallback;
 import com.project.shared_card.activity.main_screen.check.callback.SwipeCallback;
+import com.project.shared_card.activity.main_screen.check.dialog.DialogAddProductToHistory;
 import com.project.shared_card.activity.main_screen.check.tabs.AdapterForRecyclerView;
-import com.project.shared_card.activity.main_screen.check.tabs.model.Cell;
-import com.project.shared_card.database.entity.check.product.FullProduct;
-import com.project.shared_card.database.entity.check.product.ProductEntity;
 import com.project.shared_card.database.entity.check.target.FullTarget;
 import com.project.shared_card.database.entity.check.target.TargetEntity;
 import com.project.shared_card.databinding.FragmentListBinding;
@@ -47,7 +43,7 @@ public class TargetListFragment extends Fragment {
     TargetListViewModel viewModel;
     List<TargetEntity> targetEntityList;
 
-    private final AdapterCallback adapterCallback = (v, position) ->{
+    private final AdapterCallback adapterCallback = (v, position) -> {
         TargetEntity entity = targetEntityList.get(position);
         if (((CheckBox) v).isChecked()) {
             viewModel.updateTargetIsChecked(entity);
@@ -145,7 +141,8 @@ public class TargetListFragment extends Fragment {
 
         getTarget();
     }
-    void getTarget(){
+
+    void getTarget() {
         viewModel.getTarget().observe(getViewLifecycleOwner(), fullTargets -> {
             targetEntityList = fullTargets.stream().map(FullTarget::getTarget).collect(Collectors.toList());
             adapter.update(ModelConverter.FromTargetEntityToTargetModel(fullTargets));
@@ -170,11 +167,12 @@ public class TargetListFragment extends Fragment {
                     break;
             }
         }
-        void swipeRight(int position){
+
+        void swipeRight(int position) {
             DialogAddProductToHistory dialod = DialogAddProductToHistory.newInstance(targetEntityList.get(position));
             dialod.show(getChildFragmentManager(), "dialog");
             dialod.getViewLifecycleOwnerLiveData().observe(getViewLifecycleOwner(), lifecycleOwner -> {
-                if(lifecycleOwner==null) {
+                if (lifecycleOwner == null) {
                     adapter.notifyItemChanged(position);
                 }
             });

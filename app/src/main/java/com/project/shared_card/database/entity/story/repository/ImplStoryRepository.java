@@ -18,4 +18,9 @@ public class ImplStoryRepository implements StoryRepository{
     public LiveData<List<History>> getAll(Long id_group) {
         return dao.getAll(id_group);
     }
+
+    @Override
+    public LiveData<List<History>> getAllForQuery(Long id_group, String query) {
+        return dao.getAll(id_group);
+    }
 }

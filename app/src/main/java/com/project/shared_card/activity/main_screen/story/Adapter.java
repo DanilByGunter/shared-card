@@ -20,18 +20,84 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements Filterable {
-    private final LayoutInflater inflater;
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<History> histories;
-    private List<History> historiesFilter;
     private boolean SORTED_PRODUCT = true;
     private boolean SORTED_USER = true;
     private boolean SORTED_CATEGORY = true;
     private boolean SORTED_DATE = true;
 
 
-    public Adapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
+    public Adapter() {
+
+    }
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        CellProductStoryBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.cell_product_story,
+                        parent, false);
+        return new ViewHolder(binding);
+    }
+
+    public void setHistories(List<History> histories_) {
+        if(histories==null) {
+            histories = histories_;
+            notifyItemRangeInserted(0, histories.size());
+        }
+        else {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return histories.size();
+                }
+
+                @Override
+                public int getNewListSize() {
+                    return histories_.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    return histories.get(oldItemPosition).getDataLast().equals(histories_.get(newItemPosition).getDataLast());
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    return histories.get(oldItemPosition).getDataLast().equals(histories_.get(newItemPosition).getDataLast());
+                }
+            });
+            histories = histories_;
+            result.dispatchUpdatesTo(this);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bindin.setHistory(histories.get(position));
+        holder.bindin.textProduct.setSelected(true);
+        holder.bindin.metric.setSelected(true);
+        holder.bindin.buyer.setSelected(true);
+        holder.bindin.category.setSelected(true);
+        holder.bindin.dateOfBuy.setSelected(true);
+        holder.bindin.shop.setSelected(true);
+        holder.bindin.price.setSelected(true);
+        holder.bindin.executePendingBindings();
+    }
+
+    @Override
+    public int getItemCount() {
+        return histories==null ? 0 : histories.size();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        final CellProductStoryBinding bindin;
+        public ViewHolder(@NonNull CellProductStoryBinding binding) {
+            super(binding.getRoot());
+            this.bindin = binding;
+        }
     }
     public void sorted(int mode){
         switch (mode){
@@ -95,109 +161,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
                 }
                 notifyDataSetChanged();
                 break;
-        }
-        historiesFilter = histories;
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CellProductStoryBinding binding = DataBindingUtil
-                .inflate(LayoutInflater.from(parent.getContext()), R.layout.cell_product_story,
-                        parent, false);
-        return new ViewHolder(binding);
-    }
-
-    public void setHistories(List<History> histories_) {
-        if(histories==null) {
-            this.histories = histories_;
-            historiesFilter = histories_;
-            notifyItemRangeInserted(0, histories.size());
-        }
-        else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return histories.size();
-                }
-
-                @Override
-                public int getNewListSize() {
-                    return histories_.size();
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return histories.get(oldItemPosition).getDataLast().equals(histories_.get(newItemPosition).getDataLast());
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    return histories.get(oldItemPosition).getDataLast().equals(histories_.get(newItemPosition).getDataLast());
-                }
-            });
-            this.histories = histories_;
-            historiesFilter = histories_;
-            result.dispatchUpdatesTo(this);
-        }
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindin.setHistory(histories.get(position));
-        holder.bindin.textProduct.setSelected(true);
-        holder.bindin.metric.setSelected(true);
-        holder.bindin.buyer.setSelected(true);
-        holder.bindin.category.setSelected(true);
-        holder.bindin.dateOfBuy.setSelected(true);
-        holder.bindin.shop.setSelected(true);
-        holder.bindin.price.setSelected(true);
-        holder.bindin.executePendingBindings();
-    }
-
-    @Override
-    public int getItemCount() {
-        return histories==null ? 0 : histories.size();
-    }
-
-    @Override
-    public Filter getFilter() {
-        Filter filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if(constraint==null || constraint.length() ==0){
-                    filterResults.values = historiesFilter;
-                    filterResults.count = historiesFilter.size();
-                }
-                else{
-                    String search = constraint.toString().toLowerCase();
-                    List<History> list = new ArrayList<>();
-                    for(History history:historiesFilter){
-                        if(history.getProduct().toLowerCase().contains(search)){
-                            list.add(history);
-                        }
-                    }
-                    filterResults.values =list;
-                    filterResults.count = list.size();
-                }
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                histories = (List<History>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-        return filter;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        final CellProductStoryBinding bindin;
-        public ViewHolder(@NonNull CellProductStoryBinding binding) {
-            super(binding.getRoot());
-            this.bindin = binding;
         }
     }
 }

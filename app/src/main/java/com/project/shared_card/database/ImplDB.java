@@ -5,6 +5,7 @@ import static com.project.shared_card.database.data.MyData.getCategoryProduct;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -35,25 +36,43 @@ import java.util.List;
 public class ImplDB {
     private static ImplDB implDB;
     private AppDatabase db;
+    private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
 
     public ImplDB(Context context) {
-        this.db = Room.databaseBuilder(context,
-                        AppDatabase.class, "Sample.db")
-                .addCallback(new RoomDatabase.Callback() {
-                    @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        List<CategoriesProductEntity> categoriesProduct = MyData.getCategoryProduct();
-                        List<CategoriesTargetEntity> categoriesTarget = MyData.getCategoryTarget();
-                        List<CurrencyEntity> currency = MyData.getCurrency();
-                        List<MetricsEntity> metric = MyData.getMetric();
-                        List<ShopProductEntity> shopProduct = MyData.getShopProduct();
-                        List<ShopTargetEntity> shopTarget = MyData.getShopTarget();
-                        insert(categoriesProduct,categoriesTarget,currency,metric,shopProduct,shopTarget);
-                    }
-                })
-                .build();
+//        this.db = Room.databaseBuilder(context,
+//                        AppDatabase.class, "Sample.db")
+//                .addCallback(new RoomDatabase.Callback() {
+//                    @Override
+//                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
+//                        super.onCreate(db);
+//                        List<CategoriesProductEntity> categoriesProduct = MyData.getCategoryProduct();
+//                        List<CategoriesTargetEntity> categoriesTarget = MyData.getCategoryTarget();
+//                        List<CurrencyEntity> currency = MyData.getCurrency();
+//                        List<MetricsEntity> metric = MyData.getMetric();
+//                        List<ShopProductEntity> shopProduct = MyData.getShopProduct();
+//                        List<ShopTargetEntity> shopTarget = MyData.getShopTarget();
+//                        insert(categoriesProduct,categoriesTarget,currency,metric,shopProduct,shopTarget);
+//                        setDatabaseCreated();
+//                    }
+//                })
+//                .build();
+        this.db = Room.databaseBuilder(context, AppDatabase.class,"Sample.db").allowMainThreadQueries().build();
     }
+
+    public MutableLiveData<Boolean> getmIsDatabaseCreated() {
+        return mIsDatabaseCreated;
+    }
+
+    private void updateDatabaseCreated(final Context context) {
+        if (context.getDatabasePath("Sample.db").exists()) {
+            setDatabaseCreated();
+        }
+    }
+
+    private void setDatabaseCreated(){
+        mIsDatabaseCreated.postValue(true);
+    }
+
 
     private void insert(List<CategoriesProductEntity> categoriesProduct, List<CategoriesTargetEntity> categoriesTarget, List<CurrencyEntity> currency, List<MetricsEntity> metric, List<ShopProductEntity> shopProduct, List<ShopTargetEntity> shopTarget) {
         db.runInTransaction(() ->{

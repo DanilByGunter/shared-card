@@ -14,12 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentOnAttachListener;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -177,10 +171,10 @@ public class CurrentListFragment extends Fragment {
             DialogAddProductToHistory dialod = DialogAddProductToHistory.newInstance(productEntityList.get(position));
             dialod.show(getChildFragmentManager(), "dialog");
             dialod.getViewLifecycleOwnerLiveData().observe(getViewLifecycleOwner(), lifecycleOwner -> {
-                    if(lifecycleOwner==null) {
-                        productAdapter.notifyItemChanged(position);
-                    }
-                });
+                if (lifecycleOwner == null) {
+                    productAdapter.notifyItemChanged(position);
+                }
+            });
         }
 
         @Override

@@ -12,6 +12,7 @@ public interface UserNameRepository {
     LiveData<List<UserNameEntity>> allUsers();
 
     void updateMe(String name, byte[] photo);
+    void update(UserNameEntity entity);
 
     LiveData<UserNameEntity> getMe();
 

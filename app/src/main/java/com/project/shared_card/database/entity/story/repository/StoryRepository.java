@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface StoryRepository {
     LiveData<List<History>> getAll(Long id_group);
+
+    LiveData<List<History>> getAllForQuery(Long id_group, String query);
 }
